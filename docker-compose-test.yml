@@ -2,7 +2,7 @@ version: '3'
 services:
   asyncapi_service:
     build: asyncapi-service
-    image: fastapi-image
+    image: asyncapi-service-image
     env_file:
       - asyncapi-service/.env/.env.prod
     expose:
@@ -44,7 +44,7 @@ services:
       - docker_compose_sprint5_network
   
   tests:
-    image: fastapi-image
+    image: asyncapi-service-image
     env_file:
       - asyncapi-service/tests/.env/.env.prod
     entrypoint: > 
