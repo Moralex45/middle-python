@@ -16,7 +16,7 @@ services:
       - data-faker/.env/.env.prod
     depends_on:
       - postgres
-      - django_admin
+      - admin-service
     networks:
       - docker_compose_sprint4_network
 
@@ -66,7 +66,7 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - django_admin
+      - admin-service
       - api
     networks:
       - docker_compose_sprint4_network
@@ -84,7 +84,7 @@ services:
     networks:
       - docker_compose_sprint4_network
 
-  django_admin:
+  admin-service:
     build: admin-service
     env_file:
       - admin-service/.env/.env.prod
