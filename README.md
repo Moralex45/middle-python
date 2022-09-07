@@ -7,7 +7,7 @@ https://github.com/M1LKYWVYs/Async_API_sprint_2
 `docker-compose -p async_api_sprint_tests --file docker-compose-test.yml up --build --abort-on-container-exit --remove-orphans`
 
 # Запуск сервисов
-`docker-compose --file docker-compose.yml up --build`
+`docker-compose --file docker-compose.yml up --build --remove-orphans`
 
 
 # Инициализация проекта

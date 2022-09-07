@@ -14,7 +14,7 @@ services:
       - redis
       - elasticsearch
     networks:
-      - docker_compose_sprint5_network
+      - docker_compose_sprint6_network
   
   elasticsearch:
     image: elasticsearch:7.17.5
@@ -29,9 +29,9 @@ services:
       - "9200:9200"
     restart: always
     volumes:
-      - sprint5_elasticsearch_data:/usr/share/elasticsearch/data
+      - sprint6_elasticsearch_data:/usr/share/elasticsearch/data
     networks:
-      - docker_compose_sprint5_network
+      - docker_compose_sprint6_network
   
   redis:
     image: redis:7.0.4-alpine
@@ -41,7 +41,7 @@ services:
       - "63790:6379"
     restart: always
     networks:
-      - docker_compose_sprint5_network
+      - docker_compose_sprint6_network
   
   tests:
     image: asyncapi-service-image
@@ -56,11 +56,11 @@ services:
       - elasticsearch
       - asyncapi_service
     networks:
-      - docker_compose_sprint5_network
+      - docker_compose_sprint6_network
 
 volumes:
-  sprint5_elasticsearch_data:
+  sprint6_elasticsearch_data:
 
 networks:
-  docker_compose_sprint5_network:
+  docker_compose_sprint6_network:
     driver: bridge

@@ -8,7 +8,7 @@ services:
     depends_on:
       - elasticsearch
     networks:
-      - docker_compose_sprint4_network
+      - docker_compose_sprint6_network
 
   data_faker_service:
     build: data-faker-service
@@ -18,59 +18,7 @@ services:
       - postgres
       - admin_service
     networks:
-      - docker_compose_sprint4_network
-
-  postgres:
-    image: postgres:13
-    env_file:
-      - postgresql/.env/.env.prod
-    expose:
-      - "5432"
-    restart: always
-    volumes:
-      - ./postgresql/init_scripts:/docker-entrypoint-initdb.d
-      - sprint4_pg_data:/var/lib/postgresql/data
-    networks:
-      - docker_compose_sprint4_network
-
-  elasticsearch:
-    image: elasticsearch:7.17.5
-    environment:
-      - discovery.type=single-node
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    expose:
-      - "9200"
-    restart: always
-    volumes:
-      - sprint4_elasticsearch_data:/usr/share/elasticsearch/data
-    networks:
-      - docker_compose_sprint4_network
-
-  redis:
-    image: redis:7.0.4-alpine
-    expose:
-      - "6379"
-    restart: always
-    networks:
-      - docker_compose_sprint4_network
-
-  nginx:
-    image: nginx:latest
-    volumes:
-      - sprint4_static:/static/:ro
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/configs:/etc/nginx/conf.d
-    expose:
-      - "80"
-    restart: always
-    ports:
-      - "80:80"
-    depends_on:
-      - admin_service
-      - asyncapi_service
-    networks:
-      - docker_compose_sprint4_network
-
+      - docker_compose_sprint6_network
   asyncapi_service:
     build: asyncapi-service
     env_file:
@@ -82,7 +30,7 @@ services:
       - redis
       - elasticsearch
     networks:
-      - docker_compose_sprint4_network
+      - docker_compose_sprint6_network
 
   admin_service:
     build: admin-service
@@ -92,17 +40,71 @@ services:
       - "8000"
     restart: always
     volumes:
-      - sprint4_static:/opt/app/src/static/
+      - sprint6_static
     depends_on:
       - postgres
     networks:
-      - docker_compose_sprint4_network
+      - docker_compose_sprint6_network
+
+
+  postgres:
+    image: postgres:13
+    env_file:
+      - postgresql/.env/.env.prod
+    expose:
+      - "5432"
+    restart: always
+    volumes:
+      - ./postgresql/init_scripts:/docker-entrypoint-initdb.d
+      - sprint6_pg_data
+    networks:
+      - docker_compose_sprint6_network
+
+  elasticsearch:
+    image: elasticsearch:7.17.5
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    expose:
+      - "9200"
+    ports:
+      - "9200:9200"
+    restart: always
+    volumes:
+      - sprint6_elasticsearch_data
+    networks:
+      - docker_compose_sprint6_network
+
+  redis:
+    image: redis:7.0.4-alpine
+    expose:
+      - "6379"
+    restart: always
+    networks:
+      - docker_compose_sprint6_network
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - sprint6_static
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/configs:/etc/nginx/conf.d
+    expose:
+      - "80"
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - admin_service
+      - asyncapi_service
+    networks:
+      - docker_compose_sprint6_network
 
 volumes:
-  sprint4_pg_data:
-  sprint4_elasticsearch_data:
-  sprint4_static:
+  sprint6_pg_data:
+  sprint6_elasticsearch_data:
+  sprint6_static:
 
 networks:
-  docker_compose_sprint4_network:
+  docker_compose_sprint6_network:
     driver: bridge
