@@ -1,9 +1,9 @@
 version: '3'
 services:
-  etl_app:
-    build: etl
+  etl_service:
+    build: etl-service
     env_file:
-      - etl/.env/.env.prod
+      - etl-service/.env/.env.prod
     restart: always
     depends_on:
       - elasticsearch
