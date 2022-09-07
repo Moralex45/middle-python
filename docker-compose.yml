@@ -16,7 +16,7 @@ services:
       - data-faker-service/.env/.env.prod
     depends_on:
       - postgres
-      - admin-service
+      - admin_service
     networks:
       - docker_compose_sprint4_network
 
@@ -66,15 +66,15 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - admin-service
-      - api
+      - admin_service
+      - asyncapi_service
     networks:
       - docker_compose_sprint4_network
 
-  api:
-    build: fastapi
+  asyncapi_service:
+    build: asyncapi-service
     env_file:
-      - fastapi/.env/.env.prod
+      - asyncapi-service/.env/.env.prod
     expose:
       - "8000"
     restart: always

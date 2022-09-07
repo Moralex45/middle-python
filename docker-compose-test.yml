@@ -1,10 +1,10 @@
 version: '3'
 services:
-  fastapi:
-    build: fastapi
+  asyncapi_service:
+    build: asyncapi-service
     image: fastapi-image
     env_file:
-      - fastapi/.env/.env.prod
+      - asyncapi-service/.env/.env.prod
     expose:
       - "8000"
     ports:
@@ -46,7 +46,7 @@ services:
   tests:
     image: fastapi-image
     env_file:
-      - fastapi/tests/.env/.env.prod
+      - asyncapi-service/tests/.env/.env.prod
     entrypoint: > 
       bash -c "python3 tests/functional/utils/wait_for_redis.py 
       && python3 tests/functional/utils/wait_for_es.py 
@@ -54,7 +54,7 @@ services:
     depends_on:
       - redis
       - elasticsearch
-      - fastapi
+      - asyncapi_service
     networks:
       - docker_compose_sprint5_network
 
