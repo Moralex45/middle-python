@@ -84,7 +84,7 @@ services:
     networks:
       - docker_compose_sprint4_network
 
-  admin-service:
+  admin_service:
     build: admin-service
     env_file:
       - admin-service/.env/.env.prod
