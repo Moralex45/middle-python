@@ -10,7 +10,7 @@ services:
     networks:
       - docker_compose_sprint4_network
 
-  data-faker-service:
+  data_faker_service:
     build: data-faker-service
     env_file:
       - data-faker-service/.env/.env.prod
