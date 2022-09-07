@@ -10,10 +10,10 @@ services:
     networks:
       - docker_compose_sprint4_network
 
-  data_faker:
-    build: data-faker
+  data-faker-service:
+    build: data-faker-service
     env_file:
-      - data-faker/.env/.env.prod
+      - data-faker-service/.env/.env.prod
     depends_on:
       - postgres
       - admin-service
