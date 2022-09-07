@@ -85,9 +85,9 @@ services:
       - docker_compose_sprint4_network
 
   django_admin:
-    build: django-admin
+    build: admin-service
     env_file:
-      - django-admin/.env/.env.prod
+      - admin-service/.env/.env.prod
     expose:
       - "8000"
     restart: always
