@@ -1,4 +1,4 @@
-from typing import Any, Type
+from typing import Type
 
 import backoff
 import orjson
@@ -7,7 +7,7 @@ from pydantic import parse_obj_as
 from pydantic.json import pydantic_encoder
 
 from db.cache.base import AsyncCache, AsyncCacheService
-from models.base import Base
+from models import T
 
 
 class AsyncRedisCache(AsyncCache):
@@ -31,7 +31,7 @@ class AsyncRedisCacheService(AsyncRedisCache, AsyncCacheService):
     def __init__(self, redis_pool: Redis):
         super().__init__(redis_pool)
 
-    async def get_single(self, key: str, base_class: Type[Base]) -> Base | None:
+    async def get_single(self, key: str, base_class: Type[T]) -> T | None:
         data = await self.redis.get(key)
         if not data:
             return None
@@ -39,10 +39,10 @@ class AsyncRedisCacheService(AsyncRedisCache, AsyncCacheService):
         obj = base_class.parse_raw(data)
         return obj
 
-    async def set_single(self, key: str, data: Base, expire: int):
+    async def set_single(self, key: str, data: T, expire: int):
         await self.redis.set(key, data.json(), expire=expire)
 
-    async def get_list(self, key: str, base_class: Type[Base]) -> list[Base] | None:
+    async def get_list(self, key: str, base_class: Type[T]) -> list[T] | None:
         data = await self.redis.get(key)
         if not data:
             return None
@@ -50,7 +50,7 @@ class AsyncRedisCacheService(AsyncRedisCache, AsyncCacheService):
         objs = parse_obj_as(list[base_class], orjson.loads(data))
         return objs
 
-    async def set_list(self, key: str, data: list[Any], expire: int):
+    async def set_list(self, key: str, data: list[T], expire: int):
         await self.redis.set(key, orjson.dumps(data, default=pydantic_encoder).decode(), expire=expire)
 
     async def close(self):

@@ -1,0 +1,67 @@
+version: '3'
+services:
+  asyncapi_service:
+    build: ../../asyncapi-service
+    image: asyncapi-service-image
+    env_file:
+      - ../../asyncapi-service/.env/.env.prod
+    expose:
+      - "8000"
+    ports:
+      - "8000:8000"
+    restart: always
+    depends_on:
+      - redis
+      - elasticsearch
+    networks:
+      - docker_compose_sprint6_network
+  
+  elasticsearch:
+    image: elasticsearch:7.17.5
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+      - action.destructive_requires_name=false
+    expose:
+      - "9200"
+    ports:
+      - "9200:9200"
+    restart: always
+    volumes:
+      - sprint6_elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - docker_compose_sprint6_network
+  
+  redis:
+    image: redis:7.0.4-alpine
+    expose:
+      - "6379"
+    ports:
+      - "63790:6379"
+    restart: always
+    networks:
+      - docker_compose_sprint6_network
+  
+  tests:
+#    image: asyncapi-service-image
+    build: ../../asyncapi-service
+    env_file:
+      - .env/.env.prod
+    entrypoint: > 
+      bash -c "python3 tests/functional/utils/wait_for_redis.py 
+      && python3 tests/functional/utils/wait_for_es.py 
+      && pytest --disable-warnings"
+    depends_on:
+      - redis
+      - elasticsearch
+      - asyncapi_service
+    networks:
+      - docker_compose_sprint6_network
+
+volumes:
+  sprint6_elasticsearch_data:
+
+networks:
+  docker_compose_sprint6_network:
+    driver: bridge
