@@ -5,7 +5,7 @@ from models import T
 
 class AsyncStorage(ABC):
     @abstractmethod
-    async def get_by_id(self, _id: str, base_class: Type[T], **kwargs) -> T | None:
+    async def get_by_id(self, id: str, base_class: Type[T], **kwargs) -> T | None:
         raise NotImplementedError()
 
     @abstractmethod

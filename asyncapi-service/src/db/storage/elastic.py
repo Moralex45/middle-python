@@ -12,11 +12,11 @@ class AsyncElasticStorageService(AsyncStorageService):
         self.elastic: AsyncElasticsearch = elastic
 
     @backoff.on_exception(backoff.expo, [exceptions.ConnectionError], max_time=10)
-    async def get_by_id(self, _id: str, base_class: Type[T], **kwargs) -> T | None:
+    async def get_by_id(self, id: str, base_class: Type[T], **kwargs) -> T | None:
         index: str = kwargs['index']
 
         try:
-            doc = await self.elastic.get(index, _id)
+            doc = await self.elastic.get(index, id)
         except NotFoundError:
             return None
         return base_class.from_es(**doc['_source'])
