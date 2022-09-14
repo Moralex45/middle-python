@@ -2,16 +2,17 @@ import datetime
 import uuid
 
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Column, TIMESTAMP
 
-from extentions import db
+from extentions import Base
 
 
-class BaseModel(db.Model):
+class BaseModel(Base):
     __abstract__ = True
 
-    id = db.Column(UUID(as_uuid=True), nullable=False, unique=True, primary_key=True, default=uuid.uuid4)
-    created_at = db.Column(db.TIMESTAMP, nullable=False, default=datetime.datetime.now())
-    updated_at = db.Column(db.TIMESTAMP, nullable=False, default=datetime.datetime.now(), onupdate=datetime.datetime.now())  # noqa
+    id = Column(UUID(as_uuid=True), nullable=False, unique=True, primary_key=True, default=uuid.uuid4)
+    created_at = Column(TIMESTAMP, nullable=False, default=datetime.datetime.now())
+    updated_at = Column(TIMESTAMP, nullable=False, default=datetime.datetime.now(), onupdate=datetime.datetime.now())  # noqa
 
     def __repr__(self):
         return "<{0.__class__.__name__}(id={0.id!r})>".format(self)

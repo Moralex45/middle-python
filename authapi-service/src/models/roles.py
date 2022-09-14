@@ -2,15 +2,15 @@ import uuid
 
 from sqlalchemy.dialects.postgresql import UUID
 
-from extentions import db
+from sqlalchemy import Column, VARCHAR, ForeignKey, TEXT
 from models.base import BaseModel
 
 
 class Role(BaseModel):
     __tablename__ = 'roles'
 
-    code = db.Column(db.VARCHAR(255), nullable=False, unique=True)
-    description = db.Column(db.Text, default='')
+    code = Column(VARCHAR(255), nullable=False, unique=True)
+    description = Column(TEXT(), default='')
 
     def __repr__(self):
         return f'({self.code}) {self.description}'
@@ -19,5 +19,5 @@ class Role(BaseModel):
 class UserRole(BaseModel):
     __tablename__ = 'users_roles'
 
-    user_id = db.Column(UUID(as_uuid=True), db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False, default=uuid.uuid4)
-    role_id = db.Column(UUID(as_uuid=True), db.ForeignKey('roles.id', ondelete='CASCADE'), nullable=False, default=uuid.uuid4)
+    user_id = Column(UUID(as_uuid=True), ForeignKey('users.id', ondelete='CASCADE'), nullable=False, default=uuid.uuid4)
+    role_id = Column(UUID(as_uuid=True), ForeignKey('roles.id', ondelete='CASCADE'), nullable=False, default=uuid.uuid4)

@@ -1,10 +1,11 @@
-from extentions import db
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Column, VARCHAR, ForeignKey
 from models.base import BaseModel
 
 class Permission(BaseModel):
     __tablename__ = 'permissions'
 
-    code = db.Column(db.VARCHAR(255), nullable=False, unique=True)
+    code = Column(VARCHAR(255), nullable=False, unique=True)
 
     def __repr__(self):
         return f'({self.code}) {self.description}'
@@ -13,5 +14,5 @@ class Permission(BaseModel):
 class RolePermissions(BaseModel):
     __tablename__ = 'roles_permissions'
 
-    role_id = db.Column(db.ForeignKey('roles.id', ondelete='CASCADE'), nullable=False)
-    perm_id = db.Column(db.ForeignKey('permissions.id', ondelete='CASCADE'), nullable=False)
+    role_id = Column(UUID(as_uuid=True), ForeignKey('roles.id', ondelete='CASCADE'), nullable=False)
+    perm_id = Column(UUID(as_uuid=True), ForeignKey('permissions.id', ondelete='CASCADE'), nullable=False)

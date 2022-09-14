@@ -4,18 +4,18 @@ from sqlalchemy.dialects.postgresql import INET
 from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from extentions import db
+from sqlalchemy import Column, VARCHAR, ForeignKey, TEXT, TIMESTAMP, BOOLEAN
 from models.base import BaseModel
 
 
 class User(BaseModel):
     __tablename__ = 'users'
 
-    username = db.Column(db.VARCHAR(255), nullable=False, unique=True)
-    pwd_hash = db.Column(db.VARCHAR(255))
-    is_superuser = db.Column(db.BOOLEAN(), default=False)
-    data_joined = db.Column(db.TIMESTAMP(), default=datetime.datetime.now())
-    terminate_date = db.Column(db.TIMESTAMP())
+    username = Column(VARCHAR(255), nullable=False, unique=True)
+    pwd_hash = Column(VARCHAR(255))
+    is_superuser = Column(BOOLEAN(), default=False)
+    data_joined = Column(TIMESTAMP(), default=datetime.datetime.now())
+    terminate_date = Column(TIMESTAMP())
 
     def __repr__(self):
         return f'{self.username}'
@@ -34,11 +34,11 @@ class User(BaseModel):
 class UserData(BaseModel):
     __tablename__ = 'users_data'
 
-    user_id = db.Column(db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
-    first_name = db.Column(db.TEXT())
-    last_name = db.Column(db.TEXT())
-    email = db.Column(db.TEXT())
-    birth_date = db.Column(db.TIMESTAMP())
+    user_id = Column(ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    first_name = Column(TEXT())
+    last_name = Column(TEXT())
+    email = Column(TEXT())
+    birth_date = Column(TIMESTAMP())
 
     def __repr__(self):
         return f'{self.first_name} {self.last_name}'
@@ -46,10 +46,9 @@ class UserData(BaseModel):
 class AuthHistory(BaseModel):
     __tablename__ = 'auth_history'
 
-    user_id = db.Column(db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
-    ip = db.Column(INET())
-    device_key = db.Column(db.TEXT())
-    user_agent = db.Column(db.TEXT())
+    user_id = Column(ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    ip = Column(INET())
+    user_agent = Column(TEXT())
 
     def __repr__(self):
         return f'{self.ip} {self.user_agent}'
