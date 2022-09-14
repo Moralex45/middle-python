@@ -2,7 +2,7 @@ import click
 from flask import Flask
 
 from core.config import get_settings_instance
-from extentions import db
+from extentions import Base, engine
 from models import *
 
 __all__ = ('create_app',)
@@ -10,17 +10,14 @@ __all__ = ('create_app',)
 def create_app() -> Flask:
     app = Flask(__name__, instance_relative_config=True)
     configure_blueprints(app)
-    configure_db(app)
+    # configure_db(app)
     configure_cli(app)
 
     return app
 
 def configure_db(app) -> None:
-    app.config['SQLALCHEMY_DATABASE_URI'] = get_settings_instance().postgres_connection_url
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    db.init_app(app)
-    app.app_context().push()
-    db.create_all()
+    pass
+
 
 def configure_jwt():
     pass
@@ -32,8 +29,8 @@ def configure_blueprints(app) -> None:
     app.register_blueprint(role_blueprint)
 
 def configure_cli(app):
-    @app.cli.command('createsuperuser')
-    @click.argument('username')
-    @click.argument('password')
-    def create_superuser(username, password):
-        pass
+    # @app.cli.command('createsuperuser')
+    # @click.argument('username')
+    # @click.argument('password')
+    # def create_superuser(username, password):
+    pass
