@@ -44,7 +44,8 @@ services:
       - docker_compose_sprint6_network
   
   tests:
-    image: asyncapi-service-image
+#    image: asyncapi-service-image
+    build: asyncapi-service
     env_file:
       - asyncapi-service/tests/.env/.env.prod
     entrypoint: > 
