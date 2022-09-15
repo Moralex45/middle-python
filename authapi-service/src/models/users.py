@@ -1,5 +1,6 @@
 import datetime
 
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.postgresql import INET
 from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -46,9 +47,11 @@ class UserData(BaseModel):
 class AuthHistory(BaseModel):
     __tablename__ = 'auth_history'
 
-    user_id = Column(ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    user_id = Column(UUID(as_uuid=True),ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     ip = Column(INET())
     user_agent = Column(TEXT())
+    date_start = Column(TIMESTAMP())
+    date_end= Column(TIMESTAMP())
 
     def __repr__(self):
         return f'{self.ip} {self.user_agent}'
