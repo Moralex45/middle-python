@@ -1,9 +1,4 @@
-import click
 from flask import Flask
-
-from core.config import get_settings_instance
-from extentions import Base, engine
-from models import *
 
 __all__ = ('create_app',)
 

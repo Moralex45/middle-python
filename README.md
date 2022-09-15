@@ -29,10 +29,15 @@ https://github.com/M1LKYWVYs/Async_API_sprint_2
 
 # Запуск postgres
 
-`docker run -d --name sprint6_postgres -p 54320:5432 --mount type=bind,source=$PWD/postgresql/init_scripts,target=/docker-entrypoint-initdb.d --mount type=volume,source=sprint6_pgdata,target=/var/lib/postgresql/data --env-file postgresql/.env/.env.dev postgres:13`
+`docker run -d --name yp_postgres -p 54320:5432 --mount type=bind,source=$PWD/postgresql/init_scripts,target=/docker-entrypoint-initdb.d --mount type=volume,source=sprint6_pgdata,target=/var/lib/postgresql/data --env-file postgresql/.env/.env.dev postgres:13`
 
 После запуска postgres, необходимо инициализировать таблицы и заполнить их данными
 
 # Запуск elastic
 
-`docker run -d --name sprint6_elastic -p 9200:9200 --mount type=volume,source=sprint6_elasticsearch_data,target=/usr/share/elasticsearch/data  -e "discovery.type=single-node" elasticsearch:7.17.5`
+`docker run -d --name yp_elastic -p 9200:9200 --mount type=volume,source=sprint6_elasticsearch_data,target=/usr/share/elasticsearch/data  -e "discovery.type=single-node" elasticsearch:7.17.5`
+
+
+# Запуск redis
+
+`docker run -d --name yp_redis -p 63790:6379 redis`

@@ -2,6 +2,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy import Column, VARCHAR, ForeignKey
 from models.base import BaseModel
 
+
 class Permission(BaseModel):
     __tablename__ = 'permissions'
 

@@ -6,6 +6,7 @@ from pydantic import BaseSettings, Field
 
 # from core.logger import LOGGING
 
+
 class Settings(BaseSettings):
     # logging_config.dictConfig(LOGGING)
 
@@ -27,8 +28,7 @@ class Settings(BaseSettings):
 
     @property
     def postgres_connection_url(self):
-        return f'postgresql+psycopg2://{self.POSTGRES_DB_USER}:{self.POSTGRES_DB_PASSWORD}@{self.POSTGRES_DB_HOST}:{self.POSTGRES_DB_PORT}/{self.POSTGRES_DB_NAME}'
-
+        return f'postgresql+psycopg2://{self.POSTGRES_DB_USER}:{self.POSTGRES_DB_PASSWORD}@{self.POSTGRES_DB_HOST}:{self.POSTGRES_DB_PORT}/{self.POSTGRES_DB_NAME}'  # noqa
 
     class Config:
         __BASE_DIR_PATH = Path(__file__).parent.parent.parent

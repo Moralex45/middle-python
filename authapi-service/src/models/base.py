@@ -3,8 +3,9 @@ import uuid
 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy import Column, TIMESTAMP
+from sqlalchemy.orm import declarative_base
 
-from extentions import Base
+Base = declarative_base()
 
 
 class BaseModel(Base):
