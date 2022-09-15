@@ -1,4 +1,5 @@
 from flask import Flask
+from models.database import db_session
 
 __all__ = ('create_app',)
 
