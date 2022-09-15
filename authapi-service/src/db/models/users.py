@@ -6,8 +6,8 @@ from sqlalchemy.ext.hybrid import hybrid_property
 import hashlib
 import bcrypt
 
-from sqlalchemy import Column, VARCHAR, ForeignKey, TEXT, TIMESTAMP, BOOLEAN
-from models.base import BaseModel
+from sqlalchemy import Column, VARCHAR, ForeignKey, TEXT, TIMESTAMP, BOOLEAN, UniqueConstraint
+from db.models.base import BaseModel
 
 
 class PasswordConstants:
@@ -68,6 +68,7 @@ class UserData(BaseModel):
 
 class AuthHistory(BaseModel):
     __tablename__ = 'auth_history'
+    __table_args__ = (UniqueConstraint('user_agent', 'user_id'),)
 
     user_id = Column(UUID(as_uuid=True), ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     ip = Column(INET())

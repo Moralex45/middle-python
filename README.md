@@ -29,7 +29,9 @@ https://github.com/M1LKYWVYs/Async_API_sprint_2
 
 # Запуск postgres
 
-`docker run -d --name yp_postgres -p 54320:5432 --mount type=bind,source=$PWD/postgresql/init_scripts,target=/docker-entrypoint-initdb.d --mount type=volume,source=sprint6_pgdata,target=/var/lib/postgresql/data --env-file postgresql/.env/.env.dev postgres:13`
+`docker run -d --name yp_movies_postgres -p 54320:5432 --mount type=bind,source=$PWD/docker/movies_postgresql/init_scripts,target=/docker-entrypoint-initdb.d --mount type=volume,source=sprint7_movies_pgdata,target=/var/lib/postgresql/data --env-file docker/movies_postgresql/.env/.env.dev postgres:13`
+
+`docker run -d --name yp_auth_postgres -p 54321:5432 --mount type=bind,source=$PWD/docker/auth_postgresql/init_scripts,target=/docker-entrypoint-initdb.d --mount type=volume,source=sprint7_auth_pgdata,target=/var/lib/postgresql/data --env-file docker/auth_postgresql/.env/.env.dev postgres:13`
 
 После запуска postgres, необходимо инициализировать таблицы и заполнить их данными
 
@@ -40,4 +42,6 @@ https://github.com/M1LKYWVYs/Async_API_sprint_2
 
 # Запуск redis
 
-`docker run -d --name yp_redis -p 63790:6379 redis`
+`docker run -d --name yp_movies_redis -p 63790:6379 redis`
+
+`docker run -d --name yp_auth_redis -p 63791:6379 redis`

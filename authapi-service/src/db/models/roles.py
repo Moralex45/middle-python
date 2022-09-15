@@ -2,8 +2,8 @@ import uuid
 
 from sqlalchemy.dialects.postgresql import UUID
 
-from sqlalchemy import Column, VARCHAR, ForeignKey, TEXT
-from models.base import BaseModel
+from sqlalchemy import Column, VARCHAR, ForeignKey, TEXT, UniqueConstraint
+from db.models.base import BaseModel
 
 
 class Role(BaseModel):
@@ -18,6 +18,7 @@ class Role(BaseModel):
 
 class UserRole(BaseModel):
     __tablename__ = 'users_roles'
+    __table_args__ = (UniqueConstraint('user_id', 'role_id'),)
 
     user_id = Column(UUID(as_uuid=True), ForeignKey('users.id', ondelete='CASCADE'), nullable=False, default=uuid.uuid4)
     role_id = Column(UUID(as_uuid=True), ForeignKey('roles.id', ondelete='CASCADE'), nullable=False, default=uuid.uuid4)

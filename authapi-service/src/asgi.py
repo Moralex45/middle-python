@@ -4,7 +4,7 @@ import sys
 import uvicorn
 from asgiref.wsgi import WsgiToAsgi
 
-from main import create_app
+from app_utils import create_app
 from core.config import get_settings_instance
 # from core.logger import LOGGING
 

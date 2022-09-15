@@ -1,5 +1,4 @@
 from flask import Flask
-from models.database import db_session
 
 __all__ = ('create_app',)
 
@@ -7,14 +6,18 @@ __all__ = ('create_app',)
 def create_app() -> Flask:
     app = Flask(__name__, instance_relative_config=True)
     configure_blueprints(app)
-    # configure_db(app)
-    configure_cli(app)
+    configure_db()
+    # configure_cli(app)
 
     return app
 
 
-def configure_db(app) -> None:
-    pass
+def configure_db() -> None:
+    from db.models.users import User, UserData, AuthHistory  # noqa
+    from db.models.roles import Role, UserRole  # noqa
+    from db.models.permissions import Permission, RolePermissions  # noqa
+    from db.core import Base, engine
+    Base.metadata.create_all(bind=engine)
 
 
 def configure_jwt():
