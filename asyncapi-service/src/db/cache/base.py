@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Any, Type
 
+from models import T
+
 
 class AsyncCache(ABC):
     @abstractmethod
@@ -14,19 +16,19 @@ class AsyncCache(ABC):
 
 class AsyncCacheService(AsyncCache):
     @abstractmethod
-    async def get_single(self, key: str, base_class: Type[Any]) -> Any:
+    async def get_single(self, key: str, base_class: Type[T]) -> T:
         raise NotImplementedError()
 
     @abstractmethod
-    async def set_single(self, key: str, data: Any, expire: int):
+    async def set_single(self, key: str, data: T, expire: int):
         raise NotImplementedError()
 
     @abstractmethod
-    async def get_list(self, key: str, base_class: Type[Any]) -> list[Any] | None:
+    async def get_list(self, key: str, base_class: Type[T]) -> list[T] | None:
         raise NotImplementedError()
 
     @abstractmethod
-    async def set_list(self, key: str, data: list[Any], expire: int):
+    async def set_list(self, key: str, data: list[T], expire: int):
         raise NotImplementedError()
 
     @abstractmethod

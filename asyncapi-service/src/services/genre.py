@@ -18,7 +18,7 @@ class GenreService:
         redis_key: str = f'genres::uuid::{str(genre_id)}'
         genre = await self.cache_service.get_single(redis_key, Genre)
         if not genre:
-            genre = await self.storage_service.get_by_id(index='genres', id=str(genre_id), base_class=Genre)
+            genre = await self.storage_service.get_by_id(id=str(genre_id), index='genres', base_class=Genre)
             if not genre:
                 return None
             await self.cache_service.set_single(redis_key,
