@@ -1,10 +1,10 @@
 version: '3'
 services:
   asyncapi_service:
-    build: asyncapi-service
+    build: ../../asyncapi-service
     image: asyncapi-service-image
     env_file:
-      - asyncapi-service/.env/.env.prod
+      - ../../asyncapi-service/.env/.env.prod
     expose:
       - "8000"
     ports:
@@ -45,9 +45,9 @@ services:
   
   tests:
 #    image: asyncapi-service-image
-    build: asyncapi-service
+    build: ../../asyncapi-service
     env_file:
-      - asyncapi-service/tests/.env/.env.prod
+      - .env/.env.prod
     entrypoint: > 
       bash -c "python3 tests/functional/utils/wait_for_redis.py 
       && python3 tests/functional/utils/wait_for_es.py 

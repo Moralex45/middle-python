@@ -40,12 +40,11 @@ services:
       - "8000"
     restart: always
     volumes:
-      - sprint6_static
+      - sprint6_static:/opt/app/src/static/
     depends_on:
       - postgres
     networks:
       - docker_compose_sprint6_network
-
 
   postgres:
     image: postgres:13
@@ -56,7 +55,7 @@ services:
     restart: always
     volumes:
       - ./postgresql/init_scripts:/docker-entrypoint-initdb.d
-      - sprint6_pg_data
+      - sprint6_pg_data:/var/lib/postgresql/data
     networks:
       - docker_compose_sprint6_network
 
@@ -67,11 +66,9 @@ services:
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     expose:
       - "9200"
-    ports:
-      - "9200:9200"
     restart: always
     volumes:
-      - sprint6_elasticsearch_data
+      - sprint6_elasticsearch_data:/usr/share/elasticsearch/data
     networks:
       - docker_compose_sprint6_network
 
@@ -86,7 +83,7 @@ services:
   nginx:
     image: nginx:latest
     volumes:
-      - sprint6_static
+      - sprint6_static:/static/:ro
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/configs:/etc/nginx/conf.d
     expose:

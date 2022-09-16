@@ -1,8 +1,10 @@
+from typing import Type
+
 import backoff
 from elasticsearch import AsyncElasticsearch, NotFoundError, exceptions
 
-from db.storage import AsyncStorageService
-from models.base import Base
+from db.storage.base import AsyncStorageService
+from models import T
 
 
 class AsyncElasticStorageService(AsyncStorageService):
@@ -10,22 +12,18 @@ class AsyncElasticStorageService(AsyncStorageService):
         self.elastic: AsyncElasticsearch = elastic
 
     @backoff.on_exception(backoff.expo, [exceptions.ConnectionError], max_time=10)
-    async def get_by_id(self, **kwargs) -> Base | None:
+    async def get_by_id(self, id: str, base_class: Type[T], **kwargs) -> T | None:
         index: str = kwargs['index']
-        base_class: Base = kwargs['base_class']
-        _id: str = kwargs['id']
 
         try:
-            doc = await self.elastic.get(index, _id)
+            doc = await self.elastic.get(index, id)
         except NotFoundError:
             return None
         return base_class.from_es(**doc['_source'])
 
     @backoff.on_exception(backoff.expo, [exceptions.ConnectionError], max_time=10)
-    async def search(self, **kwargs) -> list[Base] | None:
+    async def search(self, body: dict, base_class: Type[T], **kwargs) -> list[T] | None:
         index: str = kwargs['index']
-        base_class: Base = kwargs['base_class']
-        body: dict = kwargs['body']
 
         try:
             doc = await self.elastic.search(index=index, body=body)

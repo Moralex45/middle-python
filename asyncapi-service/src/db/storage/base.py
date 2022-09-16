@@ -1,14 +1,15 @@
 from abc import ABC, abstractmethod
 from typing import Any, Type
+from models import T
 
 
 class AsyncStorage(ABC):
     @abstractmethod
-    async def get_by_id(self, _id: str, base_class: Type[Any]) -> Any | None:
+    async def get_by_id(self, id: str, base_class: Type[T], **kwargs) -> T | None:
         raise NotImplementedError()
 
     @abstractmethod
-    async def search(self, body: Any, base_class: Type[Any]) -> list[Any] | None:
+    async def search(self, body: Any, base_class: Type[T], **kwargs) -> list[T] | None:
         raise NotImplementedError()
 
 
