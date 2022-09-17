@@ -6,7 +6,7 @@ from core.config import get_settings_instance
 
 engine = create_engine(
     get_settings_instance().POSTGRES_DSN,
-    echo=True,
+    echo=False,
     connect_args={'options': f'-csearch_path={get_settings_instance().POSTGRES_SCHEMA}'}
 )
 

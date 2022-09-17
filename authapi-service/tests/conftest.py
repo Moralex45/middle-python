@@ -1,3 +1,2 @@
-pytest_plugins = ('tests.fixtures.redis',
-                  'tests.fixtures.elasticsearch',
-                  'tests.fixtures.common',)
+pytest_plugins = ('tests.fixtures.common',
+                  'tests.fixtures.pg_database')

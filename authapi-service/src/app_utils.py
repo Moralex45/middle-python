@@ -1,11 +1,19 @@
+import time
+
 from flask import Flask
 
-__all__ = ('create_app',)
+__all__ = ('create_app','create_raw_app')
+
+
+def create_raw_app() -> Flask:
+    app = Flask(__name__, instance_relative_config=True)
+    configure_blueprints(app)
+
+    return app
 
 
 def create_app() -> Flask:
-    app = Flask(__name__, instance_relative_config=True)
-    configure_blueprints(app)
+    app = create_raw_app()
     configure_db()
     # configure_cli(app)
 

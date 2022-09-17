@@ -1,28 +1,13 @@
-from dataclasses import dataclass
 
-from multidict import CIMultiDictProxy
 import pytest
-
-from tests.functional.settings import get_settings_instance
-
-
-@dataclass
-class HTTPResponse:
-    body: dict
-    headers: CIMultiDictProxy[str]
-    status: int
+from src.app_utils import create_raw_app
 
 
 @pytest.fixture
-def make_get_request(session):
-    async def inner(method: str, params: dict = None) -> HTTPResponse:
-        params = params or {}
-        url = get_settings_instance().BASE_API + '/api/v1' + method
-        async with session.get(url, params=params) as response:
-            return HTTPResponse(
-                body=await response.json(),
-                headers=response.headers,
-                status=response.status
-            )
+def flask_app():
+    return create_raw_app()
 
-    return inner
+
+@pytest.fixture
+def flask_test_client(flask_app):
+    return flask_app.test_client()

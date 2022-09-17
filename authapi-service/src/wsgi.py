@@ -1,11 +1,10 @@
 import uuid
 
-from app_utils import create_app
-from db.services import role_permission_service
+from app_utils import create_raw_app
 
 
 def main():
-    app = create_app()
+    app = create_raw_app()
     app.run(debug=True)
 
 

@@ -8,6 +8,7 @@ from db.models.base import BaseModel
 
 class Role(BaseModel):
     __tablename__ = 'roles'
+    __table_args__ = ({'extend_existing': True},)
 
     code = Column(VARCHAR(255), nullable=False, unique=True)
     description = Column(TEXT(), default='')
@@ -18,7 +19,8 @@ class Role(BaseModel):
 
 class UserRole(BaseModel):
     __tablename__ = 'users_roles'
-    __table_args__ = (UniqueConstraint('user_id', 'role_id'),)
+    __table_args__ = (UniqueConstraint('user_id', 'role_id'),
+                      {'extend_existing': True})
 
     user_id = Column(UUID(as_uuid=True), ForeignKey('users.id', ondelete='CASCADE'), nullable=False, default=uuid.uuid4)
     role_id = Column(UUID(as_uuid=True), ForeignKey('roles.id', ondelete='CASCADE'), nullable=False, default=uuid.uuid4)

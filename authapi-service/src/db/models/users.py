@@ -17,6 +17,7 @@ class PasswordConstants:
 
 class User(BaseModel):
     __tablename__ = 'users'
+    __table_args__ = ({'extend_existing': True},)
 
     username = Column(VARCHAR(255), nullable=False, unique=True)
     pwd_hash = Column(VARCHAR(255))
@@ -55,6 +56,7 @@ class User(BaseModel):
 
 class UserData(BaseModel):
     __tablename__ = 'users_data'
+    __table_args__ = ({'extend_existing': True},)
 
     user_id = Column(UUID(as_uuid=True), ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     first_name = Column(TEXT())
@@ -68,7 +70,8 @@ class UserData(BaseModel):
 
 class AuthHistory(BaseModel):
     __tablename__ = 'auth_history'
-    __table_args__ = (UniqueConstraint('user_agent', 'user_id'),)
+    __table_args__ = (UniqueConstraint('user_agent', 'user_id'),
+                      {'extend_existing': True})
 
     user_id = Column(UUID(as_uuid=True), ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     ip = Column(INET())
