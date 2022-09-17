@@ -17,6 +17,7 @@ class RolePermissionsService(IRolePermissionsService):
         pass
 
     def get_filtered(self, role_id: uuid) -> list[RolePermissions]:
-        pass
+        with db_session() as session:
+            return session.query(RolePermissions).filter_by(role_id=role_id).all()
 
 

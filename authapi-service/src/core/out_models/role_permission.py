@@ -7,7 +7,7 @@ from core.out_models.base import Base
 class RolePermission(Base):
     id: UUID
     role_id: UUID
-    permission_id: UUID
+    perm_id: UUID
 
     @classmethod
     def from_pg(cls, **kwargs):

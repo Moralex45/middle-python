@@ -10,6 +10,8 @@ def orjson_dumps(v, *, default):
 
 class Base(BaseModel, ABC):
     ...
-    # class Config:
-    #     json_loads = orjson.loads
-    #     json_dumps = orjson_dumps
+
+    class Config:
+        orm_mode = True
+        # json_loads = orjson.loads
+        # json_dumps = orjson_dumps
