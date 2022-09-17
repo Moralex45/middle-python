@@ -1,10 +1,9 @@
 import datetime
 import uuid
-from typing import Type
 
 from sqlalchemy import TIMESTAMP, Column
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import declarative_base, DeclarativeMeta
+from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
 
