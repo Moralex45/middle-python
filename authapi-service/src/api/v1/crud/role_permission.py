@@ -1,9 +1,8 @@
-import json
-from uuid import UUID
 from http import HTTPStatus
+from uuid import UUID
 
 import orjson
-from flask import Blueprint, request, Response
+from flask import Blueprint, Response, request
 from pydantic.json import pydantic_encoder
 
 from core.out_models.role_permission import RolePermission

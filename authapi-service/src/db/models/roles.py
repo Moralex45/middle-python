@@ -1,8 +1,8 @@
 import uuid
 
+from sqlalchemy import TEXT, VARCHAR, Column, ForeignKey, UniqueConstraint
 from sqlalchemy.dialects.postgresql import UUID
 
-from sqlalchemy import Column, VARCHAR, ForeignKey, TEXT, UniqueConstraint
 from db.models.base import BaseModel
 
 

@@ -1,7 +1,8 @@
 from typing import TypeVar
 
+from sqlalchemy import VARCHAR, Column, ForeignKey, UniqueConstraint
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy import Column, VARCHAR, ForeignKey, UniqueConstraint
+
 from db.models.base import BaseModel
 
 PT = TypeVar('PT')

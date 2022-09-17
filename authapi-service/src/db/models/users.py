@@ -1,12 +1,12 @@
 import datetime
-
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.postgresql import INET
-from sqlalchemy.ext.hybrid import hybrid_property
 import hashlib
-import bcrypt
 
-from sqlalchemy import Column, VARCHAR, ForeignKey, TEXT, TIMESTAMP, BOOLEAN, UniqueConstraint
+import bcrypt
+from sqlalchemy import (BOOLEAN, TEXT, TIMESTAMP, VARCHAR, Column, ForeignKey,
+                        UniqueConstraint)
+from sqlalchemy.dialects.postgresql import INET, UUID
+from sqlalchemy.ext.hybrid import hybrid_property
+
 from db.models.base import BaseModel
 
 
@@ -40,7 +40,7 @@ class User(BaseModel):
             value.encode('utf-8'),
             salt,
             PasswordConstants.iterations
-            ) + b'$' + salt
+        ) + b'$' + salt
 
     def check_password(self, value):
         received_salt = self.pwd_hash[-29:]
@@ -49,7 +49,7 @@ class User(BaseModel):
             value.encode('utf-8'),
             received_salt,
             PasswordConstants.iterations
-            ) + b'$' + received_salt
+        ) + b'$' + received_salt
 
         return self.pwd_hash == received_pwd_hash
 

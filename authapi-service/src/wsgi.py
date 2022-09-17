@@ -1,5 +1,3 @@
-import uuid
-
 from app_utils import create_raw_app
 
 

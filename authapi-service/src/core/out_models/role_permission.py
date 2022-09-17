@@ -1,4 +1,3 @@
-from typing import Type, TypeAlias
 from uuid import UUID
 
 from core.out_models.base import Base

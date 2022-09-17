@@ -4,7 +4,6 @@ from pathlib import Path
 
 from pydantic import BaseSettings, Field, PostgresDsn
 
-
 # from core.logger import LOGGING
 
 

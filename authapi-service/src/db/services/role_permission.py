@@ -1,8 +1,8 @@
 import uuid
 
+from db.core import db_session
 from db.models.permissions import RolePermissions
 from db.services.base import IRolePermissionsService
-from db.core import db_session
 
 
 class RolePermissionsService(IRolePermissionsService):
@@ -19,5 +19,3 @@ class RolePermissionsService(IRolePermissionsService):
     def get_filtered(self, role_id: uuid) -> list[RolePermissions]:
         with db_session() as session:
             return session.query(RolePermissions).filter_by(role_id=role_id).all()
-
-

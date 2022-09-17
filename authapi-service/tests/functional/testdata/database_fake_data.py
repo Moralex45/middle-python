@@ -31,4 +31,3 @@ roles_permissions = [
 
     }
 ]
-

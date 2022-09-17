@@ -1,5 +1,3 @@
-import asyncio
-
 import pytest
 
 from tests.functional.settings import get_settings_instance

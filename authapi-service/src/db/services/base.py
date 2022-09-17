@@ -1,5 +1,6 @@
 import abc
 import uuid
+
 from db.models.permissions import RPT
 
 

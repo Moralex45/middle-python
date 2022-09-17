@@ -6,6 +6,7 @@ from asgiref.wsgi import WsgiToAsgi
 
 from app_utils import create_app
 from core.config import get_settings_instance
+
 # from core.logger import LOGGING
 
 SOURCE_DIR = os.path.dirname(__file__)

@@ -1,5 +1,3 @@
-import time
-
 import pytest
 
 from db.core import db_session
@@ -51,4 +49,3 @@ def generate_roles_permissions(database_session, generate_roles, generate_permis
             database_session.add(db_roles_permission)
 
         database_session.commit()
-
