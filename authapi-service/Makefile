@@ -4,7 +4,7 @@ run:
 	python3 src/wsgi.py
 
 flake8:
-	flake8 "$(filter-out $@,$(MAKECMDGOALS))"
+	flake8
 
 beautify:
 	isort src
