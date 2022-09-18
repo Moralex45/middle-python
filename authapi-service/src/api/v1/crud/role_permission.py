@@ -20,8 +20,8 @@ def create_role_permission():
     request_body = request.json
 
     try:
-        role_id = request_body.get('role_id', None)
-        permission_id = request_body.get('permission_id', None)
+        role_id = uuid.UUID(request_body.get('role_id', None))
+        permission_id = uuid.UUID(request_body.get('permission_id', None))
         request_role_permission = InRolePermission(role_id=role_id, permission_id=permission_id)
 
     except (ValueError, AttributeError):
@@ -30,7 +30,7 @@ def create_role_permission():
 
     try:
         db_role_permission = RolePermissionService.create(request_role_permission.role_id,
-                                                          request_role_permission.perm_id)
+                                                          request_role_permission.permission_id)
         role_permission = OutRolePermission.from_orm(db_role_permission)
         response_body = role_permission.json()
 

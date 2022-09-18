@@ -6,7 +6,7 @@ from db.models.roles import Role
 from functional.testdata.database_fake_data import roles, permissions, roles_permissions
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture()
 def clean_database():
     from src.db.models.users import User, UserData, AuthHistory  # noqa
     from src.db.models.roles import Role, UserRole  # noqa
@@ -16,12 +16,12 @@ def clean_database():
     Base.metadata.create_all(bind=engine)
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture()
 def database_session():
     return db_session
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture()
 def generate_roles(database_session):
     with database_session():
         db_roles = [Role(**role) for role in roles]
@@ -31,7 +31,7 @@ def generate_roles(database_session):
         database_session.commit()
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture()
 def generate_permissions(database_session):
     with database_session():
         db_permissions = [Permission(**permission) for permission in permissions]
@@ -41,11 +41,13 @@ def generate_permissions(database_session):
         database_session.commit()
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture()
 def generate_roles_permissions(database_session, generate_roles, generate_permissions):
     with database_session():
-        db_roles_permissions = [RolePermissions(**role_permission) for role_permission in roles_permissions]
-        for db_roles_permission in db_roles_permissions:
-            database_session.add(db_roles_permission)
+        for role_permission in roles_permissions:
+            db_role_permission = RolePermissions(id=role_permission['id'],
+                                                 role_id=role_permission['role_id'],
+                                                 perm_id=role_permission['permission_id'])
+            database_session.add(db_role_permission)
 
         database_session.commit()

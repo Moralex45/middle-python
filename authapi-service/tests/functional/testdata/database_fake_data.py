@@ -21,13 +21,12 @@ roles_permissions = [
     {
         'id': '809378b2-c567-4c83-a4c8-120768787abf',
         'role_id': roles[0]['id'],
-        'perm_id': permissions[0]['id'],
+        'permission_id': permissions[0]['id'],
 
     },
     {
         'id': '53e3def9-0f43-4a12-9b09-11d41c9ef993',
         'role_id': roles[0]['id'],
-        'perm_id': permissions[1]['id'],
-
+        'permission_id': permissions[1]['id'],
     }
 ]

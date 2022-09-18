@@ -1,8 +1,8 @@
-from uuid import UUID
+import uuid
 
 from core.in_models.base import Base
 
 
 class RolePermission(Base):
-    role_id: UUID
-    perm_id: UUID
+    role_id: uuid.UUID
+    permission_id: uuid.UUID
