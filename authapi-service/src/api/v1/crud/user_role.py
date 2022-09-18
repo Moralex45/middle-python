@@ -1,0 +1,45 @@
+import uuid
+from http import HTTPStatus
+
+from flask import Blueprint, Response
+
+from db.services.user_role import UserRoleService
+from core.out_models.user_role import UserRole as OutUserRole
+
+blueprint = Blueprint('user_role', __name__, url_prefix='/api/v1/user_role')
+
+
+@blueprint.route('/<uuid:user_role_id>', methods=['GET'])
+def get_role_permission(role_permission_id: uuid.UUID):
+    response_body = ''
+    response_status = HTTPStatus.OK
+
+    db_user_role = UserRoleService.get_by_id(role_permission_id)
+    if db_user_role is None:
+        response_status = HTTPStatus.NO_CONTENT
+        return Response(response_body, status=response_status, mimetype='application/json')
+
+    user_role = OutUserRole.from_orm(db_user_role)
+    response_body = user_role.json()
+
+    return Response(response_body, status=response_status, mimetype='application/json')
+
+
+# @blueprint.route('/', methods=['GET'])
+# def get_roles_permissions():
+#     response_body = ''
+#     response_status = HTTPStatus.OK
+#
+#     role_id: uuid.UUID | None = request.args.get('role_id', default=None, type=uuid.UUID)
+#     if role_id is None:
+#         response_status = HTTPStatus.BAD_REQUEST
+#
+#         return Response(response_body, status=response_status, mimetype='application/json')
+#
+#     db_role_permissions = RolePermissionService.get_filtered(role_id)
+#     role_permissions = orjson.dumps(
+#         [OutRolePermission.from_orm(db_role_permission) for db_role_permission in db_role_permissions],
+#         default=pydantic_encoder)
+#     response_body = role_permissions
+#
+#     return Response(response_body, status=response_status, mimetype='application/json')

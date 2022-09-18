@@ -23,9 +23,9 @@ class User(BaseModel):
     __table_args__ = ({'extend_existing': True},)
 
     username = Column(VARCHAR(255), nullable=False, unique=True)
-    pwd_hash = Column(VARCHAR(255))
+    pwd_hash = Column(VARCHAR(255), nullable=False)
     is_superuser = Column(BOOLEAN(), default=False)
-    data_joined = Column(TIMESTAMP(), default=datetime.datetime.now())
+    data_joined = Column(TIMESTAMP(), default=datetime.datetime.now)
     terminate_date = Column(TIMESTAMP())
 
     def __repr__(self):
