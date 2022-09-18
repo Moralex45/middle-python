@@ -1,7 +1,7 @@
 import abc
 import uuid
 
-from db.models.permissions import RPT, PT
+from db.models.permissions import PT, RPT
 from db.models.roles import RT, URT
 from db.models.users import UT
 

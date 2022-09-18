@@ -74,19 +74,19 @@ users = [
     {
         'id': '3ddb563e-3158-4510-8347-17d86a541ec4',
         'username': 'user1',
-        'pwd_hash': b'{\x91\xaa\x13\x91\xff4\xe0`I\xb7\\\xb7\xc8\tU2\x0c\x90Y\x13\x93d\x8b:\xa52w\x8e\x9c\x89\x98$$2b$12$ez50qzveKfpYkKlV78qmdu',
+        'pwd_hash': b'{\x91\xaa\x13\x91\xff4\xe0`I\xb7\\\xb7\xc8\tU2\x0c\x90Y\x13\x93d\x8b:\xa52w\x8e\x9c\x89\x98$$2b$12$ez50qzveKfpYkKlV78qmdu',  # noqa
         'terminate_date': datetime.datetime.now()
     },
     {
         'id': '831d1a3b-6b00-420e-a460-1ea894487017',
         'username': 'user2',
-        'pwd_hash': b'\xc9\x91+\x85\xdc\x16\xa3w\x8b+\x16QP\x1c\xcd\xe3.\xd6\xa0#\xfb\x08\xeank\x16N\xd7\xb2\xd0\xae\xa9$$2b$12$N7qvCbrFgtlol6OZMch1zu',
+        'pwd_hash': b'\xc9\x91+\x85\xdc\x16\xa3w\x8b+\x16QP\x1c\xcd\xe3.\xd6\xa0#\xfb\x08\xeank\x16N\xd7\xb2\xd0\xae\xa9$$2b$12$N7qvCbrFgtlol6OZMch1zu',  # noqa
         'terminate_date': datetime.datetime.now()
     },
     {
         'id': '41c6bf7a-63d8-4341-ae6d-4fe1ddaea713',
         'username': 'user3',
-        'pwd_hash': b"\xf0\xc5\x02\xf8\xef\x93S\xfe\xb8\x89\x9a\xd2'+\xa6\x8a \xa7z\x1b\xed\xb9P\xe3\xe0\xb3\xf3\xf8\x84z\xde'$$2b$12$yu7tYSkq1leRO4SySrTVKu",
+        'pwd_hash': b"\xf0\xc5\x02\xf8\xef\x93S\xfe\xb8\x89\x9a\xd2'+\xa6\x8a \xa7z\x1b\xed\xb9P\xe3\xe0\xb3\xf3\xf8\x84z\xde'$$2b$12$yu7tYSkq1leRO4SySrTVKu",  # noqa
         'terminate_date': datetime.datetime.now()
     }
 ]

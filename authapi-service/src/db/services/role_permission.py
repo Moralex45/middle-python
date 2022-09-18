@@ -5,8 +5,8 @@ from sqlalchemy.exc import IntegrityError
 from db.core import db_session
 from db.models.permissions import RolePermissions
 from db.services.base import IRolePermissionService
-from db.services.role import RoleService
 from db.services.permissions import PermissionService
+from db.services.role import RoleService
 
 
 class RolePermissionService(IRolePermissionService):

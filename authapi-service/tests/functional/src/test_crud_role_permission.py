@@ -9,7 +9,10 @@ from http import HTTPStatus
 @pytest.mark.parametrize(
     'role_permission',
     [role_permission for role_permission in roles_permissions])
-def test_scrap_existing_roles_permissions(flask_test_client, clean_database, generate_roles_permissions, role_permission):
+def test_scrap_existing_roles_permissions(flask_test_client,
+                                          clean_database,
+                                          generate_roles_permissions,
+                                          role_permission):
     response = flask_test_client.get(f'/api/v1/role_permission/{role_permission["id"]}')
     assert response.status_code == HTTPStatus.OK
     assert response.is_json
