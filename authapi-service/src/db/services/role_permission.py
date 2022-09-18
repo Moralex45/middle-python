@@ -2,10 +2,10 @@ import uuid
 
 from db.core import db_session
 from db.models.permissions import RolePermissions
-from db.services.base import IRolePermissionsService
+from db.services.base import IRolePermissionService
 
 
-class RolePermissionsService(IRolePermissionsService):
+class RolePermissionService(IRolePermissionService):
     def get_by_id(self, _id: uuid.UUID) -> RolePermissions:
         with db_session() as session:
             return session.query(RolePermissions).filter_by(id=_id).first()

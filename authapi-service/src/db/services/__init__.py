@@ -1,3 +1,3 @@
-from .role_permission import RolePermissionsService
+from .role_permission import RolePermissionService
 
-role_permission_service = RolePermissionsService()
+role_permission_service = RolePermissionService()
