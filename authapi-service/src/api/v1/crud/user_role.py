@@ -74,3 +74,17 @@ def get_roles_permissions():
     response_body = role_permissions
 
     return Response(response_body, status=response_status, mimetype='application/json')
+
+
+@blueprint.route('/<uuid:user_role_id>', methods=['DELETE'])
+def delete_user_role(user_role_id: uuid.UUID):
+    response_body = ''
+    response_status = HTTPStatus.OK
+
+    try:
+        UserRoleService.delete_by_id(user_role_id)
+
+    except ValueError:
+        response_status = HTTPStatus.BAD_REQUEST
+
+    return Response(response_body, status=response_status, mimetype='application/json')

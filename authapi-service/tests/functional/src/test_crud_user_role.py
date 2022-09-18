@@ -106,3 +106,22 @@ def test_create_role_permission_with_non_existent_parameters(flask_test_client,
     response = flask_test_client.post('/api/v1/user_role/', json=request_body)
     assert response.status_code == HTTPStatus.BAD_REQUEST
     assert response.text == ''
+
+
+@pytest.mark.parametrize(
+    'user_role',
+    [user_role for user_role in users_roles])
+def test_delete_existing_user_role(flask_test_client, clean_database, generate_users_roles, user_role):
+    response = flask_test_client.delete(f'/api/v1/user_role/{user_role["id"]}')
+    assert response.status_code == HTTPStatus.OK
+    assert response.text == ''
+
+    response = flask_test_client.get(f'/api/v1/user_role/{user_role["id"]}')
+    assert response.status_code == HTTPStatus.NO_CONTENT
+    assert response.text == ''
+
+
+def test_delete_non_existing_roles_permissions(flask_test_client, clean_database, generate_users_roles):
+    response = flask_test_client.delete(f'/api/v1/user_role/{uuid.uuid4()}')
+    assert response.status_code == HTTPStatus.BAD_REQUEST
+    assert response.text == ''
