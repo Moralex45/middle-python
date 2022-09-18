@@ -2,8 +2,9 @@ import pytest
 
 from db.core import db_session
 from db.models.permissions import Permission, RolePermissions
-from db.models.roles import Role
-from functional.testdata.database_fake_data import roles, permissions, roles_permissions
+from db.models.roles import Role, UserRole
+from db.models.users import User
+from functional.testdata.database_fake_data import roles, permissions, roles_permissions, users, users_roles
 
 
 @pytest.fixture()
@@ -49,5 +50,27 @@ def generate_roles_permissions(database_session, generate_roles, generate_permis
                                                  role_id=role_permission['role_id'],
                                                  perm_id=role_permission['permission_id'])
             database_session.add(db_role_permission)
+
+        database_session.commit()
+
+
+@pytest.fixture()
+def generate_users(database_session):
+    with database_session():
+        db_users = [User(**user) for user in users]
+        for db_user in db_users:
+            database_session.add(db_user)
+
+        database_session.commit()
+
+
+@pytest.fixture()
+def generate_users_roles(database_session, generate_roles_permissions, generate_users):
+    with database_session():
+        for user_role in users_roles:
+            db_user_role = UserRole(id=user_role['id'],
+                                    user_id=user_role['user_id'],
+                                    role_id=user_role['role_id'])
+            database_session.add(db_user_role)
 
         database_session.commit()
