@@ -11,7 +11,18 @@ class RolePermissionsService(IRolePermissionsService):
             return session.query(RolePermissions).filter_by(id=_id).first()
 
     def delete_by_id(self, _id: uuid.UUID) -> None:
-        pass
+        """
+        Raises:
+            ValueError: On inability to fetch role permission with passed uuid
+
+        """
+        with db_session() as session:
+            role_permission = self.get_by_id(_id)
+            if role_permission is not None:
+                session.delete(role_permission)
+                session.commit()
+            else:
+                raise ValueError(f'Unable to fetch role permission wih passed uuid {_id}')
 
     def create(self, role_id: uuid.UUID, permission_id: uuid.UUID) -> RolePermissions:
         pass

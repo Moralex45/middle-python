@@ -58,7 +58,7 @@ class UserData(BaseModel):
     __tablename__ = 'users_data'
     __table_args__ = ({'extend_existing': True},)
 
-    user_id = Column(UUID(as_uuid=True), ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    user_id = Column(UUID(as_uuid=True), ForeignKey(User.id, ondelete='CASCADE'), nullable=False)
     first_name = Column(TEXT())
     last_name = Column(TEXT())
     email = Column(TEXT())
@@ -73,7 +73,7 @@ class AuthHistory(BaseModel):
     __table_args__ = (UniqueConstraint('user_agent', 'user_id'),
                       {'extend_existing': True})
 
-    user_id = Column(UUID(as_uuid=True), ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    user_id = Column(UUID(as_uuid=True), ForeignKey(User.id, ondelete='CASCADE'), nullable=False)
     ip = Column(INET())
     user_agent = Column(TEXT())
     date_start = Column(TIMESTAMP())
