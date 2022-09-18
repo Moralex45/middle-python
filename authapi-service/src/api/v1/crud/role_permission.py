@@ -1,3 +1,4 @@
+import uuid
 from http import HTTPStatus
 from uuid import UUID
 
@@ -9,6 +10,32 @@ from core.out_models.role_permission import RolePermission
 from db.services.role_permission import RolePermissionService
 
 blueprint = Blueprint('role_permission', __name__, url_prefix='/api/v1/role_permission')
+
+
+@blueprint.route('/', methods=['POST'])
+def create_role_permission():
+    response_body = ''
+    response_status = HTTPStatus.OK
+
+    request_body = request.json
+
+    try:
+        role_id = uuid.UUID(request_body.get('role_id', None))
+        permission_id = uuid.UUID(request_body.get('permission_id', None))
+
+    except (ValueError, AttributeError):
+        response_status = HTTPStatus.BAD_REQUEST
+        return Response(response_body, status=response_status, mimetype='application/json')
+
+    try:
+        db_role_permission = RolePermissionService.create(role_id, permission_id)
+        role_permission = RolePermission.from_orm(db_role_permission)
+        response_body = role_permission.json()
+
+    except ValueError:
+        response_status = HTTPStatus.BAD_REQUEST
+
+    return Response(response_body, status=response_status, mimetype='application/json')
 
 
 @blueprint.route('/<uuid:role_permission_id>', methods=['GET'])
@@ -28,7 +55,7 @@ def get_role_permission(role_permission_id: UUID):
 
 
 @blueprint.route('/', methods=['GET'])
-def get_role_permissions():
+def get_roles_permissions():
     response_body = ''
     response_status = HTTPStatus.OK
 
