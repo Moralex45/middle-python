@@ -10,11 +10,11 @@ blueprint = Blueprint('user_role', __name__, url_prefix='/api/v1/user_role')
 
 
 @blueprint.route('/<uuid:user_role_id>', methods=['GET'])
-def get_role_permission(role_permission_id: uuid.UUID):
+def get_role_permission(user_role_id: uuid.UUID):
     response_body = ''
     response_status = HTTPStatus.OK
 
-    db_user_role = UserRoleService.get_by_id(role_permission_id)
+    db_user_role = UserRoleService.get_by_id(user_role_id)
     if db_user_role is None:
         response_status = HTTPStatus.NO_CONTENT
         return Response(response_body, status=response_status, mimetype='application/json')
