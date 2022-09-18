@@ -1,25 +1,32 @@
 import uuid
 
 from db.core import db_session
-from db.models.permissions import PT
+from db.models.permissions import PT, Permission
 from db.services.base import IPermissionService
 
 
 class PermissionService(IPermissionService):
-    def get_by_id(self, _id: uuid.UUID) -> PT:
+    @classmethod
+    def get_by_id(cls, _id: uuid.UUID) -> PT:
+        with db_session() as session:
+            return session.query(Permission).filter_by(id=_id).first()
+
+    @classmethod
+    def get_all(cls) -> [PT]:
         pass
 
-    def get_all(self) -> [PT]:
+    @classmethod
+    def delete_by_id(cls, _id: uuid.UUID) -> None:
         pass
 
-    def delete_by_id(self, _id: uuid.UUID) -> None:
+    @classmethod
+    def create(cls, code: int) -> PT:
         pass
 
-    def create(self, code: int) -> PT:
+    @classmethod
+    def recreate(cls, _id: uuid.UUID, code: int) -> PT:
         pass
 
-    def recreate(self, _id: uuid.UUID, code: int) -> PT:
-        pass
-
-    def update(self, _id: uuid.UUID, code: int) -> PT:
+    @classmethod
+    def update(cls, _id: uuid.UUID, code: int) -> PT:
         pass

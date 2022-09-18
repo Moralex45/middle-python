@@ -6,70 +6,86 @@ from db.models.roles import RT, URT
 
 
 class IRolePermissionService(abc.ABC):
+    @classmethod
     @abc.abstractmethod
-    def get_by_id(self, _id: uuid.UUID) -> RPT:
+    def get_by_id(cls, _id: uuid.UUID) -> RPT:
         raise NotImplementedError
 
+    @classmethod
     @abc.abstractmethod
-    def delete_by_id(self, _id: uuid.UUID) -> None:
+    def delete_by_id(cls, _id: uuid.UUID) -> None:
         raise NotImplementedError
 
+    @classmethod
     @abc.abstractmethod
-    def create(self, role_id: uuid.UUID, permission_id: uuid.UUID) -> RPT:
+    def create(cls, role_id: uuid.UUID, permission_id: uuid.UUID) -> RPT:
         raise NotImplementedError
 
+    @classmethod
     @abc.abstractmethod
-    def get_filtered(self, role_id: uuid.UUID) -> list[RPT]:
+    def get_filtered(cls, role_id: uuid.UUID) -> list[RPT]:
         raise NotImplementedError
 
 
 class IPermissionService(abc.ABC):
+    @classmethod
     @abc.abstractmethod
-    def get_by_id(self, _id: uuid.UUID) -> PT:
+    def get_by_id(cls, _id: uuid.UUID) -> PT:
         raise NotImplementedError
 
+    @classmethod
     @abc.abstractmethod
-    def get_all(self) -> [PT]:
+    def get_all(cls) -> [PT]:
         raise NotImplementedError
 
+    @classmethod
     @abc.abstractmethod
-    def delete_by_id(self, _id: uuid.UUID) -> None:
+    def delete_by_id(cls, _id: uuid.UUID) -> None:
         raise NotImplementedError
 
+    @classmethod
     @abc.abstractmethod
-    def create(self, code: int) -> PT:
+    def create(cls, code: int) -> PT:
         raise NotImplementedError
 
+    @classmethod
     @abc.abstractmethod
-    def recreate(self, _id: uuid.UUID, code: int) -> PT:
+    def recreate(cls, _id: uuid.UUID, code: int) -> PT:
         raise NotImplementedError
 
+    @classmethod
     @abc.abstractmethod
-    def update(self, _id: uuid.UUID, code: int) -> PT:
+    def update(cls, _id: uuid.UUID, code: int) -> PT:
         raise NotImplementedError
 
 
 class IRoleService(abc.ABC):
+    @classmethod
     @abc.abstractmethod
-    def get_by_id(self, _id: uuid.UUID) -> RT:
+    def get_by_id(cls, _id: uuid.UUID) -> RT:
         raise NotImplementedError
 
+    @classmethod
     @abc.abstractmethod
-    def get_all(self) -> [RT]:
+    def get_all(cls) -> [RT]:
         raise NotImplementedError
 
+    @classmethod
     @abc.abstractmethod
-    def delete_by_id(self, _id: uuid.UUID) -> None:
+    def delete_by_id(cls, _id: uuid.UUID) -> None:
         raise NotImplementedError
 
+    @classmethod
     @abc.abstractmethod
-    def create(self, code: int, description: int) -> RT:
+    def create(cls, code: int, description: int) -> RT:
         raise NotImplementedError
 
+    @classmethod
     @abc.abstractmethod
-    def recreate(self, _id: uuid.UUID, code: int, description: str) -> RT:
+    def recreate(cls, _id: uuid.UUID, code: int, description: str) -> RT:
         raise NotImplementedError
 
+    @classmethod
     @abc.abstractmethod
-    def update(self, _id: uuid.UUID, code: int, description: str) -> RT:
+    def update(cls, _id: uuid.UUID, code: int, description: str) -> RT:
         raise NotImplementedError

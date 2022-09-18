@@ -6,7 +6,7 @@ from flask import Blueprint, Response, request
 from pydantic.json import pydantic_encoder
 
 from core.out_models.role_permission import RolePermission
-from db.services import role_permission_service
+from db.services.role_permission import RolePermissionService
 
 blueprint = Blueprint('role_permission', __name__, url_prefix='/api/v1/role_permission')
 
@@ -16,7 +16,7 @@ def get_role_permission(role_permission_id: UUID):
     response_body = ''
     response_status = HTTPStatus.OK
 
-    db_role_permission = role_permission_service.get_by_id(role_permission_id)
+    db_role_permission = RolePermissionService.get_by_id(role_permission_id)
     if db_role_permission is None:
         response_status = HTTPStatus.NO_CONTENT
         return Response(response_body, status=response_status, mimetype='application/json')
@@ -38,7 +38,7 @@ def get_role_permissions():
 
         return Response(response_body, status=response_status, mimetype='application/json')
 
-    db_role_permissions = role_permission_service.get_filtered(role_id)
+    db_role_permissions = RolePermissionService.get_filtered(role_id)
     role_permissions = orjson.dumps(
         [RolePermission.from_orm(db_role_permission) for db_role_permission in db_role_permissions],
         default=pydantic_encoder)
@@ -53,7 +53,7 @@ def delete_role_permission(role_permission_id: UUID):
     response_status = HTTPStatus.OK
 
     try:
-        role_permission_service.delete_by_id(role_permission_id)
+        RolePermissionService.delete_by_id(role_permission_id)
 
     except ValueError:
         response_status = HTTPStatus.BAD_REQUEST

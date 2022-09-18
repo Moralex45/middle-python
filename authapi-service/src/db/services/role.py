@@ -1,25 +1,33 @@
 import uuid
 
-from db.models.roles import RT
+from db.core import db_session
+from db.models.roles import RT, Role
 from db.services.base import IRoleService
 
 
 class RoleService(IRoleService):
-    def get_by_id(self, _id: uuid.UUID) -> RT:
+    @classmethod
+    def get_by_id(cls, _id: uuid.UUID) -> RT:
+        with db_session() as session:
+            return session.query(Role).filter_by(id=_id).first()
+
+    @classmethod
+    def get_all(cls) -> [RT]:
         pass
 
-    def get_all(self) -> [RT]:
+    @classmethod
+    def delete_by_id(cls, _id: uuid.UUID) -> None:
         pass
 
-    def delete_by_id(self, _id: uuid.UUID) -> None:
+    @classmethod
+    def create(cls, code: int, description: int) -> RT:
         pass
 
-    def create(self, code: int, description: int) -> RT:
+    @classmethod
+    def recreate(cls, _id: uuid.UUID, code: int, description: str) -> RT:
         pass
 
-    def recreate(self, _id: uuid.UUID, code: int, description: str) -> RT:
-        pass
-
-    def update(self, _id: uuid.UUID, code: int, description: str) -> RT:
+    @classmethod
+    def update(cls, _id: uuid.UUID, code: int, description: str) -> RT:
         pass
 
