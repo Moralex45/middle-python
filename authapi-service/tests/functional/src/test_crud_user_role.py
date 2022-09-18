@@ -50,3 +50,59 @@ def test_scrap_user_role_filtered_by_inappropriate_role_id_format(flask_test_cli
     response = flask_test_client.get(f'/api/v1/user_role/?user_id={str(uuid.uuid4())[-1:]}')
     assert response.status_code == HTTPStatus.BAD_REQUEST
     assert response.text == ''
+
+
+@pytest.mark.parametrize(
+    'user_role',
+    [user_role for user_role in users_roles])
+def test_create_user_role(flask_test_client, clean_database, generate_roles_permissions, generate_users, user_role):
+    request_body = {
+        'user_id': user_role['user_id'],
+        'role_id': user_role['role_id']
+    }
+    response = flask_test_client.post('/api/v1/user_role/', json=request_body)
+    assert response.status_code == HTTPStatus.OK
+    assert response.is_json
+
+    created_user_role_id = response.json['id']
+    response = flask_test_client.get(f'/api/v1/user_role/{created_user_role_id}')
+    assert response.status_code == HTTPStatus.OK
+    assert response.is_json
+    request_body |= {
+        'id': created_user_role_id
+    }
+    assert response.json == request_body
+
+
+def test_double_create_user_role(flask_test_client, clean_database, generate_roles_permissions, generate_users):
+    user_role = users_roles[0]
+    request_body = {
+        'user_id': user_role['user_id'],
+        'role_id': user_role['role_id']
+    }
+    response = flask_test_client.post('/api/v1/user_role/', json=request_body)
+    assert response.status_code == HTTPStatus.OK
+    assert response.is_json
+
+    response = flask_test_client.post('/api/v1/user_role/', json=request_body)
+    assert response.status_code == HTTPStatus.BAD_REQUEST
+    assert response.text == ''
+
+
+@pytest.mark.parametrize(
+    'user_id, role_id',
+    [(users[0]['id'], uuid.uuid4()),
+     (uuid.uuid4(), roles[0]['id']),
+     (uuid.uuid4(), uuid.uuid4())])
+def test_create_role_permission_with_non_existent_parameters(flask_test_client,
+                                                             clean_database,
+                                                             generate_roles_permissions,
+                                                             generate_users,
+                                                             user_id, role_id):
+    request_body = {
+        'user_id': user_id,
+        'role_id': role_id,
+    }
+    response = flask_test_client.post('/api/v1/user_role/', json=request_body)
+    assert response.status_code == HTTPStatus.BAD_REQUEST
+    assert response.text == ''
