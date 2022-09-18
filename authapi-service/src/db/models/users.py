@@ -1,5 +1,6 @@
 import datetime
 import hashlib
+from typing import TypeVar
 
 import bcrypt
 from sqlalchemy import (BOOLEAN, TEXT, TIMESTAMP, VARCHAR, Column, ForeignKey,
@@ -8,6 +9,8 @@ from sqlalchemy.dialects.postgresql import INET, UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from db.models.base import BaseModel
+
+UT = TypeVar('UT')
 
 
 class PasswordConstants:
