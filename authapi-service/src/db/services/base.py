@@ -2,7 +2,7 @@ import abc
 from uuid import UUID
 
 from db.models.permissions import RPT, PT
-from db.models.roles import RT, URT
+from db.models.roles import RT
 
 
 class IRolePermissionService(abc.ABC):

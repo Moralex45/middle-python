@@ -71,7 +71,7 @@ def test_create_role_permission(flask_test_client, clean_database, generate_role
         'role_id': role['id'],
         'permission_id': permission['id']
     }
-    response = flask_test_client.post(f'/api/v1/role_permission/', json=request_body)
+    response = flask_test_client.post('/api/v1/role_permission/', json=request_body)
     assert response.status_code == HTTPStatus.OK
     assert response.is_json
 
@@ -91,11 +91,11 @@ def test_double_create_role_permission(flask_test_client, clean_database, genera
         'role_id': role['id'],
         'permission_id': permission['id']
     }
-    response = flask_test_client.post(f'/api/v1/role_permission/', json=request_body)
+    response = flask_test_client.post('/api/v1/role_permission/', json=request_body)
     assert response.status_code == HTTPStatus.OK
     assert response.is_json
 
-    response = flask_test_client.post(f'/api/v1/role_permission/', json=request_body)
+    response = flask_test_client.post('/api/v1/role_permission/', json=request_body)
     assert response.status_code == HTTPStatus.BAD_REQUEST
     assert response.text == ''
 
@@ -114,6 +114,6 @@ def test_create_role_permission_with_non_existent_parameters(flask_test_client,
         'role_id': role_id,
         'permission_id': permission_id
     }
-    response = flask_test_client.post(f'/api/v1/role_permission/', json=request_body)
+    response = flask_test_client.post('/api/v1/role_permission/', json=request_body)
     assert response.status_code == HTTPStatus.BAD_REQUEST
     assert response.text == ''

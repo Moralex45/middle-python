@@ -53,8 +53,8 @@ class RolePermissionService(IRolePermissionService):
                 session.commit()
 
             except IntegrityError:
-                raise ValueError(f'Unable to create role_permission with passed role and permission. '
-                                 f'Instance already exists')
+                raise ValueError('Unable to create role_permission with passed role and permission. '
+                                 'Instance already exists')
 
             return RolePermissionService.get_by_id(db_role_permission.id)
 

@@ -30,4 +30,3 @@ class RoleService(IRoleService):
     @classmethod
     def update(cls, _id: uuid.UUID, code: int, description: str) -> RT:
         pass
-
