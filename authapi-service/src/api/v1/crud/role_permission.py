@@ -1,12 +1,12 @@
 import uuid
 from http import HTTPStatus
-from uuid import UUID
 
 import orjson
 from flask import Blueprint, Response, request
 from pydantic.json import pydantic_encoder
 
-from core.out_models.role_permission import RolePermission
+from core.out_models.role_permission import RolePermission as OutRolePermission
+from core.in_models.role_permission import RolePermission as InRolePermission
 from db.services.role_permission import RolePermissionService
 
 blueprint = Blueprint('role_permission', __name__, url_prefix='/api/v1/role_permission')
@@ -20,16 +20,18 @@ def create_role_permission():
     request_body = request.json
 
     try:
-        role_id = uuid.UUID(request_body.get('role_id', None))
-        permission_id = uuid.UUID(request_body.get('permission_id', None))
+        role_id = request_body.get('role_id', None)
+        permission_id = request_body.get('permission_id', None)
+        request_role_permission = InRolePermission(role_id=role_id, permission_id=permission_id)
 
     except (ValueError, AttributeError):
         response_status = HTTPStatus.BAD_REQUEST
         return Response(response_body, status=response_status, mimetype='application/json')
 
     try:
-        db_role_permission = RolePermissionService.create(role_id, permission_id)
-        role_permission = RolePermission.from_orm(db_role_permission)
+        db_role_permission = RolePermissionService.create(request_role_permission.role_id,
+                                                          request_role_permission.perm_id)
+        role_permission = OutRolePermission.from_orm(db_role_permission)
         response_body = role_permission.json()
 
     except ValueError:
@@ -39,7 +41,7 @@ def create_role_permission():
 
 
 @blueprint.route('/<uuid:role_permission_id>', methods=['GET'])
-def get_role_permission(role_permission_id: UUID):
+def get_role_permission(role_permission_id: uuid.UUID):
     response_body = ''
     response_status = HTTPStatus.OK
 
@@ -48,7 +50,7 @@ def get_role_permission(role_permission_id: UUID):
         response_status = HTTPStatus.NO_CONTENT
         return Response(response_body, status=response_status, mimetype='application/json')
 
-    role_permission = RolePermission.from_orm(db_role_permission)
+    role_permission = OutRolePermission.from_orm(db_role_permission)
     response_body = role_permission.json()
 
     return Response(response_body, status=response_status, mimetype='application/json')
@@ -59,7 +61,7 @@ def get_roles_permissions():
     response_body = ''
     response_status = HTTPStatus.OK
 
-    role_id: UUID | None = request.args.get('role_id', default=None, type=UUID)
+    role_id: uuid.UUID | None = request.args.get('role_id', default=None, type=uuid.UUID)
     if role_id is None:
         response_status = HTTPStatus.BAD_REQUEST
 
@@ -67,7 +69,7 @@ def get_roles_permissions():
 
     db_role_permissions = RolePermissionService.get_filtered(role_id)
     role_permissions = orjson.dumps(
-        [RolePermission.from_orm(db_role_permission) for db_role_permission in db_role_permissions],
+        [OutRolePermission.from_orm(db_role_permission) for db_role_permission in db_role_permissions],
         default=pydantic_encoder)
     response_body = role_permissions
 
@@ -75,7 +77,7 @@ def get_roles_permissions():
 
 
 @blueprint.route('/<uuid:role_permission_id>', methods=['DELETE'])
-def delete_role_permission(role_permission_id: UUID):
+def delete_role_permission(role_permission_id: uuid.UUID):
     response_body = ''
     response_status = HTTPStatus.OK
 

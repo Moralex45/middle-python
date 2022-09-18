@@ -1,5 +1,5 @@
 import abc
-import uuid
+from uuid import UUID
 
 from db.models.permissions import RPT, PT
 from db.models.roles import RT, URT
@@ -8,29 +8,29 @@ from db.models.roles import RT, URT
 class IRolePermissionService(abc.ABC):
     @classmethod
     @abc.abstractmethod
-    def get_by_id(cls, _id: uuid.UUID) -> RPT:
+    def get_by_id(cls, _id: UUID) -> RPT:
         raise NotImplementedError
 
     @classmethod
     @abc.abstractmethod
-    def delete_by_id(cls, _id: uuid.UUID) -> None:
+    def delete_by_id(cls, _id: UUID) -> None:
         raise NotImplementedError
 
     @classmethod
     @abc.abstractmethod
-    def create(cls, role_id: uuid.UUID, permission_id: uuid.UUID) -> RPT:
+    def create(cls, role_id: UUID, permission_id: UUID) -> RPT:
         raise NotImplementedError
 
     @classmethod
     @abc.abstractmethod
-    def get_filtered(cls, role_id: uuid.UUID) -> list[RPT]:
+    def get_filtered(cls, role_id: UUID) -> list[RPT]:
         raise NotImplementedError
 
 
 class IPermissionService(abc.ABC):
     @classmethod
     @abc.abstractmethod
-    def get_by_id(cls, _id: uuid.UUID) -> PT:
+    def get_by_id(cls, _id: UUID) -> PT:
         raise NotImplementedError
 
     @classmethod
@@ -40,7 +40,7 @@ class IPermissionService(abc.ABC):
 
     @classmethod
     @abc.abstractmethod
-    def delete_by_id(cls, _id: uuid.UUID) -> None:
+    def delete_by_id(cls, _id: UUID) -> None:
         raise NotImplementedError
 
     @classmethod
@@ -50,19 +50,19 @@ class IPermissionService(abc.ABC):
 
     @classmethod
     @abc.abstractmethod
-    def recreate(cls, _id: uuid.UUID, code: int) -> PT:
+    def recreate(cls, _id: UUID, code: int) -> PT:
         raise NotImplementedError
 
     @classmethod
     @abc.abstractmethod
-    def update(cls, _id: uuid.UUID, code: int) -> PT:
+    def update(cls, _id: UUID, code: int) -> PT:
         raise NotImplementedError
 
 
 class IRoleService(abc.ABC):
     @classmethod
     @abc.abstractmethod
-    def get_by_id(cls, _id: uuid.UUID) -> RT:
+    def get_by_id(cls, _id: UUID) -> RT:
         raise NotImplementedError
 
     @classmethod
@@ -72,7 +72,7 @@ class IRoleService(abc.ABC):
 
     @classmethod
     @abc.abstractmethod
-    def delete_by_id(cls, _id: uuid.UUID) -> None:
+    def delete_by_id(cls, _id: UUID) -> None:
         raise NotImplementedError
 
     @classmethod
@@ -82,10 +82,10 @@ class IRoleService(abc.ABC):
 
     @classmethod
     @abc.abstractmethod
-    def recreate(cls, _id: uuid.UUID, code: int, description: str) -> RT:
+    def recreate(cls, _id: UUID, code: int, description: str) -> RT:
         raise NotImplementedError
 
     @classmethod
     @abc.abstractmethod
-    def update(cls, _id: uuid.UUID, code: int, description: str) -> RT:
+    def update(cls, _id: UUID, code: int, description: str) -> RT:
         raise NotImplementedError

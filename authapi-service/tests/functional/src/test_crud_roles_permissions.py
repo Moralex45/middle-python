@@ -1,6 +1,6 @@
 import uuid
 
-from functional.testdata.database_fake_data import roles_permissions, roles
+from functional.testdata.database_fake_data import roles_permissions, roles, permissions
 from http import HTTPStatus
 
 
