@@ -9,7 +9,7 @@ from src.core.in_models.user_role import UserRole as InUserRole
 from src.core.out_models.user_role import UserRole as OutUserRole
 from src.db.services.user_role import UserRoleService
 
-blueprint = Blueprint('user_role', __name__, url_prefix='/api/v1/user_role')
+blueprint = Blueprint('user_role', __name__, url_prefix='/api/v1/crud/user_role')
 
 
 @blueprint.route('/', methods=['POST'])

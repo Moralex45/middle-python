@@ -9,7 +9,7 @@ from src.core.in_models.role_permission import RolePermission as InRolePermissio
 from src.core.out_models.role_permission import RolePermission as OutRolePermission
 from src.db.services.role_permission import RolePermissionService
 
-blueprint = Blueprint('role_permission', __name__, url_prefix='/api/v1/role_permission')
+blueprint = Blueprint('role_permission', __name__, url_prefix='/api/v1/crud/role_permission')
 
 
 @blueprint.route('/', methods=['POST'])
