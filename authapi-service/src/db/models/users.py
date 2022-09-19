@@ -1,13 +1,16 @@
 import datetime
-
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.postgresql import INET
-from sqlalchemy.ext.hybrid import hybrid_property
 import hashlib
-import bcrypt
+from typing import TypeVar
 
-from sqlalchemy import Column, VARCHAR, ForeignKey, TEXT, TIMESTAMP, BOOLEAN, UniqueConstraint
-from db.models.base import BaseModel
+import bcrypt
+from sqlalchemy import (BOOLEAN, TEXT, TIMESTAMP, VARCHAR, Column, ForeignKey,
+                        UniqueConstraint)
+from sqlalchemy.dialects.postgresql import INET, UUID
+from sqlalchemy.ext.hybrid import hybrid_property
+
+from src.db.models.base import BaseModel
+
+UT = TypeVar('UT')
 
 
 class PasswordConstants:
@@ -17,11 +20,12 @@ class PasswordConstants:
 
 class User(BaseModel):
     __tablename__ = 'users'
+    __table_args__ = ({'extend_existing': True},)
 
     username = Column(VARCHAR(255), nullable=False, unique=True)
-    pwd_hash = Column(VARCHAR(255))
+    pwd_hash = Column(VARCHAR(255), nullable=False)
     is_superuser = Column(BOOLEAN(), default=False)
-    data_joined = Column(TIMESTAMP(), default=datetime.datetime.now())
+    data_joined = Column(TIMESTAMP(), default=datetime.datetime.now)
     terminate_date = Column(TIMESTAMP())
 
     def __repr__(self):
@@ -39,7 +43,7 @@ class User(BaseModel):
             value.encode('utf-8'),
             salt,
             PasswordConstants.iterations
-            ) + b'$' + salt
+        ) + b'$' + salt
 
     def check_password(self, value):
         received_salt = self.pwd_hash[-29:]
@@ -48,15 +52,16 @@ class User(BaseModel):
             value.encode('utf-8'),
             received_salt,
             PasswordConstants.iterations
-            ) + b'$' + received_salt
+        ) + b'$' + received_salt
 
         return self.pwd_hash == received_pwd_hash
 
 
 class UserData(BaseModel):
     __tablename__ = 'users_data'
+    __table_args__ = ({'extend_existing': True},)
 
-    user_id = Column(UUID(as_uuid=True), ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    user_id = Column(UUID(as_uuid=True), ForeignKey(User.id, ondelete='CASCADE'), nullable=False)
     first_name = Column(TEXT())
     last_name = Column(TEXT())
     email = Column(TEXT())
@@ -68,9 +73,10 @@ class UserData(BaseModel):
 
 class AuthHistory(BaseModel):
     __tablename__ = 'auth_history'
-    __table_args__ = (UniqueConstraint('user_agent', 'user_id'),)
+    __table_args__ = (UniqueConstraint('user_agent', 'user_id'),
+                      {'extend_existing': True})
 
-    user_id = Column(UUID(as_uuid=True), ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    user_id = Column(UUID(as_uuid=True), ForeignKey(User.id, ondelete='CASCADE'), nullable=False)
     ip = Column(INET())
     user_agent = Column(TEXT())
     date_start = Column(TIMESTAMP())

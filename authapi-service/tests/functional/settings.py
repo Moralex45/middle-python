@@ -1,15 +1,10 @@
 from functools import lru_cache
-# from logging import config as logging_config
 from pathlib import Path
 
 from pydantic import BaseSettings, Field, PostgresDsn
 
-# from core.logger import LOGGING
 
-
-class Settings(BaseSettings):
-    # logging_config.dictConfig(LOGGING)
-
+class TestSettings(BaseSettings):
     PROJECT_NAME: str = Field(env='PROJECT_NAME')
 
     REDIS_HOST: str = Field(env='REDIS_HOST')
@@ -29,7 +24,7 @@ class Settings(BaseSettings):
         env_file_encoding = 'utf-8'
 
 
-__settings = Settings()
+__settings = TestSettings()
 
 
 @lru_cache

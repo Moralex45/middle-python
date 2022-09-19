@@ -1,7 +1,10 @@
-from app_utils import create_app
+from app_utils import create_raw_app
 
-app = create_app()
+
+def main():
+    app = create_raw_app()
+    app.run(debug=True)
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    main()
