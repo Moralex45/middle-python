@@ -1,8 +1,8 @@
 import uuid
 
-from db.core import db_session
-from db.models.roles import RT, Role
-from db.services.base import IRoleService
+from src.db.core import db_session
+from src.db.models.roles import RT, Role
+from src.db.services.base import IRoleService
 
 
 class RoleService(IRoleService):

@@ -1,6 +1,6 @@
 import uuid
 
-from core.in_models.base import Base
+from src.core.in_models.base import Base
 
 
 class RolePermission(Base):

@@ -1,8 +1,8 @@
 import uuid
 
-from db.core import db_session
-from db.models.users import User
-from db.services.base import IUserService
+from src.db.core import db_session
+from src.db.models.users import User
+from src.db.services.base import IUserService
 
 
 class UserService(IUserService):

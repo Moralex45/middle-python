@@ -1,8 +1,8 @@
 import uuid
 
-from db.core import db_session
-from db.models.permissions import PT, Permission
-from db.services.base import IPermissionService
+from src.db.core import db_session
+from src.db.models.permissions import PT, Permission
+from src.db.services.base import IPermissionService
 
 
 class PermissionService(IPermissionService):

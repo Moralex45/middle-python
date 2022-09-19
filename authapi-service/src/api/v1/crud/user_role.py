@@ -5,9 +5,9 @@ import orjson
 from flask import Blueprint, Response, request
 from pydantic.json import pydantic_encoder
 
-from core.in_models.user_role import UserRole as InUserRole
-from core.out_models.user_role import UserRole as OutUserRole
-from db.services.user_role import UserRoleService
+from src.core.in_models.user_role import UserRole as InUserRole
+from src.core.out_models.user_role import UserRole as OutUserRole
+from src.db.services.user_role import UserRoleService
 
 blueprint = Blueprint('user_role', __name__, url_prefix='/api/v1/user_role')
 

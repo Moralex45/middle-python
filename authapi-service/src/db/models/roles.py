@@ -4,8 +4,8 @@ from typing import TypeVar
 from sqlalchemy import TEXT, VARCHAR, Column, ForeignKey, UniqueConstraint
 from sqlalchemy.dialects.postgresql import UUID
 
-from db.models.base import BaseModel
-from db.models.users import User
+from src.db.models.base import BaseModel
+from src.db.models.users import User
 
 RT = TypeVar('RT')
 URT = TypeVar('URT')

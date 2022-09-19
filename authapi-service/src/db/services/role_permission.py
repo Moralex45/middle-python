@@ -2,11 +2,11 @@ import uuid
 
 from sqlalchemy.exc import IntegrityError
 
-from db.core import db_session
-from db.models.permissions import RolePermissions
-from db.services.base import IRolePermissionService
-from db.services.permissions import PermissionService
-from db.services.role import RoleService
+from src.db.core import db_session
+from src.db.models.permissions import RolePermissions
+from src.db.services.base import IRolePermissionService
+from src.db.services.permissions import PermissionService
+from src.db.services.role import RoleService
 
 
 class RolePermissionService(IRolePermissionService):

@@ -2,7 +2,7 @@ import uuid
 
 import pytest
 
-from functional.testdata.database_fake_data import roles, users_roles, users
+from tests.functional.testdata.database_fake_data import roles, users_roles, users
 from http import HTTPStatus
 
 

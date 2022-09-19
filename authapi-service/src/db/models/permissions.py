@@ -3,8 +3,8 @@ from typing import TypeVar
 from sqlalchemy import VARCHAR, Column, ForeignKey, UniqueConstraint
 from sqlalchemy.dialects.postgresql import UUID
 
-from db.models.base import BaseModel
-from db.models.roles import Role
+from src.db.models.base import BaseModel
+from src.db.models.roles import Role
 
 PT = TypeVar('PT')
 RPT = TypeVar('RPT')

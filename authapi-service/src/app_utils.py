@@ -19,10 +19,10 @@ def create_app() -> Flask:
 
 
 def configure_db() -> None:
-    from db.core import Base, engine
-    from db.models.permissions import Permission, RolePermissions  # noqa
-    from db.models.roles import Role, UserRole  # noqa
-    from db.models.users import AuthHistory, User, UserData  # noqa
+    from src.db.core import Base, engine
+    from src.db.models.permissions import Permission, RolePermissions  # noqa
+    from src.db.models.roles import Role, UserRole  # noqa
+    from src.db.models.users import AuthHistory, User, UserData  # noqa
     Base.metadata.create_all(bind=engine)
 
 
@@ -31,11 +31,11 @@ def configure_jwt():
 
 
 def configure_blueprints(app) -> None:
-    from api.v1.auth import blueprint as auth_blueprint
-    from api.v1.crud.role_permission import \
+    from src.api.v1.auth import blueprint as auth_blueprint
+    from src.api.v1.crud.role_permission import \
         blueprint as role_permission_blueprint
-    from api.v1.crud.user_role import blueprint as user_role_blueprint
-    from api.v1.role import blueprint as role_blueprint
+    from src.api.v1.crud.user_role import blueprint as user_role_blueprint
+    from src.api.v1.role import blueprint as role_blueprint
     app.register_blueprint(auth_blueprint)
     app.register_blueprint(role_blueprint)
     app.register_blueprint(role_permission_blueprint)

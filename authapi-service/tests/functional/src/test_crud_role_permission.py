@@ -2,7 +2,7 @@ import uuid
 
 import pytest
 
-from functional.testdata.database_fake_data import roles_permissions, roles, permissions
+from tests.functional.testdata.database_fake_data import roles_permissions, roles, permissions
 from http import HTTPStatus
 
 

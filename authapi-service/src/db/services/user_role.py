@@ -2,11 +2,11 @@ import uuid
 
 from sqlalchemy.exc import IntegrityError
 
-from db.core import db_session
-from db.models.roles import UserRole
-from db.services.base import IUserRoleService
-from db.services.role import RoleService
-from db.services.user import UserService
+from src.db.core import db_session
+from src.db.models.roles import UserRole
+from src.db.services.base import IUserRoleService
+from src.db.services.role import RoleService
+from src.db.services.user import UserService
 
 
 class UserRoleService(IUserRoleService):

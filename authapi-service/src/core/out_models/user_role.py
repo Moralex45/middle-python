@@ -1,7 +1,7 @@
 import uuid
 from typing import Any
 
-from core.out_models.base import Base
+from src.core.out_models.base import Base
 
 
 class UserRole(Base):

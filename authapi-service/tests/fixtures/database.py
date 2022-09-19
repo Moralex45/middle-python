@@ -1,10 +1,10 @@
 import pytest
 
-from db.core import db_session
-from db.models.permissions import Permission, RolePermissions
-from db.models.roles import Role, UserRole
-from db.models.users import User
-from functional.testdata.database_fake_data import roles, permissions, roles_permissions, users, users_roles
+from src.db.core import db_session
+from src.db.models.permissions import Permission, RolePermissions
+from src.db.models.roles import Role, UserRole
+from src.db.models.users import User
+from tests.functional.testdata.database_fake_data import roles, permissions, roles_permissions, users, users_roles
 
 
 @pytest.fixture()
