@@ -4,7 +4,7 @@ import uuid
 
 from src.db.models.permissions import PT, RPT
 from src.db.models.roles import RT, URT
-from src.db.models.users import UT, UDT
+from src.db.models.users import UDT, UT
 
 
 class IRolePermissionService(abc.ABC):

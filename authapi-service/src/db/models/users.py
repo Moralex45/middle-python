@@ -4,7 +4,7 @@ from typing import TypeVar
 
 import bcrypt
 from sqlalchemy import (BOOLEAN, TEXT, TIMESTAMP, VARCHAR, Column, ForeignKey,
-                        UniqueConstraint, LargeBinary)
+                        LargeBinary, UniqueConstraint)
 from sqlalchemy.dialects.postgresql import INET, UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 

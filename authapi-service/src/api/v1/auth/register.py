@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from flask import Blueprint, request, Response
+from flask import Blueprint, Response, request
 
 from core.in_models.user import UserRegister as InUserRegister
 from db.services.user import UserService

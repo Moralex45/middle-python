@@ -1,5 +1,3 @@
-import datetime
-
 roles = [
     {
         'id': '53877241-56a9-4c0e-92fb-57dfcfd63f8e',

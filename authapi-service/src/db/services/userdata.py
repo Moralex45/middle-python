@@ -1,13 +1,10 @@
 import datetime
 import uuid
-from typing import Optional
-
-from sqlalchemy.exc import IntegrityError
 
 from db.services.user import UserService
 from src.db.core import db_session
-from src.db.models.users import User, UserData
-from src.db.services.base import IUserService, IUserDataService
+from src.db.models.users import UserData
+from src.db.services.base import IUserDataService
 
 
 class UserDataService(IUserDataService):

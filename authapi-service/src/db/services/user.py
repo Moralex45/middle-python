@@ -1,6 +1,5 @@
 import datetime
 import uuid
-from typing import Optional
 
 from sqlalchemy.exc import IntegrityError
 
