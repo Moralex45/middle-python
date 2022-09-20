@@ -4,13 +4,14 @@ from typing import TypeVar
 
 import bcrypt
 from sqlalchemy import (BOOLEAN, TEXT, TIMESTAMP, VARCHAR, Column, ForeignKey,
-                        UniqueConstraint)
+                        UniqueConstraint, LargeBinary)
 from sqlalchemy.dialects.postgresql import INET, UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from src.db.models.base import BaseModel
 
 UT = TypeVar('UT')
+UDT = TypeVar('UDT')
 
 
 class PasswordConstants:
@@ -23,7 +24,7 @@ class User(BaseModel):
     __table_args__ = ({'extend_existing': True},)
 
     username = Column(VARCHAR(255), nullable=False, unique=True)
-    pwd_hash = Column(VARCHAR(255), nullable=False)
+    pwd_hash = Column(LargeBinary(), nullable=False)
     is_superuser = Column(BOOLEAN(), default=False)
     data_joined = Column(TIMESTAMP(), default=datetime.datetime.now)
     terminate_date = Column(TIMESTAMP())
@@ -36,7 +37,7 @@ class User(BaseModel):
         return self.pwd_hash
 
     @password.setter
-    def password(self, value):
+    def password(self, value: str):
         salt = bcrypt.gensalt()
         self.pwd_hash = hashlib.pbkdf2_hmac(
             PasswordConstants.algorithm,
@@ -45,7 +46,7 @@ class User(BaseModel):
             PasswordConstants.iterations
         ) + b'$' + salt
 
-    def check_password(self, value):
+    def check_password(self, value: str):
         received_salt = self.pwd_hash[-29:]
         received_pwd_hash = hashlib.pbkdf2_hmac(
             PasswordConstants.algorithm,

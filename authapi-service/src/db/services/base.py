@@ -3,13 +3,13 @@ import uuid
 
 from src.db.models.permissions import PT, RPT
 from src.db.models.roles import RT, URT
-from src.db.models.users import UT
+from src.db.models.users import UT, UDT
 
 
 class IRolePermissionService(abc.ABC):
     @classmethod
     @abc.abstractmethod
-    def get_by_id(cls, _id: uuid.UUID) -> RPT:
+    def get_by_id(cls, _id: uuid.UUID) -> RPT | None:
         raise NotImplementedError
 
     @classmethod
@@ -31,7 +31,7 @@ class IRolePermissionService(abc.ABC):
 class IUserRoleService(abc.ABC):
     @classmethod
     @abc.abstractmethod
-    def get_by_id(cls, _id: uuid.UUID) -> URT:
+    def get_by_id(cls, _id: uuid.UUID) -> URT | None:
         raise NotImplementedError
 
     @classmethod
@@ -53,14 +53,54 @@ class IUserRoleService(abc.ABC):
 class IUserService(abc.ABC):
     @classmethod
     @abc.abstractmethod
-    def get_by_id(cls, _id: uuid.UUID) -> UT:
+    def get_by_id(cls, _id: uuid.UUID) -> UT | None:
         raise NotImplementedError
+
+    @classmethod
+    @abc.abstractmethod
+    def get_by_username(cls, username: str) -> UT | None:
+        raise NotImplementedError
+
+    @classmethod
+    @abc.abstractmethod
+    def delete_by_id(cls, _id: uuid.UUID) -> UT:
+        raise NotImplementedError
+
+    @classmethod
+    @abc.abstractmethod
+    def create(cls, username: str, password: str, is_superuser: bool) -> UT:
+        raise NotImplementedError
+
+    @classmethod
+    def update(cls, _id: uuid.UUID, username: str, password: str) -> UT:
+        pass
+
+
+class IUserDataService(abc.ABC):
+    @classmethod
+    @abc.abstractmethod
+    def get_by_id(cls, _id: uuid.UUID) -> UDT | None:
+        raise NotImplementedError
+
+    @classmethod
+    @abc.abstractmethod
+    def delete_by_id(cls, _id: uuid.UUID) -> UDT:
+        raise NotImplementedError
+
+    @classmethod
+    @abc.abstractmethod
+    def create(cls, username: str, password: str, is_superuser: bool) -> UDT:
+        raise NotImplementedError
+
+    @classmethod
+    def update(cls, _id: uuid.UUID, username: str, password: str) -> UDT:
+        pass
 
 
 class IPermissionService(abc.ABC):
     @classmethod
     @abc.abstractmethod
-    def get_by_id(cls, _id: uuid.UUID) -> PT:
+    def get_by_id(cls, _id: uuid.UUID) -> PT | None:
         raise NotImplementedError
 
     @classmethod
@@ -92,7 +132,7 @@ class IPermissionService(abc.ABC):
 class IRoleService(abc.ABC):
     @classmethod
     @abc.abstractmethod
-    def get_by_id(cls, _id: uuid.UUID) -> RT:
+    def get_by_id(cls, _id: uuid.UUID) -> RT | None:
         raise NotImplementedError
 
     @classmethod

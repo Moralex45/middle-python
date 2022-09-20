@@ -11,7 +11,7 @@ from src.db.services.role import RoleService
 
 class RolePermissionService(IRolePermissionService):
     @classmethod
-    def get_by_id(cls, _id: uuid.UUID) -> RolePermissions:
+    def get_by_id(cls, _id: uuid.UUID) -> RolePermissions | None:
         with db_session() as session:
             return session.query(RolePermissions).filter_by(id=_id).first()
 
