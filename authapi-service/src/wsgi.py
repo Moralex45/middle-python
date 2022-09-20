@@ -1,8 +1,8 @@
-from app_utils import create_raw_app
+from app_utils import create_app
 
 
 def main():
-    app = create_raw_app()
+    app = create_app()
     app.run(debug=True)
 
 

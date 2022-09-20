@@ -27,7 +27,7 @@ class User(BaseModel):
     pwd_hash = Column(LargeBinary(), nullable=False)
     is_superuser = Column(BOOLEAN(), default=False)
     data_joined = Column(TIMESTAMP(), default=datetime.datetime.now)
-    terminate_date = Column(TIMESTAMP())
+    terminate_date = Column(TIMESTAMP(), nullable=True)
 
     def __repr__(self):
         return f'{self.username}'

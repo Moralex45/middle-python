@@ -6,4 +6,4 @@ class User(Base):
 
 
 class UserRegister(User):
-    user_name: int
+    user_name: str

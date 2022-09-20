@@ -1,4 +1,5 @@
 import abc
+import datetime
 import uuid
 
 from src.db.models.permissions import PT, RPT
@@ -68,10 +69,11 @@ class IUserService(abc.ABC):
 
     @classmethod
     @abc.abstractmethod
-    def create(cls, username: str, password: str, is_superuser: bool) -> UT:
+    def create(cls, username: str, password: str) -> UT:
         raise NotImplementedError
 
     @classmethod
+    @abc.abstractmethod
     def update(cls, _id: uuid.UUID, username: str, password: str) -> UT:
         pass
 
@@ -84,17 +86,32 @@ class IUserDataService(abc.ABC):
 
     @classmethod
     @abc.abstractmethod
-    def delete_by_id(cls, _id: uuid.UUID) -> UDT:
+    def get_by_user_id(cls, user_id: uuid.UUID) -> UDT | None:
         raise NotImplementedError
 
     @classmethod
     @abc.abstractmethod
-    def create(cls, username: str, password: str, is_superuser: bool) -> UDT:
+    def delete_by_id(cls, _id: uuid.UUID) -> None:
         raise NotImplementedError
 
     @classmethod
-    def update(cls, _id: uuid.UUID, username: str, password: str) -> UDT:
-        pass
+    @abc.abstractmethod
+    def create(cls,
+               user_id: uuid.UUID,
+               first_name: str | None = None,
+               last_name: str | None = None,
+               email: str | None = None,
+               birth_date: datetime.datetime | None = None) -> UDT:
+        raise NotImplementedError
+
+    @classmethod
+    @abc.abstractmethod
+    def update(cls, _id: uuid.UUID,
+               first_name: str | None = None,
+               last_name: str | None = None,
+               email: str | None = None,
+               birth_date: datetime.datetime | None = None) -> UDT:
+        raise NotImplementedError
 
 
 class IPermissionService(abc.ABC):

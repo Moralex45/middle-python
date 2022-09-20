@@ -36,10 +36,10 @@ def configure_blueprints(app) -> None:
         blueprint as role_permission_blueprint
     from src.api.v1.crud.user_role import blueprint as user_role_blueprint
     from src.api.v1.role import blueprint as role_blueprint
-    app.register_blueprint(register_blueprint)
     app.register_blueprint(role_blueprint)
     app.register_blueprint(role_permission_blueprint)
     app.register_blueprint(user_role_blueprint)
+    app.register_blueprint(register_blueprint)
 
 
 def configure_cli(app):

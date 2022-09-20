@@ -37,7 +37,7 @@ class UserService(IUserService):
                 raise ValueError(f'Unable to fetch user wih passed uuid {_id}')
 
     @classmethod
-    def create(cls, username: str, password: str, is_superuser: bool) -> User:
+    def create(cls, username: str, password: str) -> User:
         """
 
         Raises:
@@ -45,7 +45,7 @@ class UserService(IUserService):
 
         """
         with db_session() as session:
-            db_user = User(username=username, is_superuser=is_superuser)
+            db_user = User(username=username)
             db_user.password = password
             session.add_all([db_user])
 
