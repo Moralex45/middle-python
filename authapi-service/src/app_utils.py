@@ -26,8 +26,26 @@ def configure_db() -> None:
     Base.metadata.create_all(bind=engine)
 
 
-def configure_jwt():
-    pass
+def configure_jwt(app):
+    from src.core.config import get_settings_instance
+
+    app.config['JWT_SECRET_KEY'] = get_settings_instance().JWT_SECRET_KEY
+    app.config['JWT_TOKEN_LOCATION'] = ['cookies']
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = get_settings_instance().JWT_ACCESS_TOKEN_EXPIRES
+    app.config['JWT_COOKIE_SECURE'] = get_settings_instance().JWT_COOKIE_SECURE
+    app.config['JWT_COOKIE_CSRF_PROTECT'] = True
+    app.config['JWT_ACCESS_CSRF_HEADER_NAME'] = "X-CSRF-TOKEN-ACCESS"
+
+    from flask_jwt_extended import JWTManager
+    jwt = JWTManager(app)
+
+    # @jwt.user_identity_loader
+    # def user_identity_lookup(user):
+    #     return user.id
+    #
+    # def user_lookup_callback(_jwt_header, jwt_data):
+    #     identity = jwt_data["sub"]
+    #     return User.query.filter_by(id=identity).one_or_none()
 
 
 def configure_blueprints(app) -> None:

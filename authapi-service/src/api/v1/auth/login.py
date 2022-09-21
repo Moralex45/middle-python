@@ -39,6 +39,7 @@ def login_user():
     pass  # TODO create access token
     pass  # TODO create refresh token
     pass  # TODO Set refresh token in http only cookie
+    pass  # TODO Set access token in http only cookie
     pass  # TODO create auth_history entity in db
     pass  # TODO push refresh token in redis
 
