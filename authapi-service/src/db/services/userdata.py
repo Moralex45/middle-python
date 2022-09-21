@@ -83,7 +83,7 @@ class UserDataService(IUserDataService):
 
         """
         with db_session() as session:
-            db_user_data: UserData = session.query(UserData).filter_by(id=_id).first()
+            db_user_data = cls.get_by_id(_id)
             if db_user_data is None:
                 raise ValueError(f'Unable to fetch user wih passed uuid {_id}')
             if first_name is not None:
@@ -94,6 +94,7 @@ class UserDataService(IUserDataService):
                 db_user_data.email = email
             if birth_date is not None:
                 db_user_data.birth_date = birth_date
+            session.add(db_user_data)
             session.commit()
 
             return cls.get_by_id(db_user_data.id)
