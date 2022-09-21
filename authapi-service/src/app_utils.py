@@ -62,7 +62,8 @@ def configure_cli(app):
             CAN_ADD_PERMISSION,
             CAN_ADD_ROLE,
             CAN_ADD_ROLE_PERMISSION,
-            CAN_ADD_USER_ROLE
+            CAN_ADD_USER_ROLE,
+            CAN_EDIT_PROFILE
         )
 
         with db_session() as session:
@@ -89,6 +90,10 @@ def configure_cli(app):
             db_can_add_user_role = Permission(
                 **CAN_ADD_USER_ROLE
             )
+            
+            db_can_edit_profile = Permission(
+                **CAN_EDIT_PROFILE
+            )
 
             session.add_all(
                 [
@@ -97,7 +102,8 @@ def configure_cli(app):
                     db_can_add_role,
                     db_can_add_permission,
                     db_can_add_role_permission,
-                    db_can_add_user_role
+                    db_can_add_user_role,
+                    db_can_edit_profile
                 ]
             )
             session.commit()
@@ -118,6 +124,10 @@ def configure_cli(app):
                 role_id=db_role_admin.id,
                 perm_id=db_can_add_user_role.id
             )
+            role_sample_user_can_edit_profile = RolePermissions(
+                role_id=db_role_user.id,
+                perm_id=db_can_edit_profile.id
+            )
 
             session.add_all(
                 [
@@ -125,6 +135,7 @@ def configure_cli(app):
                     role_admin_can_add_permission,
                     role_admin_can_add_role_permission,
                     role_admin_can_add_user_role,
+                    role_sample_user_can_edit_profile
                 ]
             )
             session.commit()

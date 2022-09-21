@@ -23,3 +23,7 @@ CAN_ADD_ROLE_PERMISSION = {
 CAN_ADD_USER_ROLE = {
     "code": 3
 }
+
+CAN_EDIT_PROFILE = {
+    "code": 4
+}
