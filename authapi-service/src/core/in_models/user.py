@@ -7,3 +7,7 @@ class User(Base):
 
 class UserRegister(User):
     user_name: str
+
+
+class UserLogin(UserRegister):
+    remember: bool

@@ -32,6 +32,7 @@ def configure_jwt():
 
 def configure_blueprints(app) -> None:
     from src.api.v1.auth.register import blueprint as register_blueprint
+    from src.api.v1.auth.login import blueprint as login_blueprint
     from src.api.v1.crud.role_permission import \
         blueprint as role_permission_blueprint
     from src.api.v1.crud.user_role import blueprint as user_role_blueprint
@@ -40,6 +41,7 @@ def configure_blueprints(app) -> None:
     app.register_blueprint(role_permission_blueprint)
     app.register_blueprint(user_role_blueprint)
     app.register_blueprint(register_blueprint)
+    app.register_blueprint(login_blueprint)
 
 
 def configure_cli(app):
