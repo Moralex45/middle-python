@@ -10,7 +10,7 @@ from src.db.services.base import IPermissionService
 
 class PermissionService(IPermissionService):
     @classmethod
-    def get_by_id(cls, _id: uuid.UUID) -> PT:
+    def get_by_id(cls, _id: uuid.UUID) -> Permission | None:
         with db_session() as session:
             return session.query(Permission).filter_by(id=_id).first()
 

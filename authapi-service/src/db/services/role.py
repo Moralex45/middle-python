@@ -10,7 +10,7 @@ from src.db.services.base import IRoleService
 
 class RoleService(IRoleService):
     @classmethod
-    def get_by_id(cls, _id: uuid.UUID) -> RT:
+    def get_by_id(cls, _id: uuid.UUID) -> Role | None:
         with db_session() as session:
             return session.query(Role).filter_by(id=_id).first()
 
