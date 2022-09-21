@@ -11,7 +11,7 @@ from src.db.services.user import UserService
 
 class UserRoleService(IUserRoleService):
     @classmethod
-    def get_by_id(cls, _id: uuid.UUID) -> UserRole:
+    def get_by_id(cls, _id: uuid.UUID) -> UserRole | None:
         with db_session() as session:
             return session.query(UserRole).filter_by(id=_id).first()
 

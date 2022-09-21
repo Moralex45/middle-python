@@ -1,5 +1,3 @@
-import datetime
-
 roles = [
     {
         'id': '53877241-56a9-4c0e-92fb-57dfcfd63f8e',
@@ -70,41 +68,56 @@ roles_permissions = [
     }
 ]
 
-users = [
+fdb_users = [
     {
         'id': '3ddb563e-3158-4510-8347-17d86a541ec4',
         'username': 'user1',
         'pwd_hash': b'{\x91\xaa\x13\x91\xff4\xe0`I\xb7\\\xb7\xc8\tU2\x0c\x90Y\x13\x93d\x8b:\xa52w\x8e\x9c\x89\x98$$2b$12$ez50qzveKfpYkKlV78qmdu',  # noqa
-        'terminate_date': datetime.datetime.now()
     },
     {
         'id': '831d1a3b-6b00-420e-a460-1ea894487017',
         'username': 'user2',
         'pwd_hash': b'\xc9\x91+\x85\xdc\x16\xa3w\x8b+\x16QP\x1c\xcd\xe3.\xd6\xa0#\xfb\x08\xeank\x16N\xd7\xb2\xd0\xae\xa9$$2b$12$N7qvCbrFgtlol6OZMch1zu',  # noqa
-        'terminate_date': datetime.datetime.now()
     },
     {
         'id': '41c6bf7a-63d8-4341-ae6d-4fe1ddaea713',
         'username': 'user3',
         'pwd_hash': b"\xf0\xc5\x02\xf8\xef\x93S\xfe\xb8\x89\x9a\xd2'+\xa6\x8a \xa7z\x1b\xed\xb9P\xe3\xe0\xb3\xf3\xf8\x84z\xde'$$2b$12$yu7tYSkq1leRO4SySrTVKu",  # noqa
-        'terminate_date': datetime.datetime.now()
+    }
+]
+
+register_users = [
+    {
+        'id': '3ddb563e-3158-4510-8347-17d86a541ec4',
+        'username': 'user1',
+        'password': 'pwd1',
+    },
+    {
+        'id': '831d1a3b-6b00-420e-a460-1ea894487017',
+        'username': 'user2',
+        'password': 'pwd2',
+    },
+    {
+        'id': '41c6bf7a-63d8-4341-ae6d-4fe1ddaea713',
+        'username': 'user3',
+        'password': 'pwd3',
     }
 ]
 
 users_roles = [
     {
         'id': 'fdc27267-0a23-4594-be76-c94ff9e2aa09',
-        'user_id': users[0]['id'],
+        'user_id': fdb_users[0]['id'],
         'role_id': roles[0]['id'],
     },
     {
         'id': '4558db65-2a68-453a-a572-9396ec9b17bd',
-        'user_id': users[1]['id'],
+        'user_id': fdb_users[1]['id'],
         'role_id': roles[1]['id'],
     },
     {
         'id': '67ff5328-f6da-4bb2-872a-285da7c360fc',
-        'user_id': users[1]['id'],
+        'user_id': fdb_users[1]['id'],
         'role_id': roles[2]['id'],
     }
 ]
