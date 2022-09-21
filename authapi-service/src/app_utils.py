@@ -90,7 +90,7 @@ def configure_cli(app):
             db_can_add_user_role = Permission(
                 **CAN_ADD_USER_ROLE
             )
-            
+
             db_can_edit_profile = Permission(
                 **CAN_EDIT_PROFILE
             )
