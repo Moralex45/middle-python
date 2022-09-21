@@ -46,7 +46,7 @@ class UserService(IUserService):
         with db_session() as session:
             db_user = User(username=username)
             db_user.password = password
-            session.add_all([db_user])
+            session.add(db_user)
 
             try:
                 session.commit()
@@ -65,13 +65,14 @@ class UserService(IUserService):
 
         """
         with db_session() as session:
-            db_user: User = session.query(User).filter_by(id=_id).first()
+            db_user = cls.get_by_id(_id)
             if db_user is None:
                 raise ValueError(f'Unable to fetch user wih passed uuid {_id}')
             if username is not None:
                 db_user.username = username
             if password is not None:
                 db_user.password = password
+            session.add(db_user)
             session.commit()
 
             return cls.get_by_id(db_user.id)
