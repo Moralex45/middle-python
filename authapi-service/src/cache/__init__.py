@@ -1,3 +1,3 @@
-from cache.base import CacheService
+from cache.redis import RedisCacheService
 
-cache_service: CacheService | None = None
+cache_service: RedisCacheService | None = None

@@ -5,8 +5,10 @@ import secrets
 from flask import Blueprint, Response, request, make_response
 from flask_jwt_extended import create_access_token
 
+from src import cache
 from core.config import get_settings_instance
 from core.in_models.user import UserLogin as InUserLogin
+from db.services.auth_history import AuthHistoryService
 from db.services.user import UserService
 
 blueprint = Blueprint('login', __name__, url_prefix='/api/v1/auth/login')
@@ -50,17 +52,21 @@ def login_user():
     )
 
     refresh_token = secrets.token_hex(32)
+    refresh_token_expire_days = get_settings_instance().REFRESH_TOKEN_EXPIRES_LONG \
+        if request_user.remember \
+        else get_settings_instance().REFRESH_TOKEN_EXPIRES_SHORT
+    refresh_token_expire = datetime.datetime.now() + datetime.timedelta(
+        days=refresh_token_expire_days)
     response.set_cookie(
         key=get_settings_instance().REFRESH_TOKEN_COOKIE_NAME,
         value=refresh_token,
         httponly=True,
-        expires=datetime.datetime.now() + datetime.timedelta(
-            days=get_settings_instance().REFRESH_TOKEN_EXPIRES_LONG
-            if request_user.remember
-            else get_settings_instance().REFRESH_TOKEN_EXPIRES_SHORT)
+        expires=refresh_token_expire
     )
 
-    pass  # TODO create auth_history entity in db
-    pass  # TODO push refresh token in redis
+    AuthHistoryService.create(db_user.id, request.user_agent.string, request.remote_addr)
+
+    cache_service_key = f'user_id::{db_user.id}::user_agent::{request.user_agent.string}'
+    cache.cache_service.set(cache_service_key, refresh_token, refresh_token_expire_days*60*60*60)
 
     return response
