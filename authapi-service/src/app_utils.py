@@ -6,6 +6,7 @@ __all__ = ('create_app', 'create_raw_app')
 def create_raw_app() -> Flask:
     app = Flask(__name__, instance_relative_config=True)
     configure_blueprints(app)
+    configure_jwt(app)
 
     return app
 
@@ -39,13 +40,31 @@ def configure_jwt(app):
     from flask_jwt_extended import JWTManager
     jwt = JWTManager(app)
 
-    # @jwt.user_identity_loader
-    # def user_identity_lookup(user):
-    #     return user.id
-    #
-    # def user_lookup_callback(_jwt_header, jwt_data):
-    #     identity = jwt_data["sub"]
-    #     return User.query.filter_by(id=identity).one_or_none()
+    from src.db.services.user import UserService
+    from src.db.services.user_role import UserRoleService
+    from src.db.services.role import RoleService
+    from src.db.services.role_permission import RolePermissionService
+
+    @jwt.user_identity_loader
+    def user_identity_lookup(user):
+        return user.id
+
+    @jwt.user_lookup_loader
+    def user_lookup_callback(_jwt_header, jwt_data):
+        identity = jwt_data["sub"]
+        return UserService.get_by_id(identity)
+
+    @jwt.additional_claims_loader
+    def add_claims_to_access_token(identity):
+        users_roles = UserRoleService.get_filtered(identity.id)
+        return {
+            "iss": get_settings_instance().PROJECT_NAME,
+            "permissions": [],
+            "is_super": True,
+            "aud": "some_audience",
+            "foo": "bar",
+            "upcase_name": '',
+        }
 
 
 def configure_blueprints(app) -> None:

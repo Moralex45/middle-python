@@ -1,6 +1,7 @@
 from http import HTTPStatus
 
 from flask import Blueprint, Response, request
+from flask_jwt_extended import create_access_token
 
 from core.in_models.user import UserLogin as InUserLogin
 from db.services.user import UserService
@@ -36,7 +37,7 @@ def login_user():
         response_status = HTTPStatus.UNAUTHORIZED
         return Response(response_body, status=response_status, mimetype='application/json')
 
-    pass  # TODO create access token
+    access_token = create_access_token(identity=db_user)
     pass  # TODO create refresh token
     pass  # TODO Set refresh token in http only cookie
     pass  # TODO Set access token in http only cookie
