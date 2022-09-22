@@ -1,5 +1,6 @@
 import datetime
 from http import HTTPStatus
+import secrets
 
 from flask import Blueprint, Response, request, make_response
 from flask_jwt_extended import create_access_token
@@ -42,12 +43,23 @@ def login_user():
     response = make_response()
     response.status = response_status
     response.set_cookie(
-        key='access_token_cookie',
+        key=get_settings_instance().JWT_ACCESS_COOKIE_NAME,
         value=access_token,
         httponly=True,
-        expires=datetime.datetime.now() + datetime.timedelta(seconds=get_settings_instance().JWT_ACCESS_TOKEN_EXPIRES))
+        expires=datetime.datetime.now() + datetime.timedelta(seconds=get_settings_instance().JWT_ACCESS_TOKEN_EXPIRES)
+    )
 
-    pass  # TODO create refresh token
+    refresh_token = secrets.token_hex(32)
+    response.set_cookie(
+        key=get_settings_instance().REFRESH_TOKEN_COOKIE_NAME,
+        value=refresh_token,
+        httponly=True,
+        expires=datetime.datetime.now() + datetime.timedelta(
+            days=get_settings_instance().REFRESH_TOKEN_EXPIRES_LONG
+            if request_user.remember
+            else get_settings_instance().REFRESH_TOKEN_EXPIRES_SHORT)
+    )
+
     pass  # TODO Set refresh token in http only cookie
     pass  # TODO create auth_history entity in db
     pass  # TODO push refresh token in redis

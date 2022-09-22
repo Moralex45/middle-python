@@ -9,8 +9,8 @@ class RedisCacheService(CacheService):
     def __init__(self, redis_instance: redis.Redis):
         self.redis: redis.Redis = redis_instance
 
-    def get(self, key: str) -> bytes | None:
-        data = self.redis.get(key)
+    def get(self, key: str) -> str | None:
+        data = self.redis.get(key).decode()
         if not data:
             return None
 
