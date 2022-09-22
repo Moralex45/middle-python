@@ -3,6 +3,7 @@ from http import HTTPStatus
 
 import orjson
 from flask import Blueprint, Response, request
+from flask_jwt_extended import jwt_required, get_jwt_identity, current_user
 from pydantic.json import pydantic_encoder
 
 from src.core.in_models.user_role import UserRole as InUserRole
@@ -41,7 +42,7 @@ def create_user_role():
 
 
 @blueprint.route('/<uuid:user_role_id>', methods=['GET'])
-def get_role_permission(user_role_id: uuid.UUID):
+def get_user_role(user_role_id: uuid.UUID):
     response_body = ''
     response_status = HTTPStatus.OK
 
@@ -57,7 +58,7 @@ def get_role_permission(user_role_id: uuid.UUID):
 
 
 @blueprint.route('/', methods=['GET'])
-def get_roles_permissions():
+def get_filtered_users_roles_by_user_id():
     response_body = ''
     response_status = HTTPStatus.OK
 

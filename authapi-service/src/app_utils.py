@@ -39,12 +39,11 @@ def configure_jwt(app):
     app.config['JWT_ACCESS_CSRF_HEADER_NAME'] = "X-CSRF-TOKEN-ACCESS"
 
     from flask_jwt_extended import JWTManager
+
     jwt = JWTManager(app)
 
-    from src.db.services.user import UserService
-    from src.db.services.user_role import UserRoleService
-    from src.db.services.role import RoleService
-    from src.db.services.role_permission import RolePermissionService
+    from db.services.permissions import PermissionService
+    from db.services.user import UserService
 
     @jwt.user_identity_loader
     def user_identity_lookup(user):
@@ -57,15 +56,13 @@ def configure_jwt(app):
 
     @jwt.additional_claims_loader
     def add_claims_to_access_token(identity):
-        users_roles = UserRoleService.get_filtered(identity.id)
-        return {
-            "iss": get_settings_instance().PROJECT_NAME,
-            "permissions": [],
-            "is_super": True,
-            "aud": "some_audience",
-            "foo": "bar",
-            "upcase_name": '',
+        user_permissions = PermissionService.get_filtered_by_user_id(identity.id)
+        claims = {
+            'iss': get_settings_instance().PROJECT_NAME,
+            'permissions': [user_permission.code for user_permission in user_permissions],
+            'is_super': True
         }
+        return claims
 
 
 def configure_blueprints(app) -> None:

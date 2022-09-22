@@ -1,11 +1,12 @@
+import datetime
 from http import HTTPStatus
 
-from flask import Blueprint, Response, request
+from flask import Blueprint, Response, request, make_response
 from flask_jwt_extended import create_access_token
 
+from core.config import get_settings_instance
 from core.in_models.user import UserLogin as InUserLogin
 from db.services.user import UserService
-from db.services.userdata import UserDataService
 
 blueprint = Blueprint('login', __name__, url_prefix='/api/v1/auth/login')
 
@@ -38,10 +39,17 @@ def login_user():
         return Response(response_body, status=response_status, mimetype='application/json')
 
     access_token = create_access_token(identity=db_user)
+    response = make_response()
+    response.status = response_status
+    response.set_cookie(
+        key='access_token_cookie',
+        value=access_token,
+        httponly=True,
+        expires=datetime.datetime.now() + datetime.timedelta(seconds=get_settings_instance().JWT_ACCESS_TOKEN_EXPIRES))
+
     pass  # TODO create refresh token
     pass  # TODO Set refresh token in http only cookie
-    pass  # TODO Set access token in http only cookie
     pass  # TODO create auth_history entity in db
     pass  # TODO push refresh token in redis
 
-    return Response(response_body, status=response_status, mimetype='application/json')
+    return response

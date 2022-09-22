@@ -3,8 +3,9 @@ import uuid
 
 from sqlalchemy.exc import IntegrityError
 
+from db.models.roles import UserRole, Role
 from src.db.core import db_session
-from src.db.models.permissions import PT, Permission
+from src.db.models.permissions import PT, Permission, RolePermissions
 from src.db.services.base import IPermissionService
 
 
@@ -23,6 +24,17 @@ class PermissionService(IPermissionService):
     def get_all(cls) -> List[PT]:
         with db_session() as session:
             return session.query(Permission).all()
+
+    @classmethod
+    def get_filtered_by_user_id(cls, user_id: str) -> [Permission]:
+        with db_session() as session:
+            user_permissions = session.query(Permission) \
+                .join(RolePermissions, Permission.id == RolePermissions.perm_id) \
+                .join(UserRole, RolePermissions.role_id == UserRole.role_id) \
+                .filter(UserRole.user_id == user_id) \
+                .all()
+
+            return user_permissions
 
     @classmethod
     def delete_by_id(cls, _id: uuid.UUID) -> None:

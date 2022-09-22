@@ -137,11 +137,6 @@ class IPermissionService(abc.ABC):
 
     @classmethod
     @abc.abstractmethod
-    def recreate(cls, _id: uuid.UUID, code: int) -> PT:
-        raise NotImplementedError
-
-    @classmethod
-    @abc.abstractmethod
     def update(cls, _id: uuid.UUID, code: int) -> PT:
         raise NotImplementedError
 
@@ -165,11 +160,6 @@ class IRoleService(abc.ABC):
     @classmethod
     @abc.abstractmethod
     def create(cls, code: int, description: int) -> RT:
-        raise NotImplementedError
-
-    @classmethod
-    @abc.abstractmethod
-    def recreate(cls, _id: uuid.UUID, code: int, description: str) -> RT:
         raise NotImplementedError
 
     @classmethod
