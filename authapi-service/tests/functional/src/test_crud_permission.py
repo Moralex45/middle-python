@@ -1,9 +1,8 @@
-import uuid
-
 import pytest
 
 from tests.functional.testdata.database_fake_data import permissions
 from http import HTTPStatus
+
 
 @pytest.mark.parametrize(
     'permission',
@@ -19,6 +18,7 @@ def test_get_permission_list(
     assert response.is_json
     assert response.json == permission
 
+
 def test_get_role_by_id(
     flask_test_client,
     clean_database,
@@ -30,6 +30,7 @@ def test_get_role_by_id(
     assert response.is_json
     assert response.json == permission
 
+
 def test_create_role(
     flask_test_client,
     clean_database,
@@ -38,9 +39,10 @@ def test_create_role(
     request_body = {
         "code": 100,
     }
-    response = flask_test_client.post(f'/api/v1/crud/permission/', json=request_body)
+    response = flask_test_client.post('/api/v1/crud/permission/', json=request_body)
     assert response.status_code == HTTPStatus.OK
     assert response.is_json
+
 
 def test_update_role_by_id(
     flask_test_client,
@@ -54,6 +56,7 @@ def test_update_role_by_id(
     response = flask_test_client.put(f'/api/v1/crud/permission/{permission["id"]}', json=request_body)
     assert response.status_code == HTTPStatus.OK
     assert response.is_json
+
 
 def test_delete_role_by_id(
     flask_test_client,
