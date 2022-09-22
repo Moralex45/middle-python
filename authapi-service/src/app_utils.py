@@ -8,6 +8,7 @@ def create_raw_app() -> Flask:
     app = Flask(__name__, instance_relative_config=True)
     configure_blueprints(app)
     configure_jwt(app)
+    configure_cache()
 
     return app
 
@@ -26,6 +27,18 @@ def configure_db() -> None:
     from src.db.models.roles import Role, UserRole  # noqa
     from src.db.models.users import AuthHistory, User, UserData  # noqa
     Base.metadata.create_all(bind=engine)
+
+
+def configure_cache():
+    from src import cache
+    from src.cache.redis import RedisCacheService
+    from src.core.config import get_settings_instance
+
+    import redis
+
+    redis_instance = redis.Redis(host=get_settings_instance().REDIS_HOST,
+                                 port=get_settings_instance().REDIS_PORT)
+    cache.cache_service = RedisCacheService(redis_instance)
 
 
 def configure_jwt(app):
