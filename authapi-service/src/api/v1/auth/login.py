@@ -60,7 +60,6 @@ def login_user():
             else get_settings_instance().REFRESH_TOKEN_EXPIRES_SHORT)
     )
 
-    pass  # TODO Set refresh token in http only cookie
     pass  # TODO create auth_history entity in db
     pass  # TODO push refresh token in redis
 

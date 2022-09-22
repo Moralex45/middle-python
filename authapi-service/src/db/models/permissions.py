@@ -1,6 +1,6 @@
 from typing import TypeVar
 
-from sqlalchemy import VARCHAR, Column, ForeignKey, UniqueConstraint
+from sqlalchemy import VARCHAR, Column, ForeignKey, UniqueConstraint, INT
 from sqlalchemy.dialects.postgresql import UUID
 
 from src.db.models.base import BaseModel
@@ -14,7 +14,7 @@ class Permission(BaseModel):
     __tablename__ = 'permissions'
     __table_args__ = ({'extend_existing': True},)
 
-    code = Column(VARCHAR(255), nullable=False, unique=True)
+    code = Column(INT(), nullable=False, unique=True)
 
     def __repr__(self):
         return f'({self.code}) {self.description}'

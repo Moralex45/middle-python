@@ -4,7 +4,29 @@ import uuid
 
 from src.db.models.permissions import PT, RPT
 from src.db.models.roles import RT, URT
-from src.db.models.users import UDT, UT
+from src.db.models.users import UDT, UT, AHT
+
+
+class IAuthHistory(abc.ABC):
+    @classmethod
+    @abc.abstractmethod
+    def create(cls, user_id: uuid.UUID, user_agent: str, ip: str) -> AHT:
+        raise NotImplementedError
+
+    @classmethod
+    @abc.abstractmethod
+    def delete_by_id(cls, _id: uuid.UUID):
+        raise NotImplementedError
+
+    @classmethod
+    @abc.abstractmethod
+    def delete_all_by_user_id(cls, user_id: uuid.UUID):
+        raise NotImplementedError
+
+    @classmethod
+    @abc.abstractmethod
+    def get_by_user_id_and_user_agent(cls, user_id: uuid.UUID, user_agent: str) -> AHT | None:
+        raise NotImplementedError
 
 
 class IRolePermissionService(abc.ABC):
@@ -128,6 +150,11 @@ class IPermissionService(abc.ABC):
     @classmethod
     @abc.abstractmethod
     def delete_by_id(cls, _id: uuid.UUID) -> None:
+        raise NotImplementedError
+
+    @classmethod
+    @abc.abstractmethod
+    def get_filtered_by_user_id(cls, user_id: str) -> [PT]:
         raise NotImplementedError
 
     @classmethod
