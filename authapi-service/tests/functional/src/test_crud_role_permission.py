@@ -19,17 +19,19 @@ def test_scrap_existing_roles_permissions(flask_test_client,
     assert response.json == role_permission
 
 
-def test_scrap_non_existing_roles_permissions(flask_test_client, clean_database, generate_roles_permissions):
+def test_scrap_non_existing_roles_permissions(flask_test_client,
+                                              clean_database,
+                                              generate_roles_permissions):
     response = flask_test_client.get(f'/api/v1/crud/role_permission/{uuid.uuid4()}')
     assert response.status_code == HTTPStatus.NO_CONTENT
     assert response.text == ''
 
 
-def test_scrap_existing_roles_permissions_filtered_by_role_id(super_user_authenticated_flask_test_client,
+def test_scrap_existing_roles_permissions_filtered_by_role_id(flask_test_client,
                                                               clean_database,
                                                               generate_roles_permissions):
     role = roles[0]
-    response = super_user_authenticated_flask_test_client.get(f'/api/v1/crud/role_permission/?role_id={role["id"]}')
+    response = flask_test_client.get(f'/api/v1/crud/role_permission/?role_id={role["id"]}')
     assert response.status_code == HTTPStatus.OK
     assert response.is_json
     assert response.json == list(filter(lambda o: o['role_id'] == role['id'], roles_permissions))
@@ -63,7 +65,9 @@ def test_delete_existing_roles_permissions(flask_test_client, clean_database, ge
     assert response.text == ''
 
 
-def test_delete_non_existing_roles_permissions(flask_test_client, clean_database, generate_roles_permissions):
+def test_delete_non_existing_roles_permissions(flask_test_client,
+                                               clean_database,
+                                               generate_roles_permissions):
     response = flask_test_client.delete(f'/api/v1/crud/role_permission/{uuid.uuid4()}')
     assert response.status_code == HTTPStatus.BAD_REQUEST
     assert response.text == ''

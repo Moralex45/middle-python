@@ -5,6 +5,8 @@ import orjson
 from flask import Blueprint, Response, request
 from pydantic.json import pydantic_encoder
 
+from src.core.constants import CAN_ACCESS_ROLE
+from src.core.utils import permissions_required
 from src.core.in_models.role import Role as InRole
 from src.core.out_models.role import Role as OutRole
 from src.db.services.role import RoleService
@@ -13,6 +15,7 @@ blueprint = Blueprint('role', __name__, url_prefix='/api/v1/crud/role')
 
 
 @blueprint.route('/', methods=['GET'])
+# @permissions_required(CAN_ACCESS_ROLE)
 def get_role_list():
     response_body = ''
     response_status = HTTPStatus.OK
@@ -29,6 +32,7 @@ def get_role_list():
 
 
 @blueprint.route('/<uuid:role_id>', methods=['GET'])
+# @permissions_required(CAN_ACCESS_ROLE)
 def get_role_by_id(role_id: uuid.UUID):
     response_body = ''
     response_status = HTTPStatus.OK
@@ -45,6 +49,7 @@ def get_role_by_id(role_id: uuid.UUID):
 
 
 @blueprint.route('/', methods=['POST'])
+# @permissions_required(CAN_ACCESS_ROLE)
 def create_role():
     response_body = ''
     response_status = HTTPStatus.OK
@@ -74,6 +79,7 @@ def create_role():
 
 
 @blueprint.route('/<uuid:role_id>', methods=['PUT'])
+# @permissions_required(CAN_ACCESS_ROLE)
 def change_role(role_id: uuid.UUID):
     response_body = ''
     response_status = HTTPStatus.OK
@@ -104,6 +110,7 @@ def change_role(role_id: uuid.UUID):
 
 
 @blueprint.route('/<uuid:role_id>', methods=['DELETE'])
+# @permissions_required(CAN_ACCESS_ROLE)
 def delete_role(role_id: uuid.UUID):
     response_body = ''
     response_status = HTTPStatus.OK

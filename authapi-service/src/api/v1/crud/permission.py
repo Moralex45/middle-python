@@ -5,6 +5,8 @@ import orjson
 from flask import Blueprint, Response, request
 from pydantic.json import pydantic_encoder
 
+from src.core.constants import CAN_ACCESS_PERMISSION
+from src.core.utils import permissions_required
 from src.core.in_models.permission import Permission as InPermission
 from src.core.out_models.permission import Permission as OutPermission
 from src.db.services.permissions import PermissionService
@@ -13,6 +15,7 @@ blueprint = Blueprint('permission', __name__, url_prefix='/api/v1/crud/permissio
 
 
 @blueprint.route('/', methods=['GET'])
+# @permissions_required(CAN_ACCESS_PERMISSION)
 def get_permission_list():
     response_body = ''
     response_status = HTTPStatus.OK
@@ -29,6 +32,7 @@ def get_permission_list():
 
 
 @blueprint.route('/<uuid:permission_id>', methods=['GET'])
+# @permissions_required(CAN_ACCESS_PERMISSION)
 def get_permission_by_id(permission_id: uuid.UUID):
     response_body = ''
     response_status = HTTPStatus.OK
@@ -45,6 +49,7 @@ def get_permission_by_id(permission_id: uuid.UUID):
 
 
 @blueprint.route('/', methods=['POST'])
+# @permissions_required(CAN_ACCESS_PERMISSION)
 def create_permission():
     response_body = ''
     response_status = HTTPStatus.OK
@@ -73,7 +78,8 @@ def create_permission():
 
 
 @blueprint.route('/<uuid:permission_id>', methods=['PUT'])
-def change_role(permission_id: uuid.UUID):
+# @permissions_required(CAN_ACCESS_PERMISSION)
+def change_permission(permission_id: uuid.UUID):
     response_body = ''
     response_status = HTTPStatus.OK
 
@@ -101,7 +107,8 @@ def change_role(permission_id: uuid.UUID):
 
 
 @blueprint.route('/<uuid:permission_id>', methods=['DELETE'])
-def delete_role(permission_id: uuid.UUID):
+# @permissions_required(CAN_ACCESS_PERMISSION)
+def delete_permission(permission_id: uuid.UUID):
     response_body = ''
     response_status = HTTPStatus.OK
 
