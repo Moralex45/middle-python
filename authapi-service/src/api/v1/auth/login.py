@@ -6,10 +6,10 @@ from flask import Blueprint, Response, request, make_response
 from flask_jwt_extended import create_access_token
 
 from src import cache
-from core.config import get_settings_instance
-from core.in_models.user import UserLogin as InUserLogin
-from db.services.auth_history import AuthHistoryService
-from db.services.user import UserService
+from src.core.config import get_settings_instance
+from src.core.in_models.user import UserLogin as InUserLogin
+from src.db.services.auth_history import AuthHistoryService
+from src.db.services.user import UserService
 
 blueprint = Blueprint('login', __name__, url_prefix='/api/v1/auth/login')
 

@@ -55,8 +55,8 @@ def configure_jwt(app):
 
     jwt = JWTManager(app)
 
-    from db.services.permissions import PermissionService
-    from db.services.user import UserService
+    from src.db.services.permissions import PermissionService
+    from src.db.services.user import UserService
 
     @jwt.user_identity_loader
     def user_identity_lookup(user):

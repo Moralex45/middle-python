@@ -10,6 +10,16 @@ from src.db.models.users import UDT, UT, AHT
 class IAuthHistoryService(abc.ABC):
     @classmethod
     @abc.abstractmethod
+    def get_by_user_name_and_user_agent(cls, user_name: str, user_agent: str) -> AHT | None:
+        raise NotImplementedError
+
+    @classmethod
+    @abc.abstractmethod
+    def get_by_user_name(cls, user_name: str) -> [AHT]:
+        raise NotImplementedError
+
+    @classmethod
+    @abc.abstractmethod
     def create(cls, user_id: uuid.UUID, user_agent: str, ip: str) -> AHT:
         raise NotImplementedError
 

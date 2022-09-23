@@ -2,9 +2,9 @@ import uuid
 
 from sqlalchemy.exc import IntegrityError
 
-from db.core import db_session
-from db.models.users import AuthHistory
-from db.services.base import IAuthHistoryService
+from src.db.core import db_session
+from src.db.models.users import AuthHistory, User
+from src.db.services.base import IAuthHistoryService
 
 
 class AuthHistoryService(IAuthHistoryService):
@@ -61,3 +61,22 @@ class AuthHistoryService(IAuthHistoryService):
     def get_by_user_id(cls, user_id: uuid.UUID) -> [AuthHistory]:
         with db_session() as session:
             return session.query(AuthHistory).filter_by(user_id=user_id).all()
+
+    @classmethod
+    def get_by_user_name_and_user_agent(cls, user_name: str, user_agent: str) -> AuthHistory | None:
+        with db_session() as session:
+            auth_history = session.query(AuthHistory) \
+                .join(User, User.id == AuthHistory.user_id) \
+                .filter(User.username == user_name)\
+                .filter(AuthHistory.user_agent == user_agent) \
+                .first()
+            return auth_history
+
+    @classmethod
+    def get_by_user_name(cls, user_name: str) -> [AuthHistory]:
+        with db_session() as session:
+            auth_histories = session.query(AuthHistory) \
+                .join(User, User.id == AuthHistory.user_id) \
+                .filter(User.username == user_name) \
+                .all()
+            return auth_histories

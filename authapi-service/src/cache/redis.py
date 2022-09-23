@@ -2,7 +2,7 @@ from typing import Type
 
 import redis
 
-from cache.base import CacheService
+from src.cache.base import CacheService
 
 
 class RedisCacheService(CacheService):

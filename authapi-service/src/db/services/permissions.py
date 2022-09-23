@@ -3,7 +3,7 @@ import uuid
 
 from sqlalchemy.exc import IntegrityError
 
-from db.models.roles import UserRole, Role
+from src.db.models.roles import UserRole, Role
 from src.db.core import db_session
 from src.db.models.permissions import PT, Permission, RolePermissions
 from src.db.services.base import IPermissionService

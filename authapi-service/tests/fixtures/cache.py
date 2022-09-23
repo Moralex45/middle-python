@@ -1,7 +1,7 @@
 import pytest
 import redis
 
-from cache import RedisCacheService
+# from cache import RedisCacheService
 
 
 @pytest.fixture()
@@ -15,4 +15,5 @@ def cache_session(settings_instance):
 @pytest.fixture()
 def clean_cache(cache_session):
     keys = cache_session.keys('*')
-    cache_session.delete(*keys)
+    if len(keys):
+        cache_session.delete(*keys)

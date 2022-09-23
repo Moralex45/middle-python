@@ -2,13 +2,21 @@ from http import HTTPStatus
 
 import pytest
 
-from functional.testdata.database_fake_data import register_users
+from src.db.services.user import UserService
+from src.db.services.auth_history import AuthHistoryService
+from src import cache
+from tests.functional.testdata.database_fake_data import register_users
 
 
 @pytest.mark.parametrize(
     'user',
     [user for user in register_users])
-def test_successful_user_registration(flask_test_client, clean_database, clean_cache, user):
+def test_successful_user_login(flask_test_client,
+                               clean_database,
+                               clean_cache,
+                               generate_register_users,
+                               server_settings_instance,
+                               user):
     request_body = {
         'username': user['username'],
         'password': user['password'],
@@ -19,7 +27,24 @@ def test_successful_user_registration(flask_test_client, clean_database, clean_c
     assert response.status_code == HTTPStatus.OK
     assert response.text == ''
 
+    db_auth_history = AuthHistoryService.get_by_user_name(user['username'])
+    assert db_auth_history is not None
+    access_cookie = next(
+        (cookie
+         for cookie in flask_test_client.cookie_jar if cookie.name == server_settings_instance.JWT_ACCESS_COOKIE_NAME),
+        None
+    )
+    assert access_cookie is not None
+    refresh_cookie = next(
+        (cookie
+         for cookie in flask_test_client.cookie_jar if cookie.name == server_settings_instance.REFRESH_TOKEN_COOKIE_NAME),
+        None
+    )
+    assert refresh_cookie is not None
+
+    cache_service_keys = cache.cache_service.redis.keys('*')
+    assert len(cache_service_keys)
+
     db_user = UserService.get_by_username(user['username'])
-    assert db_user is not None
-    assert db_user.username == user['username']
-    assert db_user.check_password(user['password']) is True
+    user_refresh_token = cache_service_keys[0].decode()
+    assert str(db_user.id) in user_refresh_token

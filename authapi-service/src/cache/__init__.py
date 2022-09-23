@@ -1,3 +1,3 @@
-from cache.redis import RedisCacheService
+from src.cache.redis import RedisCacheService
 
 cache_service: RedisCacheService | None = None

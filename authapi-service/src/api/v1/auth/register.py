@@ -2,9 +2,9 @@ from http import HTTPStatus
 
 from flask import Blueprint, Response, request
 
-from core.in_models.user import UserRegister as InUserRegister
-from db.services.user import UserService
-from db.services.userdata import UserDataService
+from src.core.in_models.user import UserRegister as InUserRegister
+from src.db.services.user import UserService
+from src.db.services.userdata import UserDataService
 
 blueprint = Blueprint('register', __name__, url_prefix='/api/v1/auth/register')
 
