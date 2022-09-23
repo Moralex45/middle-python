@@ -5,16 +5,16 @@ import pytest
 from src.db.services.user import UserService
 from src.db.services.auth_history import AuthHistoryService
 from src import cache
-from tests.functional.testdata.database_fake_data import register_users
+from tests.functional.testdata.database_fake_data import users
 
 
 @pytest.mark.parametrize(
     'user',
-    [user for user in register_users])
+    [user for user in users])
 def test_successful_user_login(flask_test_client,
                                clean_database,
                                clean_cache,
-                               generate_register_users,
+                               generate_users,
                                server_settings_instance,
                                user):
     request_body = {
@@ -52,11 +52,11 @@ def test_successful_user_login(flask_test_client,
 
 @pytest.mark.parametrize(
     'user',
-    [user for user in register_users])
+    [user for user in users])
 def test_double_unsuccessful_user_login(flask_test_client,
                                         clean_database,
                                         clean_cache,
-                                        generate_register_users,
+                                        generate_users,
                                         server_settings_instance,
                                         user):
     request_body = {

@@ -25,11 +25,11 @@ def test_scrap_non_existing_roles_permissions(flask_test_client, clean_database,
     assert response.text == ''
 
 
-def test_scrap_existing_roles_permissions_filtered_by_role_id(flask_test_client,
+def test_scrap_existing_roles_permissions_filtered_by_role_id(super_user_authenticated_flask_test_client,
                                                               clean_database,
                                                               generate_roles_permissions):
     role = roles[0]
-    response = flask_test_client.get(f'/api/v1/crud/role_permission/?role_id={role["id"]}')
+    response = super_user_authenticated_flask_test_client.get(f'/api/v1/crud/role_permission/?role_id={role["id"]}')
     assert response.status_code == HTTPStatus.OK
     assert response.is_json
     assert response.json == list(filter(lambda o: o['role_id'] == role['id'], roles_permissions))

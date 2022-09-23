@@ -3,12 +3,12 @@ from http import HTTPStatus
 import pytest
 
 from src.db.services.user import UserService
-from tests.functional.testdata.database_fake_data import register_users
+from tests.functional.testdata.database_fake_data import users
 
 
 @pytest.mark.parametrize(
     'user',
-    [user for user in register_users])
+    [user for user in users])
 def test_successful_user_registration(flask_test_client, clean_database, generate_roles_permissions, user):
     request_body = {
         'username': user['username'],
@@ -26,7 +26,7 @@ def test_successful_user_registration(flask_test_client, clean_database, generat
 
 @pytest.mark.parametrize(
     'user',
-    [user for user in register_users])
+    [user for user in users])
 def test_double_unsuccessful_user_registration(flask_test_client, clean_database, generate_roles_permissions, user):
     request_body = {
         'username': user['username'],

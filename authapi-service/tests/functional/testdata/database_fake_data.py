@@ -68,25 +68,7 @@ roles_permissions = [
     }
 ]
 
-fdb_users = [
-    {
-        'id': '3ddb563e-3158-4510-8347-17d86a541ec4',
-        'username': 'user1',
-        'pwd_hash': b'{\x91\xaa\x13\x91\xff4\xe0`I\xb7\\\xb7\xc8\tU2\x0c\x90Y\x13\x93d\x8b:\xa52w\x8e\x9c\x89\x98$$2b$12$ez50qzveKfpYkKlV78qmdu',  # noqa
-    },
-    {
-        'id': '831d1a3b-6b00-420e-a460-1ea894487017',
-        'username': 'user2',
-        'pwd_hash': b'\xc9\x91+\x85\xdc\x16\xa3w\x8b+\x16QP\x1c\xcd\xe3.\xd6\xa0#\xfb\x08\xeank\x16N\xd7\xb2\xd0\xae\xa9$$2b$12$N7qvCbrFgtlol6OZMch1zu',  # noqa
-    },
-    {
-        'id': '41c6bf7a-63d8-4341-ae6d-4fe1ddaea713',
-        'username': 'user3',
-        'pwd_hash': b"\xf0\xc5\x02\xf8\xef\x93S\xfe\xb8\x89\x9a\xd2'+\xa6\x8a \xa7z\x1b\xed\xb9P\xe3\xe0\xb3\xf3\xf8\x84z\xde'$$2b$12$yu7tYSkq1leRO4SySrTVKu",  # noqa
-    }
-]
-
-register_users = [
+users = [
     {
         'id': '3ddb563e-3158-4510-8347-17d86a541ec4',
         'username': 'user1',
@@ -104,20 +86,34 @@ register_users = [
     }
 ]
 
+super_users = [
+    {
+        'id': '41c6bf7a-63d8-4341-ae6d-4fe1ddaea713',
+        'username': 'iamroot',
+        'password': 'pwd1',
+        'is_superuser': True
+    }
+]
+
+
+very_long_access_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY2MzkzNDE2MCwianRpIjoiOTczYTY4NzYtOGIzYS00ZTQxLWIwNWMtNWZiZDg2YjQ3YmZiIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjMxNjgzZDUxLTk1N2MtNDI5Yi1iOTM1LTE4ZjdhNmM5ZWNjOCIsIm5iZiI6MTY2MzkzNDE2MCwiY3NyZiI6ImJhZWI0ZWQwLWQwYzEtNGY2Yy1iOGE1LTQyMjc2ZDRlYzRmMCIsImV4cCI6MjA1ODU1MzQxNjAsImlzcyI6ImF1dGgtYXBpIiwicGVybWlzc2lvbnMiOlswXSwiaXNfc3VwZXIiOnRydWV9.yWDveh4TkXpKClxmNgUG_SejtNU6QSbSxiup1spYnKA'  # noqa
+very_long_refresh_token = '7803cb1d1b986e64e66207e7836dde4de685d1335ab1d9c2cc6312498751b49d'
+
+
 users_roles = [
     {
         'id': 'fdc27267-0a23-4594-be76-c94ff9e2aa09',
-        'user_id': fdb_users[0]['id'],
+        'user_id': users[0]['id'],
         'role_id': roles[0]['id'],
     },
     {
         'id': '4558db65-2a68-453a-a572-9396ec9b17bd',
-        'user_id': fdb_users[1]['id'],
+        'user_id': users[1]['id'],
         'role_id': roles[1]['id'],
     },
     {
         'id': '67ff5328-f6da-4bb2-872a-285da7c360fc',
-        'user_id': fdb_users[1]['id'],
+        'user_id': users[1]['id'],
         'role_id': roles[2]['id'],
     }
 ]

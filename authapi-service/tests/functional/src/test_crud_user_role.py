@@ -2,7 +2,7 @@ import uuid
 
 import pytest
 
-from tests.functional.testdata.database_fake_data import roles, users_roles, fdb_users
+from tests.functional.testdata.database_fake_data import roles, users_roles, users
 from http import HTTPStatus
 
 
@@ -24,7 +24,7 @@ def test_scrap_non_existing_user_role(flask_test_client, clean_database, generat
 
 @pytest.mark.parametrize(
     'user',
-    [user for user in fdb_users])
+    [user for user in users])
 def test_scrap_existing_user_role_filtered_by_user_id(flask_test_client,
                                                       clean_database,
                                                       generate_users_roles,
@@ -91,7 +91,7 @@ def test_double_create_user_role(flask_test_client, clean_database, generate_rol
 
 @pytest.mark.parametrize(
     'user_id, role_id',
-    [(fdb_users[0]['id'], uuid.uuid4()),
+    [(users[0]['id'], uuid.uuid4()),
      (uuid.uuid4(), roles[0]['id']),
      (uuid.uuid4(), uuid.uuid4())])
 def test_create_role_permission_with_non_existent_parameters(flask_test_client,
