@@ -48,3 +48,28 @@ def test_successful_user_login(flask_test_client,
     db_user = UserService.get_by_username(user['username'])
     user_refresh_token = cache_service_keys[0].decode()
     assert str(db_user.id) in user_refresh_token
+
+
+@pytest.mark.parametrize(
+    'user',
+    [user for user in register_users])
+def test_double_unsuccessful_user_login(flask_test_client,
+                                        clean_database,
+                                        clean_cache,
+                                        generate_register_users,
+                                        server_settings_instance,
+                                        user):
+    request_body = {
+        'username': user['username'],
+        'password': user['password'],
+        'remember': True
+    }
+    response = flask_test_client.post('/api/v1/auth/login/', json=request_body)
+
+    assert response.status_code == HTTPStatus.OK
+    assert response.text == ''
+
+    response = flask_test_client.post('/api/v1/auth/login/', json=request_body)
+
+    assert response.status_code == HTTPStatus.FORBIDDEN
+    assert response.text == ''

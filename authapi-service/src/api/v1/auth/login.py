@@ -43,13 +43,6 @@ def login_user():
 
     access_token = create_access_token(identity=db_user)
     response = make_response()
-    response.status = response_status
-    response.set_cookie(
-        key=get_settings_instance().JWT_ACCESS_COOKIE_NAME,
-        value=access_token,
-        httponly=True,
-        expires=datetime.datetime.now() + datetime.timedelta(seconds=get_settings_instance().JWT_ACCESS_TOKEN_EXPIRES)
-    )
 
     refresh_token = secrets.token_hex(32)
     refresh_token_expire_days = get_settings_instance().REFRESH_TOKEN_EXPIRES_LONG \
@@ -57,12 +50,6 @@ def login_user():
         else get_settings_instance().REFRESH_TOKEN_EXPIRES_SHORT
     refresh_token_expire = datetime.datetime.now() + datetime.timedelta(
         days=refresh_token_expire_days)
-    response.set_cookie(
-        key=get_settings_instance().REFRESH_TOKEN_COOKIE_NAME,
-        value=refresh_token,
-        httponly=True,
-        expires=refresh_token_expire
-    )
 
     try:
         AuthHistoryService.create(db_user.id, request.user_agent.string, request.remote_addr)
@@ -70,6 +57,22 @@ def login_user():
     except ValueError:
         response_status = HTTPStatus.FORBIDDEN
         return Response(response_body, status=response_status, mimetype='application/json')
+
+    response.status = response_status
+
+    response.set_cookie(
+        key=get_settings_instance().JWT_ACCESS_COOKIE_NAME,
+        value=access_token,
+        httponly=True,
+        expires=datetime.datetime.now() + datetime.timedelta(seconds=get_settings_instance().JWT_ACCESS_TOKEN_EXPIRES)
+    )
+
+    response.set_cookie(
+        key=get_settings_instance().REFRESH_TOKEN_COOKIE_NAME,
+        value=refresh_token,
+        httponly=True,
+        expires=refresh_token_expire
+    )
 
     cache_service_key = f'user_id::{db_user.id}::user_agent::{request.user_agent.string}'
     cache.cache_service.set(cache_service_key, refresh_token, refresh_token_expire_days*60*60*60)
