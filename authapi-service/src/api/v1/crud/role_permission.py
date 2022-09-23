@@ -5,6 +5,7 @@ import orjson
 from flask import Blueprint, Response, request
 from pydantic.json import pydantic_encoder
 
+from core.utils import permissions_required
 from src.core.in_models.role_permission import \
     RolePermission as InRolePermission
 from src.core.out_models.role_permission import \
@@ -59,6 +60,7 @@ def get_role_permission(role_permission_id: uuid.UUID):
 
 
 @blueprint.route('/', methods=['GET'])
+# @permissions_required()
 def get_roles_permissions():
     response_body = ''
     response_status = HTTPStatus.OK

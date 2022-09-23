@@ -42,28 +42,28 @@ permissions = [
 roles_permissions = [
     {
         'id': '809378b2-c567-4c83-a4c8-120768787abf',
-        'role_id': roles[0]['id'],
+        'role_id': roles[1]['id'],
         'permission_id': permissions[0]['id'],
 
     },
     {
         'id': '53e3def9-0f43-4a12-9b09-11d41c9ef993',
-        'role_id': roles[1]['id'],
+        'role_id': roles[0]['id'],
         'permission_id': permissions[1]['id'],
     },
     {
         'id': '0e2c0586-b5c1-4f7d-8f91-60fbc768619e',
-        'role_id': roles[1]['id'],
+        'role_id': roles[0]['id'],
         'permission_id': permissions[2]['id'],
     },
     {
         'id': '6ab0d632-505f-4e88-8e8c-0aecacba58ef',
-        'role_id': roles[1]['id'],
+        'role_id': roles[0]['id'],
         'permission_id': permissions[3]['id'],
     },
     {
         'id': '3567a87d-de25-46a7-b458-21be717cf953',
-        'role_id': roles[1]['id'],
+        'role_id': roles[0]['id'],
         'permission_id': permissions[4]['id'],
     }
 ]

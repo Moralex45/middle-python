@@ -7,7 +7,7 @@ from flask_jwt_extended import verify_jwt_in_request, get_jwt
 
 def permissions_required(*permissions):
     def wrapper(fn):
-        @wraps
+        @wraps(fn)
         def decorator(*args, **kwargs):
             verify_jwt_in_request()
             claims = get_jwt()
