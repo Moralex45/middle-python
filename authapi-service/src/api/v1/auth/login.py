@@ -64,7 +64,12 @@ def login_user():
         expires=refresh_token_expire
     )
 
-    AuthHistoryService.create(db_user.id, request.user_agent.string, request.remote_addr)
+    try:
+        AuthHistoryService.create(db_user.id, request.user_agent.string, request.remote_addr)
+
+    except ValueError:
+        response_status = HTTPStatus.FORBIDDEN
+        return Response(response_body, status=response_status, mimetype='application/json')
 
     cache_service_key = f'user_id::{db_user.id}::user_agent::{request.user_agent.string}'
     cache.cache_service.set(cache_service_key, refresh_token, refresh_token_expire_days*60*60*60)
