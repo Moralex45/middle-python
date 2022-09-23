@@ -2,6 +2,9 @@ from http import HTTPStatus
 
 from flask import Blueprint, Response, request
 
+from src.core.constants import SAMPLE_USER_ROLE
+from src.db.services.role import RoleService
+from src.db.services.user_role import UserRoleService
 from src.core.in_models.user import UserRegister as InUserRegister
 from src.db.services.user import UserService
 from src.db.services.userdata import UserDataService
@@ -28,6 +31,7 @@ def register_user():
     try:
         db_user = UserService.create(request_user.user_name, request_user.password)
         UserDataService.create(db_user.id)
+        UserRoleService.create(db_user.id, RoleService.get_by_code(SAMPLE_USER_ROLE['code']).id)
 
     except ValueError:
         response_status = HTTPStatus.BAD_REQUEST
