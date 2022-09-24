@@ -5,7 +5,7 @@ import pytest
 from src.db.services.user import UserService
 from src.db.services.auth_history import AuthHistoryService
 from src import cache
-from tests.functional.testdata.database_fake_data import users, roles
+from tests.functional.testdata.database_fake_data import users
 
 
 @pytest.mark.parametrize(
