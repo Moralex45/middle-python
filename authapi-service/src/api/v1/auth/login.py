@@ -74,7 +74,9 @@ def login_user():
         expires=refresh_token_expire
     )
 
-    cache_service_key = f'user_id::{db_user.id}::user_agent::{request.user_agent.string}'
-    cache.cache_service.set(cache_service_key, refresh_token, refresh_token_expire_days * 60 * 60 * 60)
+    cache.cache_service.set_user_session_by_user_id_and_user_agent(db_user.id,
+                                                                   request.user_agent.string,
+                                                                   refresh_token,
+                                                                   refresh_token_expire_days * 60 * 60 * 60)
 
     return response

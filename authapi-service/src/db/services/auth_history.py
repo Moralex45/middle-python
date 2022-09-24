@@ -1,3 +1,4 @@
+import datetime
 import uuid
 
 from sqlalchemy.exc import IntegrityError
@@ -29,7 +30,7 @@ class AuthHistoryService(IAuthHistoryService):
             return cls.get_by_id(db_auth_history.id)
 
     @classmethod
-    def get_by_id(cls, _id: uuid.UUID):
+    def get_by_id(cls, _id: uuid.UUID) -> AuthHistory | None:
         with db_session() as session:
             return session.query(AuthHistory).filter_by(id=_id).first()
 
@@ -51,6 +52,15 @@ class AuthHistoryService(IAuthHistoryService):
                 session.delete(db_auth_history)
 
             session.commit()
+
+    @classmethod
+    def stop_by_id(cls, _id: uuid.UUID):
+        with db_session() as session:
+            db_auth_history = cls.get_by_id(_id)
+            if db_auth_history:
+                db_auth_history.date_end = datetime.datetime.now()
+                session.add(db_auth_history)
+                session.commit()
 
     @classmethod
     def get_by_user_id_and_user_agent(cls, user_id: uuid.UUID, user_agent: str) -> AuthHistory | None:

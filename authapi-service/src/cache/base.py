@@ -10,3 +10,7 @@ class CacheService(ABC):
     @abstractmethod
     def set(self, key: str, value: str, expire: int):
         raise NotImplementedError()
+
+    @abstractmethod
+    def unset(self, key: str):
+        raise NotImplementedError()

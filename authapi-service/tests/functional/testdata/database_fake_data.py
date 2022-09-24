@@ -112,3 +112,5 @@ users_roles = [
         'role_id': roles[2]['id'],
     }
 ]
+
+user_agents = ['Chrome', 'Safari', 'Opera']
