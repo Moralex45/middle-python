@@ -1,9 +1,7 @@
 import datetime
 import secrets
-from http import HTTPStatus
 
 import pytest
-from flask import make_response
 from flask_jwt_extended import create_access_token
 
 from src.db.services.user import UserService

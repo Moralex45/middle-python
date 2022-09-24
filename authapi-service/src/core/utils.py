@@ -2,7 +2,7 @@ from functools import wraps
 from http import HTTPStatus
 
 from flask import Response
-from flask_jwt_extended import verify_jwt_in_request, get_jwt
+from flask_jwt_extended import get_jwt, verify_jwt_in_request
 
 
 def permissions_required(*permissions):

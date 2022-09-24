@@ -1,8 +1,8 @@
 import datetime
-from http import HTTPStatus
 import secrets
+from http import HTTPStatus
 
-from flask import Blueprint, Response, request, make_response
+from flask import Blueprint, Response, make_response, request
 from flask_jwt_extended import create_access_token
 
 from src import cache
@@ -75,6 +75,6 @@ def login_user():
     )
 
     cache_service_key = f'user_id::{db_user.id}::user_agent::{request.user_agent.string}'
-    cache.cache_service.set(cache_service_key, refresh_token, refresh_token_expire_days*60*60*60)
+    cache.cache_service.set(cache_service_key, refresh_token, refresh_token_expire_days * 60 * 60 * 60)
 
     return response

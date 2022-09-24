@@ -6,16 +6,18 @@ from flask import Blueprint, Response, request
 from pydantic.json import pydantic_encoder
 
 from src.core.constants import CAN_ACCESS_ROLE_PERMISSION
+from src.core.in_models.role_permission import \
+    RolePermission as InRolePermission
+from src.core.out_models.role_permission import \
+    RolePermission as OutRolePermission
 from src.core.utils import permissions_required
-from src.core.in_models.role_permission import RolePermission as InRolePermission
-from src.core.out_models.role_permission import RolePermission as OutRolePermission
 from src.db.services.role_permission import RolePermissionService
 
 blueprint = Blueprint('role_permission', __name__, url_prefix='/api/v1/crud/role_permission')
 
 
 @blueprint.route('/', methods=['POST'])
-# @permissions_required(CAN_ACCESS_ROLE_PERMISSION)
+@permissions_required(CAN_ACCESS_ROLE_PERMISSION['code'])
 def create_role_permission():
     response_body = ''
     response_status = HTTPStatus.OK
@@ -44,7 +46,7 @@ def create_role_permission():
 
 
 @blueprint.route('/<uuid:role_permission_id>', methods=['GET'])
-# @permissions_required(CAN_ACCESS_ROLE_PERMISSION)
+@permissions_required(CAN_ACCESS_ROLE_PERMISSION['code'])
 def get_role_permission(role_permission_id: uuid.UUID):
     response_body = ''
     response_status = HTTPStatus.OK
@@ -61,7 +63,7 @@ def get_role_permission(role_permission_id: uuid.UUID):
 
 
 @blueprint.route('/', methods=['GET'])
-# @permissions_required(CAN_ACCESS_ROLE_PERMISSION)
+@permissions_required(CAN_ACCESS_ROLE_PERMISSION['code'])
 def get_roles_permissions():
     response_body = ''
     response_status = HTTPStatus.OK
@@ -82,7 +84,7 @@ def get_roles_permissions():
 
 
 @blueprint.route('/<uuid:role_permission_id>', methods=['DELETE'])
-# @permissions_required(CAN_ACCESS_ROLE_PERMISSION)
+@permissions_required(CAN_ACCESS_ROLE_PERMISSION['code'])
 def delete_role_permission(role_permission_id: uuid.UUID):
     response_body = ''
     response_status = HTTPStatus.OK

@@ -1,10 +1,10 @@
 import datetime
 import uuid
 
-from src.db.services.user import UserService
 from src.db.core import db_session
 from src.db.models.users import UserData
 from src.db.services.base import IUserDataService
+from src.db.services.user import UserService
 
 
 class UserDataService(IUserDataService):

@@ -1,11 +1,11 @@
-from typing import List
 import uuid
+from typing import List
 
 from sqlalchemy.exc import IntegrityError
 
-from src.db.models.roles import UserRole, Role
 from src.db.core import db_session
 from src.db.models.permissions import PT, Permission, RolePermissions
+from src.db.models.roles import UserRole
 from src.db.services.base import IPermissionService
 
 

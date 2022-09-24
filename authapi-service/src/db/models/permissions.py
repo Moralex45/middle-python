@@ -1,6 +1,6 @@
 from typing import TypeVar
 
-from sqlalchemy import VARCHAR, Column, ForeignKey, UniqueConstraint, INT
+from sqlalchemy import INT, Column, ForeignKey, UniqueConstraint
 from sqlalchemy.dialects.postgresql import UUID
 
 from src.db.models.base import BaseModel

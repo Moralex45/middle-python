@@ -4,7 +4,7 @@ from typing import TypeVar
 
 import bcrypt
 from sqlalchemy import (BOOLEAN, TEXT, TIMESTAMP, VARCHAR, Column, ForeignKey,
-                        LargeBinary, UniqueConstraint)
+                        LargeBinary)
 from sqlalchemy.dialects.postgresql import INET, UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 
@@ -75,8 +75,7 @@ class UserData(BaseModel):
 
 class AuthHistory(BaseModel):
     __tablename__ = 'auth_history'
-    __table_args__ = (UniqueConstraint('user_agent', 'user_id'),
-                      {'extend_existing': True})
+    __table_args__ = ({'extend_existing': True})
 
     user_id = Column(UUID(as_uuid=True), ForeignKey(User.id, ondelete='CASCADE'), nullable=False)
     ip = Column(INET(), nullable=False)

@@ -1,5 +1,3 @@
-from typing import Type
-
 import redis
 
 from src.cache.base import CacheService

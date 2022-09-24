@@ -1,7 +1,7 @@
 import uuid
 from typing import TypeVar
 
-from sqlalchemy import TEXT, INT, Column, ForeignKey, UniqueConstraint
+from sqlalchemy import INT, TEXT, Column, ForeignKey, UniqueConstraint
 from sqlalchemy.dialects.postgresql import UUID
 
 from src.db.models.base import BaseModel

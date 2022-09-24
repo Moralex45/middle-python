@@ -88,15 +88,12 @@ users = [
 
 super_users = [
     {
-        'id': '41c6bf7a-63d8-4341-ae6d-4fe1ddaea713',
+        'id': '41c6bf7a-63d8-4341-ae6d-4fe1ddaea731',
         'username': 'iamroot',
         'password': 'pwd1',
         'is_superuser': True
     }
 ]
-
-very_long_access_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY2MzkzNzk2NywianRpIjoiYWQ2NWVmZGYtNDY2Mi00NGViLTgxMDUtNWY0NjYwMzc5MWIwIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImIzM2EyNjQwLTUxNjEtNGYwMi05NGY1LTZjNTg1ODg1YmI4YyIsIm5iZiI6MTY2MzkzNzk2NywiY3NyZiI6IjRlM2Q1NTA3LTM0MDgtNDM5NS05MWZjLTFlNmIxMTk4ODIxMCIsImV4cCI6MjA1ODU1Mzc5NjcsImlzcyI6ImF1dGgtYXBpIiwicGVybWlzc2lvbnMiOlswXSwiaXNfc3VwZXIiOnRydWV9.fsdKnZ1YOBtdAgrQz5wEecYqytuAnAAiGHdfFxMpSfw'
-very_long_refresh_token = '7803cb1d1b986e64e66207e7836dde4de685d1335ab1d9c2cc6312498751b49d'
 
 users_roles = [
     {

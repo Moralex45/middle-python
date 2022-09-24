@@ -5,7 +5,7 @@ import pytest
 from src.db.services.user import UserService
 from src.db.services.auth_history import AuthHistoryService
 from src import cache
-from tests.functional.testdata.database_fake_data import users
+from tests.functional.testdata.database_fake_data import users, roles
 
 
 @pytest.mark.parametrize(
@@ -31,13 +31,15 @@ def test_successful_user_login(flask_test_client,
     assert db_auth_history is not None
     access_cookie = next(
         (cookie
-         for cookie in flask_test_client.cookie_jar if cookie.name == server_settings_instance.JWT_ACCESS_COOKIE_NAME),
+         for cookie in flask_test_client.cookie_jar
+         if cookie.name == server_settings_instance.JWT_ACCESS_COOKIE_NAME),
         None
     )
     assert access_cookie is not None
     refresh_cookie = next(
         (cookie
-         for cookie in flask_test_client.cookie_jar if cookie.name == server_settings_instance.REFRESH_TOKEN_COOKIE_NAME),
+         for cookie in flask_test_client.cookie_jar
+         if cookie.name == server_settings_instance.REFRESH_TOKEN_COOKIE_NAME),
         None
     )
     assert refresh_cookie is not None
@@ -51,14 +53,17 @@ def test_successful_user_login(flask_test_client,
 
 
 @pytest.mark.parametrize(
+    'role',
+    [role for role in roles])
+@pytest.mark.parametrize(
     'user',
     [user for user in users])
-def test_double_unsuccessful_user_login(flask_test_client,
-                                        clean_database,
-                                        clean_cache,
-                                        generate_users,
-                                        server_settings_instance,
-                                        user):
+def test_lack_of_permissions_logged_in_user(flask_test_client,
+                                            clean_database,
+                                            generate_roles_permissions,
+                                            generate_users,
+                                            role,
+                                            user):
     request_body = {
         'username': user['username'],
         'password': user['password'],
@@ -69,7 +74,7 @@ def test_double_unsuccessful_user_login(flask_test_client,
     assert response.status_code == HTTPStatus.OK
     assert response.text == ''
 
-    response = flask_test_client.post('/api/v1/auth/login/', json=request_body)
-
+    response = flask_test_client.get(f'/api/v1/crud/role/{role["id"]}')
     assert response.status_code == HTTPStatus.FORBIDDEN
-    assert response.text == ''
+    assert response.is_json is False
+    assert response.text == 'Lack of permissions'

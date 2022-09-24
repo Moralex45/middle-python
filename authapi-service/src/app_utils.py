@@ -30,11 +30,11 @@ def configure_db() -> None:
 
 
 def configure_cache():
+    import redis
+
     from src import cache
     from src.cache.redis import RedisCacheService
     from src.core.config import get_settings_instance
-
-    import redis
 
     redis_instance = redis.Redis(host=get_settings_instance().REDIS_HOST,
                                  port=get_settings_instance().REDIS_PORT)
@@ -48,8 +48,7 @@ def configure_jwt(app):
     app.config['JWT_TOKEN_LOCATION'] = ['cookies']
     app.config['JWT_ACCESS_TOKEN_EXPIRES'] = get_settings_instance().JWT_ACCESS_TOKEN_EXPIRES
     app.config['JWT_COOKIE_SECURE'] = get_settings_instance().JWT_COOKIE_SECURE
-    app.config['JWT_COOKIE_CSRF_PROTECT'] = True
-    app.config['JWT_ACCESS_CSRF_HEADER_NAME'] = "X-CSRF-TOKEN-ACCESS"
+    app.config['JWT_COOKIE_CSRF_PROTECT'] = False
 
     from flask_jwt_extended import JWTManager
 
@@ -73,19 +72,19 @@ def configure_jwt(app):
         claims = {
             'iss': get_settings_instance().PROJECT_NAME,
             'permissions': [user_permission.code for user_permission in user_permissions],
-            'is_super': True
+            'is_super': identity.is_superuser
         }
         return claims
 
 
 def configure_blueprints(app) -> None:
-    from src.api.v1.auth.register import blueprint as register_blueprint
     from src.api.v1.auth.login import blueprint as login_blueprint
+    from src.api.v1.auth.register import blueprint as register_blueprint
+    from src.api.v1.crud.permission import blueprint as permission_blueprint
+    from src.api.v1.crud.role import blueprint as role_blueprint
     from src.api.v1.crud.role_permission import \
         blueprint as role_permission_blueprint
     from src.api.v1.crud.user_role import blueprint as user_role_blueprint
-    from src.api.v1.crud.role import blueprint as role_blueprint
-    from src.api.v1.crud.permission import blueprint as permission_blueprint
 
     app.register_blueprint(role_blueprint)
     app.register_blueprint(permission_blueprint)
@@ -102,19 +101,14 @@ def configure_cli(app):
 
     @app.cli.command('createdefault')
     def create_default_data():
+        from src.core.constants import (ADMIN_ROLE, CAN_ACCESS_PERMISSION,
+                                        CAN_ACCESS_ROLE,
+                                        CAN_ACCESS_ROLE_PERMISSION,
+                                        CAN_ACCESS_USER_ROLE, CAN_EDIT_PROFILE,
+                                        SAMPLE_USER_ROLE)
         from src.db.core import db_session
+        from src.db.models.permissions import Permission, RolePermissions
         from src.db.models.roles import Role
-        from src.db.models.permissions import RolePermissions
-        from src.db.models.permissions import Permission
-        from src.core.constants import (
-            ADMIN_ROLE,
-            SAMPLE_USER_ROLE,
-            CAN_ADD_PERMISSION,
-            CAN_ADD_ROLE,
-            CAN_ADD_ROLE_PERMISSION,
-            CAN_ADD_USER_ROLE,
-            CAN_EDIT_PROFILE
-        )
 
         with db_session() as session:
             db_role_admin = Role(
@@ -126,19 +120,19 @@ def configure_cli(app):
             )
 
             db_can_add_role = Permission(
-                **CAN_ADD_ROLE
+                **CAN_ACCESS_ROLE
             )
 
             db_can_add_permission = Permission(
-                **CAN_ADD_PERMISSION
+                **CAN_ACCESS_PERMISSION
             )
 
             db_can_add_role_permission = Permission(
-                **CAN_ADD_ROLE_PERMISSION
+                **CAN_ACCESS_ROLE_PERMISSION
             )
 
             db_can_add_user_role = Permission(
-                **CAN_ADD_USER_ROLE
+                **CAN_ACCESS_USER_ROLE
             )
 
             db_can_edit_profile = Permission(
@@ -194,10 +188,10 @@ def configure_cli(app):
     @click.argument('username')
     @click.argument('password')
     def create_superuser(username, password):
-        from src.db.models.users import User
-        from src.db.models.roles import Role, UserRole
         from src.core.constants import ADMIN_ROLE
         from src.db.core import db_session
+        from src.db.models.roles import Role, UserRole
+        from src.db.models.users import User
         with db_session() as session:
             user = User(username=username, password=password, is_superuser=True)
             session.add(user)
