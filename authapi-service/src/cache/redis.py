@@ -39,7 +39,7 @@ class RedisCacheService(CacheService):
         self.unset(f'user_id::{user_id}::user_agent::{user_agent}')
 
     def get_user_sessions_by_user_id(self, user_id: uuid.UUID) -> [str]:
-        return list(self.redis.scan_iter(f'user_id::{user_id}::user_agent::*'))
+        return self.redis.mget(list(self.redis.scan_iter(f'user_id::{user_id}::user_agent::*')))
 
     def delete_user_sessions_by_user_id(self, user_id: uuid.UUID) -> [str]:
         keys = self.redis.keys(f'user_id::{user_id}::user_agent::*')
