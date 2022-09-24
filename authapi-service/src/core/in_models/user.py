@@ -1,3 +1,5 @@
+from typing import Optional
+
 from src.core.in_models.base import Base
 
 
@@ -11,3 +13,12 @@ class UserRegister(User):
 
 class UserLogin(UserRegister):
     remember: bool
+
+
+class UserUpdate(User):
+    new_password: Optional[str]
+    user_name: Optional[str]
+    first_name: Optional[str]
+    last_name: Optional[str]
+    email: Optional[str]
+    birth_date: Optional[int]
