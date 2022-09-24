@@ -10,7 +10,7 @@ class RedisCacheService(CacheService):
         self.redis: redis.Redis = redis_instance
 
     def get(self, key: str) -> str | None:
-        data = self.redis.get(key).decode()
+        data = self.redis.get(key)
         if not data:
             return None
 
@@ -31,7 +31,7 @@ class RedisCacheService(CacheService):
                  value, expire_seconds * 60 * 60 * 60)
 
     def get_user_session_by_user_id_and_user_agent(self, user_id: uuid.UUID, user_agent: str) -> str | None:
-        session = self.redis.get(f'user_id::{user_id}::user_agent::{user_agent}')
+        session = self.get(f'user_id::{user_id}::user_agent::{user_agent}')
 
         return session
 

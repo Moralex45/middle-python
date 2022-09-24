@@ -48,7 +48,7 @@ def test_successful_user_login(flask_test_client,
     assert len(cache_service_keys)
 
     db_user = UserService.get_by_username(user['username'])
-    user_refresh_token = cache_service_keys[0].decode()
+    user_refresh_token = cache_service_keys[0]
     assert str(db_user.id) in user_refresh_token
 
 

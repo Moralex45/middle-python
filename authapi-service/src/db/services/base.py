@@ -20,6 +20,16 @@ class IAuthHistoryService(abc.ABC):
 
     @classmethod
     @abc.abstractmethod
+    def stop_by_id(cls, _id: uuid.UUID):
+        raise NotImplementedError
+
+    @classmethod
+    @abc.abstractmethod
+    def refresh_by_user_id_and_user_agent(cls, user_id: uuid.UUID, user_agent: str) -> AHT | None:
+        raise NotImplementedError
+
+    @classmethod
+    @abc.abstractmethod
     def create(cls, user_id: uuid.UUID, user_agent: str, ip: str) -> AHT:
         raise NotImplementedError
 

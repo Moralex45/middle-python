@@ -68,6 +68,16 @@ class AuthHistoryService(IAuthHistoryService):
             return session.query(AuthHistory).filter_by(user_id=user_id).filter_by(user_agent=user_agent).first()
 
     @classmethod
+    def refresh_by_user_id_and_user_agent(cls, user_id: uuid.UUID, user_agent: str) -> AuthHistory | None:
+        with db_session() as session:
+            auth_history = cls.get_by_user_id_and_user_agent(user_id, user_agent)
+            auth_history.date_start = datetime.datetime.now()
+            session.add(auth_history)
+            session.commit()
+
+            return auth_history
+
+    @classmethod
     def get_by_user_id(cls, user_id: uuid.UUID) -> [AuthHistory]:
         with db_session() as session:
             return session.query(AuthHistory).filter_by(user_id=user_id).all()

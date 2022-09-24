@@ -27,6 +27,7 @@ isort = "^5.10.1"
 autopep8 = "^1.7.0"
 mypy = "^0.971"
 redis = "^4.3.4"
+PyJWT = "^2.5.0"
 
 
 [build-system]
