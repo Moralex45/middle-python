@@ -1,10 +1,10 @@
 import datetime
 import uuid
 
-from db.services.user import UserService
 from src.db.core import db_session
 from src.db.models.users import UserData
 from src.db.services.base import IUserDataService
+from src.db.services.user import UserService
 
 
 class UserDataService(IUserDataService):
@@ -72,7 +72,7 @@ class UserDataService(IUserDataService):
             return cls.get_by_id(db_userdata.id)
 
     @classmethod
-    def update(cls, _id: uuid.UUID,
+    def update(cls, user_id: uuid.UUID,
                first_name: str | None = None,
                last_name: str | None = None,
                email: str | None = None,
@@ -83,9 +83,9 @@ class UserDataService(IUserDataService):
 
         """
         with db_session() as session:
-            db_user_data = cls.get_by_id(_id)
+            db_user_data = cls.get_by_user_id(user_id)
             if db_user_data is None:
-                raise ValueError(f'Unable to fetch user wih passed uuid {_id}')
+                raise ValueError(f'Unable to fetch userdata wih passed uuid {user_id}')
             if first_name is not None:
                 db_user_data.first_name = first_name
             if last_name is not None:

@@ -1,7 +1,7 @@
 import uuid
 from typing import TypeVar
 
-from sqlalchemy import TEXT, VARCHAR, Column, ForeignKey, UniqueConstraint
+from sqlalchemy import INT, TEXT, Column, ForeignKey, UniqueConstraint
 from sqlalchemy.dialects.postgresql import UUID
 
 from src.db.models.base import BaseModel
@@ -15,7 +15,7 @@ class Role(BaseModel):
     __tablename__ = 'roles'
     __table_args__ = ({'extend_existing': True},)
 
-    code = Column(VARCHAR(255), nullable=False, unique=True)
+    code = Column(INT(), nullable=False, unique=True)
     description = Column(TEXT(), default='')
 
     def __repr__(self):

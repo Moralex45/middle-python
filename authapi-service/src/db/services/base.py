@@ -4,7 +4,59 @@ import uuid
 
 from src.db.models.permissions import PT, RPT
 from src.db.models.roles import RT, URT
-from src.db.models.users import UDT, UT
+from src.db.models.users import AHT, UDT, UT
+
+
+class IAuthHistoryService(abc.ABC):
+    @classmethod
+    @abc.abstractmethod
+    def get_by_user_name_and_user_agent(cls, user_name: str, user_agent: str) -> AHT | None:
+        raise NotImplementedError
+
+    @classmethod
+    @abc.abstractmethod
+    def get_by_user_name(cls, user_name: str) -> [AHT]:
+        raise NotImplementedError
+
+    @classmethod
+    @abc.abstractmethod
+    def stop_by_id(cls, _id: uuid.UUID):
+        raise NotImplementedError
+
+    @classmethod
+    @abc.abstractmethod
+    def refresh_by_user_id_and_user_agent(cls, user_id: uuid.UUID, user_agent: str) -> AHT | None:
+        raise NotImplementedError
+
+    @classmethod
+    @abc.abstractmethod
+    def create(cls, user_id: uuid.UUID, user_agent: str, ip: str) -> AHT:
+        raise NotImplementedError
+
+    @classmethod
+    @abc.abstractmethod
+    def get_by_id(cls, _id: uuid.UUID) -> AHT | None:
+        raise NotImplementedError
+
+    @classmethod
+    @abc.abstractmethod
+    def delete_by_id(cls, _id: uuid.UUID):
+        raise NotImplementedError
+
+    @classmethod
+    @abc.abstractmethod
+    def delete_by_user_id(cls, user_id: uuid.UUID):
+        raise NotImplementedError
+
+    @classmethod
+    @abc.abstractmethod
+    def get_by_user_id_and_user_agent(cls, user_id: uuid.UUID, user_agent: str) -> AHT | None:
+        raise NotImplementedError
+
+    @classmethod
+    @abc.abstractmethod
+    def get_by_user_id(cls, user_id: uuid.UUID) -> [AHT]:
+        raise NotImplementedError
 
 
 class IRolePermissionService(abc.ABC):
@@ -106,7 +158,7 @@ class IUserDataService(abc.ABC):
 
     @classmethod
     @abc.abstractmethod
-    def update(cls, _id: uuid.UUID,
+    def update(cls, user_id: uuid.UUID,
                first_name: str | None = None,
                last_name: str | None = None,
                email: str | None = None,
@@ -132,12 +184,12 @@ class IPermissionService(abc.ABC):
 
     @classmethod
     @abc.abstractmethod
-    def create(cls, code: int) -> PT:
+    def get_filtered_by_user_id(cls, user_id: str) -> [PT]:
         raise NotImplementedError
 
     @classmethod
     @abc.abstractmethod
-    def recreate(cls, _id: uuid.UUID, code: int) -> PT:
+    def create(cls, code: int) -> PT:
         raise NotImplementedError
 
     @classmethod
@@ -165,11 +217,6 @@ class IRoleService(abc.ABC):
     @classmethod
     @abc.abstractmethod
     def create(cls, code: int, description: int) -> RT:
-        raise NotImplementedError
-
-    @classmethod
-    @abc.abstractmethod
-    def recreate(cls, _id: uuid.UUID, code: int, description: str) -> RT:
         raise NotImplementedError
 
     @classmethod

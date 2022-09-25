@@ -4,7 +4,7 @@ from typing import TypeVar
 
 import bcrypt
 from sqlalchemy import (BOOLEAN, TEXT, TIMESTAMP, VARCHAR, Column, ForeignKey,
-                        LargeBinary, UniqueConstraint)
+                        LargeBinary)
 from sqlalchemy.dialects.postgresql import INET, UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 
@@ -12,6 +12,7 @@ from src.db.models.base import BaseModel
 
 UT = TypeVar('UT')
 UDT = TypeVar('UDT')
+AHT = TypeVar('AHT')
 
 
 class PasswordConstants:
@@ -74,14 +75,13 @@ class UserData(BaseModel):
 
 class AuthHistory(BaseModel):
     __tablename__ = 'auth_history'
-    __table_args__ = (UniqueConstraint('user_agent', 'user_id'),
-                      {'extend_existing': True})
+    __table_args__ = ({'extend_existing': True})
 
     user_id = Column(UUID(as_uuid=True), ForeignKey(User.id, ondelete='CASCADE'), nullable=False)
-    ip = Column(INET())
-    user_agent = Column(TEXT())
-    date_start = Column(TIMESTAMP())
-    date_end = Column(TIMESTAMP())
+    ip = Column(INET(), nullable=False)
+    user_agent = Column(TEXT(), nullable=False)
+    date_start = Column(TIMESTAMP(), default=datetime.datetime.now)
+    date_end = Column(TIMESTAMP(), default=None)
 
     def __repr__(self):
         return f'{self.ip} {self.user_agent}'

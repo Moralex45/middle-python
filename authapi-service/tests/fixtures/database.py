@@ -4,7 +4,8 @@ from src.db.core import db_session
 from src.db.models.permissions import Permission, RolePermissions
 from src.db.models.roles import Role, UserRole
 from src.db.models.users import User
-from tests.functional.testdata.database_fake_data import roles, permissions, roles_permissions, fdb_users, users_roles
+from tests.functional.testdata.database_fake_data import roles, permissions, roles_permissions, users_roles, users, \
+    super_users
 
 
 @pytest.fixture()
@@ -57,7 +58,17 @@ def generate_roles_permissions(database_session, generate_roles, generate_permis
 @pytest.fixture()
 def generate_users(database_session):
     with database_session():
-        db_users = [User(**user) for user in fdb_users]
+        db_users = [User(**user) for user in users]
+        for db_user in db_users:
+            database_session.add(db_user)
+
+        database_session.commit()
+
+
+@pytest.fixture()
+def generate_super_users(database_session):
+    with database_session():
+        db_users = [User(**user) for user in super_users]
         for db_user in db_users:
             database_session.add(db_user)
 

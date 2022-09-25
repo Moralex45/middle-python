@@ -8,31 +8,31 @@ from http import HTTPStatus
     'role',
     [role for role in roles])
 def test_get_role_list(
-    flask_test_client,
+    super_user_authenticated_flask_test_client,
     clean_database,
     generate_roles,
     role
 ):
-    response = flask_test_client.get(f'/api/v1/crud/role/{role["id"]}')
+    response = super_user_authenticated_flask_test_client.get(f'/api/v1/crud/role/{role["id"]}')
     assert response.status_code == HTTPStatus.OK
     assert response.is_json
     assert response.json == role
 
 
 def test_get_role_by_id(
-    flask_test_client,
+    super_user_authenticated_flask_test_client,
     clean_database,
     generate_roles,
 ):
     role = roles[0]
-    response = flask_test_client.get(f'/api/v1/crud/role/{role["id"]}')
+    response = super_user_authenticated_flask_test_client.get(f'/api/v1/crud/role/{role["id"]}')
     assert response.status_code == HTTPStatus.OK
     assert response.is_json
     assert response.json == role
 
 
 def test_create_role(
-    flask_test_client,
+    super_user_authenticated_flask_test_client,
     clean_database,
     generate_roles
 ):
@@ -40,13 +40,13 @@ def test_create_role(
         "code": 100,
         "description": "testtest"
     }
-    response = flask_test_client.post('/api/v1/crud/role/', json=request_body)
+    response = super_user_authenticated_flask_test_client.post('/api/v1/crud/role/', json=request_body)
     assert response.status_code == HTTPStatus.OK
     assert response.is_json
 
 
 def test_update_role_by_id(
-    flask_test_client,
+    super_user_authenticated_flask_test_client,
     clean_database,
     generate_roles,
 ):
@@ -55,17 +55,17 @@ def test_update_role_by_id(
         "description": "testtest"
     }
     role = roles[0]
-    response = flask_test_client.put(f'/api/v1/crud/role/{role["id"]}', json=request_body)
+    response = super_user_authenticated_flask_test_client.put(f'/api/v1/crud/role/{role["id"]}', json=request_body)
     assert response.status_code == HTTPStatus.OK
     assert response.is_json
 
 
 def test_delete_role_by_id(
-    flask_test_client,
+    super_user_authenticated_flask_test_client,
     clean_database,
     generate_roles,
 ):
     role = roles[0]
-    response = flask_test_client.delete(f'/api/v1/crud/role/{role["id"]}')
+    response = super_user_authenticated_flask_test_client.delete(f'/api/v1/crud/role/{role["id"]}')
     assert response.status_code == HTTPStatus.OK
     assert response.is_json

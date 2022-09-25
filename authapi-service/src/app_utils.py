@@ -7,6 +7,8 @@ __all__ = ('create_app', 'create_raw_app')
 def create_raw_app() -> Flask:
     app = Flask(__name__, instance_relative_config=True)
     configure_blueprints(app)
+    configure_jwt(app)
+    configure_cache()
 
     return app
 
@@ -27,23 +29,76 @@ def configure_db() -> None:
     Base.metadata.create_all(bind=engine)
 
 
-def configure_jwt():
-    pass
+def configure_cache():
+    import redis
+
+    from src import cache
+    from src.cache.redis import RedisCacheService
+    from src.core.config import get_settings_instance
+
+    redis_instance = redis.Redis(host=get_settings_instance().REDIS_HOST,
+                                 port=get_settings_instance().REDIS_PORT,
+                                 decode_responses=True)
+    cache.cache_service = RedisCacheService(redis_instance)
+
+
+def configure_jwt(app):
+    from src.core.config import get_settings_instance
+
+    app.config['JWT_SECRET_KEY'] = get_settings_instance().JWT_SECRET_KEY
+    app.config['JWT_TOKEN_LOCATION'] = ['cookies']
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = get_settings_instance().JWT_ACCESS_TOKEN_EXPIRES
+    app.config['JWT_COOKIE_SECURE'] = get_settings_instance().JWT_COOKIE_SECURE
+    app.config['JWT_COOKIE_CSRF_PROTECT'] = False
+
+    from flask_jwt_extended import JWTManager
+
+    jwt = JWTManager(app)
+
+    from src.db.services.permissions import PermissionService
+    from src.db.services.user import UserService
+
+    @jwt.user_identity_loader
+    def user_identity_lookup(user):
+        return user.id
+
+    @jwt.user_lookup_loader
+    def user_lookup_callback(_jwt_header, jwt_data):
+        identity = jwt_data["sub"]
+        return UserService.get_by_id(identity)
+
+    @jwt.additional_claims_loader
+    def add_claims_to_access_token(identity):
+        user_permissions = PermissionService.get_filtered_by_user_id(identity.id)
+        claims = {
+            'iss': get_settings_instance().PROJECT_NAME,
+            'permissions': [user_permission.code for user_permission in user_permissions],
+            'is_super': identity.is_superuser
+        }
+        return claims
 
 
 def configure_blueprints(app) -> None:
+    from src.api.v1.auth.login import blueprint as login_blueprint
+    from src.api.v1.auth.logout import blueprint as logout_blueprint
+    from src.api.v1.auth.refresh import blueprint as refresh_blueprint
     from src.api.v1.auth.register import blueprint as register_blueprint
+    from src.api.v1.crud.permission import blueprint as permission_blueprint
+    from src.api.v1.crud.role import blueprint as role_blueprint
     from src.api.v1.crud.role_permission import \
         blueprint as role_permission_blueprint
+    from src.api.v1.crud.user import blueprint as user_blueprint
     from src.api.v1.crud.user_role import blueprint as user_role_blueprint
-    from src.api.v1.crud.role import blueprint as role_blueprint
-    from src.api.v1.crud.permission import blueprint as permission_blueprint
 
     app.register_blueprint(role_blueprint)
     app.register_blueprint(permission_blueprint)
+    app.register_blueprint(user_blueprint)
     app.register_blueprint(role_permission_blueprint)
     app.register_blueprint(user_role_blueprint)
     app.register_blueprint(register_blueprint)
+    app.register_blueprint(login_blueprint)
+    app.register_blueprint(logout_blueprint)
+    app.register_blueprint(refresh_blueprint)
 
 
 def configure_cli(app):
@@ -53,19 +108,14 @@ def configure_cli(app):
 
     @app.cli.command('createdefault')
     def create_default_data():
+        from src.core.constants import (ADMIN_ROLE, CAN_ACCESS_PERMISSION,
+                                        CAN_ACCESS_ROLE,
+                                        CAN_ACCESS_ROLE_PERMISSION,
+                                        CAN_ACCESS_USER_ROLE, CAN_EDIT_PROFILE,
+                                        SAMPLE_USER_ROLE)
         from src.db.core import db_session
+        from src.db.models.permissions import Permission, RolePermissions
         from src.db.models.roles import Role
-        from src.db.models.permissions import RolePermissions
-        from src.db.models.permissions import Permission
-        from src.core.constants import (
-            ADMIN_ROLE,
-            SAMPLE_USER_ROLE,
-            CAN_ADD_PERMISSION,
-            CAN_ADD_ROLE,
-            CAN_ADD_ROLE_PERMISSION,
-            CAN_ADD_USER_ROLE,
-            CAN_EDIT_PROFILE
-        )
 
         with db_session() as session:
             db_role_admin = Role(
@@ -77,19 +127,19 @@ def configure_cli(app):
             )
 
             db_can_add_role = Permission(
-                **CAN_ADD_ROLE
+                **CAN_ACCESS_ROLE
             )
 
             db_can_add_permission = Permission(
-                **CAN_ADD_PERMISSION
+                **CAN_ACCESS_PERMISSION
             )
 
             db_can_add_role_permission = Permission(
-                **CAN_ADD_ROLE_PERMISSION
+                **CAN_ACCESS_ROLE_PERMISSION
             )
 
             db_can_add_user_role = Permission(
-                **CAN_ADD_USER_ROLE
+                **CAN_ACCESS_USER_ROLE
             )
 
             db_can_edit_profile = Permission(
@@ -145,10 +195,10 @@ def configure_cli(app):
     @click.argument('username')
     @click.argument('password')
     def create_superuser(username, password):
-        from src.db.models.users import User
-        from src.db.models.roles import Role, UserRole
         from src.core.constants import ADMIN_ROLE
         from src.db.core import db_session
+        from src.db.models.roles import Role, UserRole
+        from src.db.models.users import User
         with db_session() as session:
             user = User(username=username, password=password, is_superuser=True)
             session.add(user)
