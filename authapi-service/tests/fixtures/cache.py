@@ -1,8 +1,6 @@
 import pytest
 import redis
 
-# from cache import RedisCacheService
-
 
 @pytest.fixture()
 def cache_session(settings_instance):

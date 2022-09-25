@@ -59,7 +59,7 @@ def update_credentials():
                 response_status = HTTPStatus.BAD_REQUEST
                 return Response(response_body, status=response_status, mimetype='application/json')
 
-        UserDataService.update(_id=db_user.id, first_name=user_update.first_name, last_name=user_update.last_name,
+        UserDataService.update(user_id=db_user.id, first_name=user_update.first_name, last_name=user_update.last_name,
                                email=user_update.email, birth_date=birth_date)
 
     return Response(response_body, status=response_status, mimetype='application/json')

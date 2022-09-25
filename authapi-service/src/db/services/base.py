@@ -158,7 +158,7 @@ class IUserDataService(abc.ABC):
 
     @classmethod
     @abc.abstractmethod
-    def update(cls, _id: uuid.UUID,
+    def update(cls, user_id: uuid.UUID,
                first_name: str | None = None,
                last_name: str | None = None,
                email: str | None = None,

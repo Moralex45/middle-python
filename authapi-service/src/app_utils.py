@@ -87,10 +87,12 @@ def configure_blueprints(app) -> None:
     from src.api.v1.crud.role import blueprint as role_blueprint
     from src.api.v1.crud.role_permission import \
         blueprint as role_permission_blueprint
+    from src.api.v1.crud.user import blueprint as user_blueprint
     from src.api.v1.crud.user_role import blueprint as user_role_blueprint
 
     app.register_blueprint(role_blueprint)
     app.register_blueprint(permission_blueprint)
+    app.register_blueprint(user_blueprint)
     app.register_blueprint(role_permission_blueprint)
     app.register_blueprint(user_role_blueprint)
     app.register_blueprint(register_blueprint)
