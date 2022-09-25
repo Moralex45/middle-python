@@ -1,16 +1,38 @@
 import datetime
 from http import HTTPStatus
 
+import orjson
 from flask import Blueprint, Response, request
 from flask_jwt_extended import current_user
+from pydantic.json import pydantic_encoder
 
+from db.services.auth_history import AuthHistoryService
 from db.services.user import UserService
 from db.services.userdata import UserDataService
 from src.core.constants import CAN_EDIT_PROFILE
 from src.core.in_models.user import UserUpdate as InUserUpdate
+from src.core.out_models.user import UserLoginHistory
 from src.core.utils import permissions_required
 
 blueprint = Blueprint('user', __name__, url_prefix='/api/v1/crud/user')
+
+
+@blueprint.route('/login_history', methods=['GET'])
+@permissions_required()
+def login_history():
+    response_body = ''
+    response_status = HTTPStatus.OK
+
+    db_user = current_user
+
+    db_user_auth_history = AuthHistoryService.get_by_user_id(db_user.id)
+
+    db_user_auth_history = [UserLoginHistory.from_orm(login_session) for login_session in db_user_auth_history]
+    user_auth_history = orjson.dumps(db_user_auth_history, default=pydantic_encoder)
+
+    response_body = user_auth_history
+
+    return Response(response_body, status=response_status, mimetype='application/json')
 
 
 @blueprint.route('/', methods=['POST'])
