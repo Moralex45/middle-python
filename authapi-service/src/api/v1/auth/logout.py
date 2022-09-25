@@ -3,10 +3,10 @@ from http import HTTPStatus
 from flask import Blueprint, Response, make_response, request
 from flask_jwt_extended import current_user, unset_jwt_cookies
 
-from core.utils import permissions_required
 from src import cache
 from src.core.config import get_settings_instance
 from src.core.in_models.auth import Logout
+from src.core.utils import permissions_required
 from src.db.services.auth_history import AuthHistoryService
 
 blueprint = Blueprint('logout', __name__, url_prefix='/api/v1/auth/logout')

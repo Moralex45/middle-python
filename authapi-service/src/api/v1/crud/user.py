@@ -6,13 +6,13 @@ from flask import Blueprint, Response, request
 from flask_jwt_extended import current_user
 from pydantic.json import pydantic_encoder
 
-from db.services.auth_history import AuthHistoryService
-from db.services.user import UserService
-from db.services.userdata import UserDataService
 from src.core.constants import CAN_EDIT_PROFILE
 from src.core.in_models.user import UserUpdate as InUserUpdate
 from src.core.out_models.user import UserLoginHistory
 from src.core.utils import permissions_required
+from src.db.services.auth_history import AuthHistoryService
+from src.db.services.user import UserService
+from src.db.services.userdata import UserDataService
 
 blueprint = Blueprint('user', __name__, url_prefix='/api/v1/crud/user')
 

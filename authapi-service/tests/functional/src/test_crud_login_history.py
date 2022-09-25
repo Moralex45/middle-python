@@ -2,7 +2,7 @@ from http import HTTPStatus
 
 import pytest
 
-from functional.testdata.database_fake_data import users, user_agents
+from tests.functional.testdata.database_fake_data import users, user_agents
 
 
 @pytest.mark.parametrize(

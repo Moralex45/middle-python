@@ -1,7 +1,7 @@
 import pytest
 
-from db.services.user import UserService
-from db.services.userdata import UserDataService
+from src.db.services.user import UserService
+from src.db.services.userdata import UserDataService
 from tests.functional.testdata.database_fake_data import users
 from http import HTTPStatus
 
