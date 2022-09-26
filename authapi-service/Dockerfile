@@ -2,5 +2,15 @@ FROM python:3.10
 
 WORKDIR /opt/app
 
+COPY requirements.txt /opt/app/
+COPY entrypoint/entrypoint.sh .
 
-CMD ["gunicorn", "--worker-class", "uvicorn.workers.UvicornWorker", "auth.asgi:asgi_app", "--bind", "0.0.0.0:5000"]
+RUN pip install --upgrade pip  \
+   && pip install --no-cache-dir -r requirements.txt \
+   && chmod a+x entrypoint.sh
+
+COPY src ./src
+
+ENV PYTHONPATH "${PYTHONPATH}:/opt/app"
+
+ENTRYPOINT ["sh", "entrypoint.sh"]

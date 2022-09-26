@@ -19,6 +19,7 @@ services:
       - admin_service
     networks:
       - docker_compose_sprint6_network
+  
   asyncapi_service:
     build: asyncapi-service
     env_file:
@@ -43,6 +44,19 @@ services:
       - sprint6_static:/opt/app/src/static/
     depends_on:
       - postgres
+    networks:
+      - docker_compose_sprint6_network
+
+  authapi_service:
+    build: authapi-service
+    env_file:
+      - authapi-service/.env/.env.prod
+    expose:
+      - "8000"
+    restart: always
+    depends_on:
+      - postgres
+      - redis
     networks:
       - docker_compose_sprint6_network
 
@@ -94,6 +108,7 @@ services:
     depends_on:
       - admin_service
       - asyncapi_service
+      - authapi_service
     networks:
       - docker_compose_sprint6_network
 
