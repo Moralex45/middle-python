@@ -69,7 +69,7 @@ services:
     restart: always
     volumes:
       - ./docker/movies_postgresql/init_scripts:/docker-entrypoint-initdb.d
-      - sprint6_pg_data:/var/lib/movies_postgresql/data
+      - sprint6_movies_pg_data:/var/lib/movies_postgresql/data
     networks:
       - docker_compose_sprint6_network
 
@@ -82,7 +82,7 @@ services:
     restart: always
     volumes:
       - ./docker/auth_postgresql/init_scripts:/docker-entrypoint-initdb.d
-      - sprint6_pg_data:/var/lib/auth_postgresql/data
+      - sprint6_auth_pg_data:/var/lib/auth_postgresql/data
     networks:
       - docker_compose_sprint6_network
 
