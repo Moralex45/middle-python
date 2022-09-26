@@ -55,21 +55,34 @@ services:
       - "8000"
     restart: always
     depends_on:
-      - postgres
-      - redis
+      - auth_postgres
+      - auth_redis
     networks:
       - docker_compose_sprint6_network
 
   postgres:
     image: postgres:13
     env_file:
-      - postgresql/.env/.env.prod
+      - docker/postgresql/.env/.env.prod
     expose:
       - "5432"
     restart: always
     volumes:
-      - ./postgresql/init_scripts:/docker-entrypoint-initdb.d
+      - ./docker/movies_postgresql/init_scripts:/docker-entrypoint-initdb.d
       - sprint6_pg_data:/var/lib/postgresql/data
+    networks:
+      - docker_compose_sprint6_network
+
+  auth_postgres:
+    image: postgres:13
+    env_file:
+      - docker/auth-postgresql/.env/.env.prod
+    expose:
+      - "5432"
+    restart: always
+    volumes:
+      - ./docker/auth_postgresql/init_scripts:/docker-entrypoint-initdb.d
+      - sprint6_pg_data:/var/lib/auth-postgresql/data
     networks:
       - docker_compose_sprint6_network
 
@@ -94,12 +107,20 @@ services:
     networks:
       - docker_compose_sprint6_network
 
+  auth_redis:
+    image: redis:7.0.4-alpine
+    expose:
+      - "6379"
+    restart: always
+    networks:
+      - docker_compose_sprint6_network
+
   nginx:
     image: nginx:latest
     volumes:
       - sprint6_static:/static/:ro
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/configs:/etc/nginx/conf.d
+      - ./docker/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/configs:/etc/nginx/conf.d
     expose:
       - "80"
     restart: always
