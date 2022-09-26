@@ -15,6 +15,4 @@ COPY src src
 
 ENV PYTHONPATH ":/opt/app"
 
-RUN echo $PYTHONPATH
-
 ENTRYPOINT ["sh", "entrypoint.sh"]
