@@ -15,7 +15,7 @@ services:
     env_file:
       - data-faker-service/.env/.env.prod
     depends_on:
-      - postgres
+      - movies_postgres
       - admin_service
     networks:
       - docker_compose_sprint6_network
@@ -43,7 +43,7 @@ services:
     volumes:
       - sprint6_static:/opt/app/src/static/
     depends_on:
-      - postgres
+      - movies_postgres
     networks:
       - docker_compose_sprint6_network
 
@@ -60,29 +60,29 @@ services:
     networks:
       - docker_compose_sprint6_network
 
-  postgres:
+  movies_postgres:
     image: postgres:13
     env_file:
-      - docker/postgresql/.env/.env.prod
+      - docker/movies_postgresql/.env/.env.prod
     expose:
       - "5432"
     restart: always
     volumes:
       - ./docker/movies_postgresql/init_scripts:/docker-entrypoint-initdb.d
-      - sprint6_pg_data:/var/lib/postgresql/data
+      - sprint6_pg_data:/var/lib/movies_postgresql/data
     networks:
       - docker_compose_sprint6_network
 
   auth_postgres:
     image: postgres:13
     env_file:
-      - docker/auth-postgresql/.env/.env.prod
+      - docker/auth_postgresql/.env/.env.prod
     expose:
       - "5432"
     restart: always
     volumes:
       - ./docker/auth_postgresql/init_scripts:/docker-entrypoint-initdb.d
-      - sprint6_pg_data:/var/lib/auth-postgresql/data
+      - sprint6_pg_data:/var/lib/auth_postgresql/data
     networks:
       - docker_compose_sprint6_network
 
