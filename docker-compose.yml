@@ -119,8 +119,8 @@ services:
     image: nginx:latest
     volumes:
       - sprint6_static:/static/:ro
-      - ./docker/nginx.conf:/etc/nginx/nginx.conf
-      - ./docker/configs:/etc/nginx/conf.d
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/configs:/etc/nginx/conf.d
     expose:
       - "80"
     restart: always
@@ -134,7 +134,8 @@ services:
       - docker_compose_sprint6_network
 
 volumes:
-  sprint6_pg_data:
+  sprint6_auth_pg_data:
+  sprint6_movies_pg_data:
   sprint6_elasticsearch_data:
   sprint6_static:
 

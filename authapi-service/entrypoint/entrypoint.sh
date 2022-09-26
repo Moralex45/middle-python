@@ -1,3 +1,7 @@
+while ! nc -z $POSTGRES_DB_HOST $POSTGRES_DB_PORT; do
+      sleep 0.1
+done
+
 cd src
 
 flask createdatabase

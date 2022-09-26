@@ -9,7 +9,9 @@ RUN pip install --upgrade pip  \
     && pip install poetry \
     && poetry config virtualenvs.create false \
     && poetry install --no-root \
-    && chmod a+x entrypoint.sh
+    && chmod a+x entrypoint.sh \
+    && apt update  \
+    && apt install -y netcat
 
 COPY src src
 
