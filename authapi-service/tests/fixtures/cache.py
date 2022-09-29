@@ -3,9 +3,9 @@ import redis
 
 
 @pytest.fixture()
-def cache_session(settings_instance):
-    redis_instance = redis.Redis(host=settings_instance.REDIS_HOST,
-                                 port=settings_instance.REDIS_PORT)
+def cache_session(server_settings_instance):
+    redis_instance = redis.Redis(host=server_settings_instance.REDIS_HOST,
+                                 port=server_settings_instance.REDIS_PORT)
 
     return redis_instance
 

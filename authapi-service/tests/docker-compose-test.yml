@@ -1,0 +1,38 @@
+version: '3'
+services:
+  auth_redis:
+    image: redis:7.0.4-alpine
+    expose:
+      - "6379"
+    restart: always
+    networks:
+      - docker_compose_sprint6_network
+
+  auth_postgres:
+    image: postgres:13
+    env_file:
+      - ../../docker/auth_postgresql/.env/.env.prod
+    expose:
+      - "5432"
+    restart: always
+    volumes:
+      - ../../docker/auth_postgresql/init_scripts:/docker-entrypoint-initdb.d
+    networks:
+      - docker_compose_sprint6_network
+
+  tests:
+#    image: asyncapi-service-image
+    build: ../../authapi-service
+    env_file:
+      - ../../authapi-service/.env/.env.prod
+    entrypoint: > 
+      bash -c "pytest --disable-warnings"
+    depends_on:
+      - auth_postgres
+      - auth_redis
+    networks:
+      - docker_compose_sprint6_network
+
+networks:
+  docker_compose_sprint6_network:
+    driver: bridge

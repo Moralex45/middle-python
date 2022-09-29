@@ -13,6 +13,7 @@ RUN pip install --upgrade pip  \
     && apt update  \
     && apt install -y netcat
 
+COPY tests tests
 COPY src src
 
 ENV PYTHONPATH ":/opt/app"
