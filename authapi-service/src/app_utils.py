@@ -29,7 +29,7 @@ def configure_db() -> None:
     from src.db.models.permissions import Permission, RolePermissions  # noqa
     from src.db.models.roles import Role, UserRole  # noqa
     from src.db.models.users import AuthHistory, User, UserData  # noqa
-    from src.db.models.social_account import SocialAccount
+    from src.db.models.social_account import SocialAccount # noqa
     Base.metadata.create_all(bind=engine)
 
 
