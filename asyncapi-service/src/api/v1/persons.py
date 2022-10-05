@@ -1,11 +1,11 @@
 from http import HTTPStatus
 from uuid import UUID
 
-from api.v1.tools import PaginatedParams
-from core.constants.exception_details import PERSON_NOT_FOUND
 from fastapi import APIRouter, Depends, HTTPException
 
-from core.utils import verify_token
+from api.v1.tools import PaginatedParams
+from core.constants.exception_details import PERSON_NOT_FOUND
+from core.utils import verify_auth_tokens
 from models.film import FilmBase
 from models.person import Person
 from services.person import PersonService, get_persons_service
@@ -18,7 +18,8 @@ router = APIRouter()
             description='Полнотекстовый поиск по участникам кинопроизведения',
             summary='Endpoint позволяет проводить поиск по участникам кинопроизведений',
             response_description='Лист объектов Person',
-            tags=['Полнотекстовый поиск'])
+            tags=['Полнотекстовый поиск'],
+            dependencies=[Depends(verify_auth_tokens)])
 async def film_search(query: str,
                       paginated_parameters: PaginatedParams = Depends(PaginatedParams.query_paginated_parameters),
                       person_service: PersonService = Depends(get_persons_service)) -> list[Person]:
@@ -33,7 +34,8 @@ async def film_search(query: str,
             description='Детальная информация участника кинопроизведения',
             summary='Endpoint позволяет получить детальную информацию по участнику кинопроизведения',
             response_description='Объект Person',
-            tags=['Доступ к элементу по id'])
+            tags=['Доступ к элементу по id'],
+            dependencies=[Depends(verify_auth_tokens)])
 async def person_details(person_id: UUID,
                          person_service: PersonService = Depends(get_persons_service)) -> Person:
     person = await person_service.get_by_id(person_id)
@@ -48,7 +50,8 @@ async def person_details(person_id: UUID,
             description='Вывод фильмов по участнику кинопроизведения',
             summary='Endpoint позволяет получить информацию по всем кинопроизведениям конкретного человека',
             response_description='Лист объектов FilmBase',
-            tags=['Доступ ко всем элементам'])
+            tags=['Доступ ко всем элементам'],
+            dependencies=[Depends(verify_auth_tokens)])
 async def person_films(person_id: UUID,
                        person_service: PersonService = Depends(get_persons_service)) -> list[FilmBase]:
     films = await person_service.get_person_films(person_id)

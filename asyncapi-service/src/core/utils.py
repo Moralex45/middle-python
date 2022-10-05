@@ -1,13 +1,12 @@
 import datetime
 from abc import ABC, abstractmethod
-from functools import wraps
+from http import HTTPStatus
 from typing import Any, Type
 
 import aiohttp
-import orjson
 import jwt
-from http import HTTPStatus
-from fastapi import Request, HTTPException, Response
+import orjson
+from fastapi import HTTPException, Request, Response
 from pydantic import parse_obj_as
 from pydantic.json import pydantic_encoder
 
@@ -15,7 +14,7 @@ from core.config import get_settings_instance
 from models.base import Base
 
 
-async def verify_token(request: Request, response: Response):
+async def verify_auth_tokens(request: Request, response: Response):
     access_token = request.cookies.get(get_settings_instance().JWT_ACCESS_COOKIE_NAME, None)
     refresh_token = request.cookies.get(get_settings_instance().REFRESH_TOKEN_COOKIE_NAME, None)
     if not (access_token is not None and refresh_token is not None):

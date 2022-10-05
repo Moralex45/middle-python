@@ -4,11 +4,11 @@ run:
 	python3 src/runner.py
 
 flake8:
-	flake8 "$(filter-out $@,$(MAKECMDGOALS))"
+	flake8
 
 beautify:
-	isort $(filter-out $@,$(MAKECMDGOALS))
-	autopep8 -r --in-place --aggressive --aggressive $(filter-out $@,$(MAKECMDGOALS))
+	isort src
+	autopep8 -r --in-place --aggressive --aggressive src
 
 git:
 	read -p "Check commit message, press any key to continue" -n1 -s
