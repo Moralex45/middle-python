@@ -24,6 +24,7 @@ class Settings(BaseSettings):
 
     FLASK_HOST: str = Field(env='FLASK_HOST', default='127.0.0.1')
     FLASK_PORT: int = Field(env='FLASK_PORT', default=5000)
+    APP_SECRET_KEY: str = Field(env='APP_SECRET_KEY')
 
     JWT_SECRET_KEY: str = Field(env='JWT_SECRET_KEY')
     JWT_ACCESS_TOKEN_EXPIRES: int = Field(env='JWT_ACCESS_TOKEN_EXPIRES_SECONDS')
@@ -33,6 +34,13 @@ class Settings(BaseSettings):
     REFRESH_TOKEN_COOKIE_NAME: str = Field(env='REFRESH_TOKEN_COOKIE_NAME')
     REFRESH_TOKEN_EXPIRES_LONG: int = Field(env='REFRESH_TOKEN_EXPIRES_LONG_DAYS')
     REFRESH_TOKEN_EXPIRES_SHORT: int = Field(env='REFRESH_TOKEN_EXPIRES_SHORT_DAYS')
+
+    # Yandex
+    YANDEX_ID: str = Field(env='YANDEX_ID')
+    YANDEX_SECRET: str = Field(env='YANDEX_SECRET')
+    YANDEX_AUTHORIZE_URL: str = Field(env='YANDEX_AUTHORIZE_URL')
+    YANDEX_TOKEN_URL: str = Field(env='YANDEX_TOKEN_URL')
+    YANDEX_PROFILE_URL: str = Field(env='YANDEX_PROFILE_URL')
 
     @property
     def POSTGRES_DSN(self) -> str:
