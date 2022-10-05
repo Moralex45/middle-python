@@ -4,6 +4,8 @@ from uuid import UUID
 from api.v1.tools import PaginatedParams
 from core.constants.exception_details import PERSON_NOT_FOUND
 from fastapi import APIRouter, Depends, HTTPException
+
+from core.utils import verify_token
 from models.film import FilmBase
 from models.person import Person
 from services.person import PersonService, get_persons_service
