@@ -10,7 +10,7 @@ from pydantic.json import pydantic_encoder
 from src.core.constants import CAN_EDIT_PROFILE
 from src.core.in_models.user import UserUpdate as InUserUpdate
 from src.core.out_models.user import CheckUserPermissions, UserLoginHistory
-from src.core.utils import permissions_required
+from src.core.utils import permissions_required, rate_limit
 from src.db.services.auth_history import AuthHistoryService
 from src.db.services.user import UserService
 from src.db.services.userdata import UserDataService

@@ -36,6 +36,12 @@ class RedisCacheService(CacheService):
 
         return int(amount) if amount is not None else amount
 
+    def set_address_requests_amount(self,
+                                    remote_address: str,
+                                    minute_value: int,
+                                    value: str):
+        self.set(f'remote_address::{remote_address}::minute::{minute_value}', value, minute_value)
+
     def increment_address_requests_amount(self,
                                           remote_address: str,
                                           minute_value: int):
