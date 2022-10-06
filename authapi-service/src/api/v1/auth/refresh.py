@@ -59,9 +59,10 @@ def body_refresh():
 
     refresh_token = secrets.token_hex(32)
     refresh_token_expire_days = get_settings_instance().REFRESH_TOKEN_EXPIRES_LONG
-    refresh_token_expire = (datetime.datetime.now() + datetime.timedelta(days=refresh_token_expire_days)).timestamp()
-    access_token_expire = (datetime.datetime.now() + datetime.timedelta(
-        seconds=get_settings_instance().JWT_ACCESS_TOKEN_EXPIRES)).timestamp()
+    refresh_token_expire = int((datetime.datetime.now() + datetime.timedelta(
+        days=refresh_token_expire_days)).timestamp())
+    access_token_expire = int((datetime.datetime.now() + datetime.timedelta(
+        seconds=get_settings_instance().JWT_ACCESS_TOKEN_EXPIRES)).timestamp())
 
     login_session = SuccessfulLogin(access_token=access_token,
                                     refresh_token=refresh_token,
