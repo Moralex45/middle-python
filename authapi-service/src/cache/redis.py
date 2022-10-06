@@ -46,7 +46,9 @@ class RedisCacheService(CacheService):
                                           remote_address: str,
                                           minute_value: int):
         amount = self.get_address_requests_amount(remote_address, minute_value)
-        self.set_with_pipeline(f'remote_address::{remote_address}::minute::{minute_value}', str(amount+1), minute_value)
+        self.set_with_pipeline(
+            f'remote_address::{remote_address}::minute::{minute_value}', str(
+                amount + 1), minute_value)
 
     def set_user_session_by_user_id_and_user_agent(self,
                                                    user_id: uuid.UUID,

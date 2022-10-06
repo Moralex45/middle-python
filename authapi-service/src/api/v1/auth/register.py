@@ -2,6 +2,7 @@ from http import HTTPStatus
 
 from flask import Blueprint, Response, request
 
+from core.utils import rate_limit
 from src.core.constants import SAMPLE_USER_ROLE
 from src.core.in_models.user import UserRegister as InUserRegister
 from src.db.services.role import RoleService
@@ -13,6 +14,7 @@ blueprint = Blueprint('register', __name__, url_prefix='/api/v1/auth/register')
 
 
 @blueprint.route('/', methods=['POST'])
+@rate_limit
 def register_user():
     response_body = ''
     response_status = HTTPStatus.OK

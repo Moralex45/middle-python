@@ -5,6 +5,7 @@ from http import HTTPStatus
 from flask import Blueprint, Response, make_response, request
 from flask_jwt_extended import create_access_token
 
+from core.utils import rate_limit
 from src import cache
 from src.core.config import get_settings_instance
 from src.core.in_models.user import UserLogin as InUserLogin
@@ -15,6 +16,7 @@ blueprint = Blueprint('login', __name__, url_prefix='/api/v1/auth/login')
 
 
 @blueprint.route('/', methods=['POST'])
+@rate_limit
 def login_user():
     response_body = ''
     response_status = HTTPStatus.OK

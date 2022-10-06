@@ -19,6 +19,7 @@ blueprint = Blueprint('user', __name__, url_prefix='/api/v1/crud/user')
 
 
 @blueprint.route('/<uuid:user_id>/check_permissions', methods=['POST'])
+@rate_limit
 def check_permissions(user_id: uuid.UUID):
     """
     Accepts url request like this:
@@ -42,6 +43,7 @@ def check_permissions(user_id: uuid.UUID):
 
 @blueprint.route('/login_history', methods=['GET'])
 @permissions_required()
+@rate_limit
 def login_history():
     response_body = ''
     response_status = HTTPStatus.OK
@@ -60,6 +62,7 @@ def login_history():
 
 @blueprint.route('/', methods=['POST'])
 @permissions_required(CAN_EDIT_PROFILE['code'])
+@rate_limit
 def update_credentials():
     response_body = ''
     response_status = HTTPStatus.OK
