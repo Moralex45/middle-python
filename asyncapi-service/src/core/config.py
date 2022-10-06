@@ -18,6 +18,12 @@ class Settings(BaseSettings):
     ELASTIC_HOST = Field(env='ELASTIC_HOST', default='127.0.0.1')
     ELASTIC_PORT = Field(env='ELASTIC_PORT', default=9200)
 
+    JWT_ACCESS_COOKIE_NAME: str = Field(env='JWT_ACCESS_COOKIE_NAME')
+    REFRESH_TOKEN_COOKIE_NAME: str = Field(env='REFRESH_TOKEN_COOKIE_NAME')
+
+    AUTH_SERVICE_TOKENS_REFRESH_URL: str = Field(env='AUTH_SERVICE_TOKENS_REFRESH_URL',
+                                                 default='127.0.0.1:5000/api/v1/auth/refresh/body')
+
     FILM_CACHE_EXPIRE_IN_SECONDS: int = 60 * 5
     GENRE_CACHE_EXPIRE_IN_SECONDS: int = 60 * 5
     PERSON_CACHE_EXPIRE_IN_SECONDS: int = 60 * 5

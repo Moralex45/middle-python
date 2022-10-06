@@ -1,9 +1,11 @@
 from http import HTTPStatus
 from uuid import UUID
 
+from fastapi import APIRouter, Depends, HTTPException, Query
+
 from api.v1.tools import PaginatedParams
 from core.constants.exception_details import FILM_NOT_FOUND
-from fastapi import APIRouter, Depends, HTTPException, Query
+from core.utils import verify_auth_tokens
 from models.film import Film, FilmBase
 from services.film import FilmService, get_film_service
 
@@ -31,7 +33,8 @@ async def film_search(
             description='Детальная информация по кинопроизведению',
             summary='Endpoint позволяет получить фильм по его uuid',
             response_description='Объект Film',
-            tags=['Доступ к элементу по id'])
+            tags=['Доступ к элементу по id'],
+            dependencies=[Depends(verify_auth_tokens)])
 async def film_details(film_id: UUID,
                        film_service: FilmService = Depends(get_film_service)) -> Film:
     film = await film_service.get_by_id(film_id)
@@ -46,7 +49,8 @@ async def film_details(film_id: UUID,
             description='Список всех кинопроизведений',
             summary='Endpoint позволяет получить список кинопроизведений',
             response_description='Лист объектов FilmBase',
-            tags=['Доступ ко всем элементам'])
+            tags=['Доступ ко всем элементам'],
+            dependencies=[Depends(verify_auth_tokens)])
 async def film_list(_filter: UUID | None = Query(alias='filter[genre]', default=None),
                     _sort: str = Query(alias='sort'),
                     paginated_parameters: PaginatedParams = Depends(PaginatedParams.query_paginated_parameters),

@@ -1,12 +1,13 @@
 from functools import lru_cache
 from uuid import UUID
 
+from fastapi import Depends
+
 from core.config import get_settings_instance
 from db.cache import get_cache_service
 from db.cache.base import AsyncCacheService
 from db.storage import get_storage_service
 from db.storage.elastic import AsyncElasticStorageService
-from fastapi import Depends
 from models.film import Film, FilmBase
 
 

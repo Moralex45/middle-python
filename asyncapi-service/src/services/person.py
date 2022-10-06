@@ -3,12 +3,12 @@ from uuid import UUID
 
 import backoff
 from elasticsearch import NotFoundError, exceptions
+from fastapi import Depends
 
 from core.config import get_settings_instance
 from db.cache import AsyncCacheService, get_cache_service
 from db.storage import get_storage_service
 from db.storage.elastic import AsyncElasticStorageService
-from fastapi import Depends
 from models.film import FilmBase
 from models.person import Person
 from services.es_queries import person_roles_find
