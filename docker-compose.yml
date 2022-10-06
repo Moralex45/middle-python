@@ -1,5 +1,18 @@
 version: '3'
 services:
+  jaeger:
+    container_name: jaeger
+    image: jaegertracing/all-in-one:1.7
+    ports:
+      - "6831:6831/udp"
+      - "5778:5778"
+      - "16686:16686"
+      - "14250:14250"
+      - "14268:14268"
+      - "14269:14269"
+    networks:
+      - docker_compose_sprint6_network
+
   etl_service:
     build: etl-service
     env_file:

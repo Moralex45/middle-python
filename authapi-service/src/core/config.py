@@ -44,6 +44,9 @@ class Settings(BaseSettings):
 
     USER_REQUEST_LIMIT_PER_MINUTE: int = Field(env='USER_REQUEST_LIMIT_PER_MINUTE')
 
+    JAEGER_HOST: str = Field(env="JAEGER_HOST")
+    JAEGER_PORT: int = Field(env="JAEGER_PORT")
+
     @property
     def POSTGRES_DSN(self) -> str:
         return f'postgresql+psycopg2://{self.POSTGRES_DB_USER}:{self.POSTGRES_DB_PASSWORD}' \

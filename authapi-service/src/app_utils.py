@@ -1,6 +1,7 @@
 import click
 from flask import Flask
 from src.core.extentions import init_oauth
+from src.core.tracer import init_tracer
 
 __all__ = ('create_app', 'create_raw_app')
 
@@ -20,6 +21,7 @@ def create_app() -> Flask:
     configure_db()
     configure_cli(app)
     init_oauth(app)
+    init_tracer(app)
 
     return app
 

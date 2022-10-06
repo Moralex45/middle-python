@@ -8,6 +8,7 @@ COPY entrypoint/entrypoint.sh .
 RUN pip install --upgrade pip  \
     && pip install poetry \
     && poetry config virtualenvs.create false \
+    && poetry update \
     && poetry install --no-root \
     && chmod a+x entrypoint.sh \
     && apt update  \
