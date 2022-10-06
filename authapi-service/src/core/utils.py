@@ -1,8 +1,35 @@
+import datetime
 from functools import wraps
 from http import HTTPStatus
 
-from flask import Response
+from flask import Response, request
 from flask_jwt_extended import get_jwt, verify_jwt_in_request
+
+from src import cache
+from src.core.config import get_settings_instance
+
+
+def rate_limit():
+    def rate_limit_decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            current_minute = datetime.datetime.now().minute
+            current_request_count = cache.cache_service.get_address_requests_amount(request.remote_addr,
+                                                                                    current_minute)
+
+            if current_request_count and current_request_count >= get_settings_instance().USER_REQUEST_LIMIT_PER_MINUTE:
+                return Response(response='Request limit exceeded',
+                                status=HTTPStatus.TOO_MANY_REQUESTS)
+
+            else:
+                cache.cache_service.increment_address_requests_amount(request.remote_addr,
+                                                                      current_minute)
+
+                return func(*args, **kwargs)
+
+        return wrapper
+
+    return rate_limit_decorator
 
 
 def permissions_required(*permissions):
