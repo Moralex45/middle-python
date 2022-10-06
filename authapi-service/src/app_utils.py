@@ -1,11 +1,13 @@
 import click
 from flask import Flask
+from src.core.extentions import init_oauth
 
 __all__ = ('create_app', 'create_raw_app')
 
 
 def create_raw_app() -> Flask:
     app = Flask(__name__, instance_relative_config=True)
+
     configure_blueprints(app)
     configure_jwt(app)
     configure_cache()
@@ -17,6 +19,7 @@ def create_app() -> Flask:
     app = create_raw_app()
     configure_db()
     configure_cli(app)
+    init_oauth(app)
 
     return app
 
@@ -26,6 +29,7 @@ def configure_db() -> None:
     from src.db.models.permissions import Permission, RolePermissions  # noqa
     from src.db.models.roles import Role, UserRole  # noqa
     from src.db.models.users import AuthHistory, User, UserData  # noqa
+    from src.db.models.social_account import SocialAccount # noqa
     Base.metadata.create_all(bind=engine)
 
 
@@ -45,6 +49,7 @@ def configure_cache():
 def configure_jwt(app):
     from src.core.config import get_settings_instance
 
+    app.config["SECRET_KEY"] = get_settings_instance().APP_SECRET_KEY
     app.config['JWT_SECRET_KEY'] = get_settings_instance().JWT_SECRET_KEY
     app.config['JWT_TOKEN_LOCATION'] = ['cookies']
     app.config['JWT_ACCESS_TOKEN_EXPIRES'] = get_settings_instance().JWT_ACCESS_TOKEN_EXPIRES
@@ -89,6 +94,7 @@ def configure_blueprints(app) -> None:
         blueprint as role_permission_blueprint
     from src.api.v1.crud.user import blueprint as user_blueprint
     from src.api.v1.crud.user_role import blueprint as user_role_blueprint
+    from src.api.v1.oauth.oauth_routes import blueprint as oauth_blueprint
 
     app.register_blueprint(role_blueprint)
     app.register_blueprint(permission_blueprint)
@@ -99,6 +105,7 @@ def configure_blueprints(app) -> None:
     app.register_blueprint(login_blueprint)
     app.register_blueprint(logout_blueprint)
     app.register_blueprint(refresh_blueprint)
+    app.register_blueprint(oauth_blueprint)
 
 
 def configure_cli(app):
