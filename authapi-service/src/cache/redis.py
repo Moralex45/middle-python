@@ -22,6 +22,34 @@ class RedisCacheService(CacheService):
     def unset(self, key: str):
         self.redis.delete(key)
 
+    def set_with_pipeline(self, key: str, value: str, expire: int = None):
+        pipe = self.redis.pipeline()
+        pipe.set(key, value)
+        if expire:
+            pipe.expire(key, expire)
+        pipe.execute()
+
+    def get_address_requests_amount(self,
+                                    remote_address: str,
+                                    minute_value: int) -> int | None:
+        amount = self.get(f'remote_address::{remote_address}::minute::{minute_value}')
+
+        return int(amount) if amount is not None else amount
+
+    def set_address_requests_amount(self,
+                                    remote_address: str,
+                                    minute_value: int,
+                                    value: str):
+        self.set(f'remote_address::{remote_address}::minute::{minute_value}', value, minute_value)
+
+    def increment_address_requests_amount(self,
+                                          remote_address: str,
+                                          minute_value: int):
+        amount = self.get_address_requests_amount(remote_address, minute_value)
+        self.set_with_pipeline(
+            f'remote_address::{remote_address}::minute::{minute_value}', str(
+                amount + 1), minute_value)
+
     def set_user_session_by_user_id_and_user_agent(self,
                                                    user_id: uuid.UUID,
                                                    user_agent: str,

@@ -8,7 +8,7 @@ from pydantic.json import pydantic_encoder
 from src.core.constants import CAN_ACCESS_USER_ROLE
 from src.core.in_models.user_role import UserRole as InUserRole
 from src.core.out_models.user_role import UserRole as OutUserRole
-from src.core.utils import permissions_required
+from src.core.utils import permissions_required, rate_limit
 from src.db.services.user_role import UserRoleService
 
 blueprint = Blueprint('user_role', __name__, url_prefix='/api/v1/crud/user_role')
@@ -16,6 +16,7 @@ blueprint = Blueprint('user_role', __name__, url_prefix='/api/v1/crud/user_role'
 
 @blueprint.route('/', methods=['POST'])
 @permissions_required(CAN_ACCESS_USER_ROLE['code'])
+@rate_limit
 def create_user_role():
     response_body = ''
     response_status = HTTPStatus.OK
@@ -45,6 +46,7 @@ def create_user_role():
 
 @blueprint.route('/<uuid:user_role_id>', methods=['GET'])
 @permissions_required(CAN_ACCESS_USER_ROLE['code'])
+@rate_limit
 def get_user_role(user_role_id: uuid.UUID):
     response_body = ''
     response_status = HTTPStatus.OK
@@ -62,6 +64,7 @@ def get_user_role(user_role_id: uuid.UUID):
 
 @blueprint.route('/', methods=['GET'])
 @permissions_required(CAN_ACCESS_USER_ROLE['code'])
+@rate_limit
 def get_filtered_users_roles_by_user_id():
     response_body = ''
     response_status = HTTPStatus.OK
@@ -83,6 +86,7 @@ def get_filtered_users_roles_by_user_id():
 
 @blueprint.route('/<uuid:user_role_id>', methods=['DELETE'])
 @permissions_required(CAN_ACCESS_USER_ROLE['code'])
+@rate_limit
 def delete_user_role(user_role_id: uuid.UUID):
     response_body = ''
     response_status = HTTPStatus.OK

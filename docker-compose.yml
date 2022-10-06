@@ -28,7 +28,7 @@ services:
       - "8000"
     restart: always
     depends_on:
-      - redis
+      - movies_redis
       - elasticsearch
     networks:
       - docker_compose_sprint6_network
@@ -99,7 +99,7 @@ services:
     networks:
       - docker_compose_sprint6_network
 
-  redis:
+  movies_redis:
     image: redis:7.0.4-alpine
     expose:
       - "6379"

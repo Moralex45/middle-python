@@ -3,6 +3,7 @@ import uuid
 
 from sqlalchemy.exc import IntegrityError
 
+from db.services.permissions import PermissionService
 from src.db.core import db_session
 from src.db.models.users import User
 from src.db.services.base import IUserService
@@ -76,3 +77,9 @@ class UserService(IUserService):
             session.commit()
 
             return cls.get_by_id(db_user.id)
+
+    @classmethod
+    def check_permissions(cls, _id: uuid.UUID, permissions: list) -> bool:
+        user_permissions_codes = [permission.code for permission in PermissionService.get_filtered_by_user_id(_id)]
+
+        return set(permissions) <= set(user_permissions_codes)

@@ -166,6 +166,11 @@ class IUserDataService(abc.ABC):
                birth_date: datetime.datetime | None = None) -> UDT:
         raise NotImplementedError
 
+    @classmethod
+    @abc.abstractmethod
+    def check_permissions(cls, _id: uuid.UUID, permissions: list) -> bool:
+        raise NotImplementedError
+
 
 class IPermissionService(abc.ABC):
     @classmethod
@@ -185,7 +190,7 @@ class IPermissionService(abc.ABC):
 
     @classmethod
     @abc.abstractmethod
-    def get_filtered_by_user_id(cls, user_id: str) -> [PT]:
+    def get_filtered_by_user_id(cls, user_id: str | uuid.UUID) -> [PT]:
         raise NotImplementedError
 
     @classmethod

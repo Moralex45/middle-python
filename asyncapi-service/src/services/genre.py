@@ -1,11 +1,12 @@
 from functools import lru_cache
 from uuid import UUID
 
+from fastapi import Depends
+
 from core.config import get_settings_instance
 from db.cache import AsyncCacheService, get_cache_service
 from db.storage import get_storage_service
 from db.storage.elastic import AsyncElasticStorageService
-from fastapi import Depends
 from models.genre import Genre
 
 

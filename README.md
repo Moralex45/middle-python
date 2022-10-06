@@ -40,7 +40,7 @@ https://github.com/M1LKYWVYs/Auth_sprint_1
 
 # Запуск elastic
 
-`docker run -d --name yp_elastic -p 9200:9200 --mount type=volume,source=sprint6_elasticsearch_data,target=/usr/share/elasticsearch/data  -e "discovery.type=single-node" elasticsearch:7.17.5`
+`docker run -d --name yp_elastic -p 9200:9200 -e "discovery.type=single-node" elasticsearch:7.17.5`
 
 
 # Запуск redis

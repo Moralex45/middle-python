@@ -42,6 +42,9 @@ class Settings(BaseSettings):
     YANDEX_TOKEN_URL: str = Field(env='YANDEX_TOKEN_URL')
     YANDEX_PROFILE_URL: str = Field(env='YANDEX_PROFILE_URL')
 
+    USER_REQUEST_LIMIT_PER_MINUTE: int = Field(env='USER_REQUEST_LIMIT_PER_MINUTE')
+
+
     @property
     def POSTGRES_DSN(self) -> str:
         return f'postgresql+psycopg2://{self.POSTGRES_DB_USER}:{self.POSTGRES_DB_PASSWORD}' \

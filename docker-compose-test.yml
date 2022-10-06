@@ -1,28 +1,100 @@
 version: '3'
 services:
+  etl_service:
+    build: etl-service
+    env_file:
+      - etl-service/.env/.env.prod
+    restart: always
+    depends_on:
+      - elasticsearch
+    networks:
+      - docker_compose_sprint6_network
+
+  data_faker_service:
+    build: data-faker-service
+    env_file:
+      - data-faker-service/.env/.env.prod
+    depends_on:
+      - movies_postgres
+      - admin_service
+    networks:
+      - docker_compose_sprint6_network
+
   asyncapi_service:
     build: asyncapi-service
-    image: asyncapi-service-image
     env_file:
       - asyncapi-service/.env/.env.prod
     expose:
       - "8000"
-    ports:
-      - "8000:8000"
     restart: always
     depends_on:
-      - redis
+      - movies_redis
       - elasticsearch
     networks:
       - docker_compose_sprint6_network
-  
+
+  admin_service:
+    build: admin-service
+    env_file:
+      - admin-service/.env/.env.prod
+    expose:
+      - "8000"
+    restart: always
+    volumes:
+      - sprint6_static:/opt/app/src/static/
+    depends_on:
+      - movies_postgres
+    networks:
+      - docker_compose_sprint6_network
+
+  authapi_service:
+    build: authapi-service
+    env_file:
+      - authapi-service/.env/.env.prod
+    expose:
+      - "8000"
+    restart: always
+    depends_on:
+      - auth_postgres
+      - auth_redis
+    networks:
+      - docker_compose_sprint6_network
+
+  movies_postgres:
+    image: postgres:13
+    env_file:
+      - docker/movies_postgresql/.env/.env.prod
+    expose:
+      - "5432"
+    ports:
+      - "54320:5432"
+    restart: always
+    volumes:
+      - ./docker/movies_postgresql/init_scripts:/docker-entrypoint-initdb.d
+      - sprint6_movies_pg_data:/var/lib/movies_postgresql/data
+    networks:
+      - docker_compose_sprint6_network
+
+  auth_postgres:
+    image: postgres:13
+    env_file:
+      - docker/auth_postgresql/.env/.env.prod
+    expose:
+      - "5432"
+    ports:
+      - "54321:5432"
+    restart: always
+    volumes:
+      - ./docker/auth_postgresql/init_scripts:/docker-entrypoint-initdb.d
+      - sprint6_auth_pg_data:/var/lib/auth_postgresql/data
+    networks:
+      - docker_compose_sprint6_network
+
   elasticsearch:
     image: elasticsearch:7.17.5
     environment:
       - discovery.type=single-node
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - xpack.security.enabled=false
-      - action.destructive_requires_name=false
     expose:
       - "9200"
     ports:
@@ -32,8 +104,8 @@ services:
       - sprint6_elasticsearch_data:/usr/share/elasticsearch/data
     networks:
       - docker_compose_sprint6_network
-  
-  redis:
+
+  movies_redis:
     image: redis:7.0.4-alpine
     expose:
       - "6379"
@@ -42,25 +114,40 @@ services:
     restart: always
     networks:
       - docker_compose_sprint6_network
-  
-  tests:
-#    image: asyncapi-service-image
-    build: asyncapi-service
-    env_file:
-      - asyncapi-service/tests/.env/.env.prod
-    entrypoint: > 
-      bash -c "python3 tests/functional/utils/wait_for_redis.py 
-      && python3 tests/functional/utils/wait_for_es.py 
-      && pytest --disable-warnings"
+
+  auth_redis:
+    image: redis:7.0.4-alpine
+    expose:
+      - "6379"
+    ports:
+      - "63791:6379"
+    restart: always
+    networks:
+      - docker_compose_sprint6_network
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - sprint6_static:/static/:ro
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/configs:/etc/nginx/conf.d
+    expose:
+      - "80"
+    restart: always
+    ports:
+      - "80:80"
     depends_on:
-      - redis
-      - elasticsearch
+      - admin_service
       - asyncapi_service
+      - authapi_service
     networks:
       - docker_compose_sprint6_network
 
 volumes:
+  sprint6_auth_pg_data:
+  sprint6_movies_pg_data:
   sprint6_elasticsearch_data:
+  sprint6_static:
 
 networks:
   docker_compose_sprint6_network:

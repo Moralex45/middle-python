@@ -10,7 +10,7 @@ from src.core.in_models.role_permission import \
     RolePermission as InRolePermission
 from src.core.out_models.role_permission import \
     RolePermission as OutRolePermission
-from src.core.utils import permissions_required
+from src.core.utils import permissions_required, rate_limit
 from src.db.services.role_permission import RolePermissionService
 
 blueprint = Blueprint('role_permission', __name__, url_prefix='/api/v1/crud/role_permission')
@@ -18,6 +18,7 @@ blueprint = Blueprint('role_permission', __name__, url_prefix='/api/v1/crud/role
 
 @blueprint.route('/', methods=['POST'])
 @permissions_required(CAN_ACCESS_ROLE_PERMISSION['code'])
+@rate_limit
 def create_role_permission():
     response_body = ''
     response_status = HTTPStatus.OK
@@ -47,6 +48,7 @@ def create_role_permission():
 
 @blueprint.route('/<uuid:role_permission_id>', methods=['GET'])
 @permissions_required(CAN_ACCESS_ROLE_PERMISSION['code'])
+@rate_limit
 def get_role_permission(role_permission_id: uuid.UUID):
     response_body = ''
     response_status = HTTPStatus.OK
@@ -64,6 +66,7 @@ def get_role_permission(role_permission_id: uuid.UUID):
 
 @blueprint.route('/', methods=['GET'])
 @permissions_required(CAN_ACCESS_ROLE_PERMISSION['code'])
+@rate_limit
 def get_roles_permissions():
     response_body = ''
     response_status = HTTPStatus.OK
@@ -85,6 +88,7 @@ def get_roles_permissions():
 
 @blueprint.route('/<uuid:role_permission_id>', methods=['DELETE'])
 @permissions_required(CAN_ACCESS_ROLE_PERMISSION['code'])
+@rate_limit
 def delete_role_permission(role_permission_id: uuid.UUID):
     response_body = ''
     response_status = HTTPStatus.OK
