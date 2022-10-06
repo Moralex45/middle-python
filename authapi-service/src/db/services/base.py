@@ -5,7 +5,7 @@ import uuid
 from src.db.models.permissions import PT, RPT
 from src.db.models.roles import RT, URT
 from src.db.models.users import AHT, UDT, UT
-
+from src.db.models.social_account import SAT
 
 class IAuthHistoryService(abc.ABC):
     @classmethod
@@ -222,4 +222,30 @@ class IRoleService(abc.ABC):
     @classmethod
     @abc.abstractmethod
     def update(cls, _id: uuid.UUID, code: int, description: str) -> RT:
+        raise NotImplementedError
+
+class ISocialAccountService(abc.ABC):
+    @classmethod
+    @abc.abstractmethod
+    def get_by_id(cls, _id: uuid.UUID) -> SAT | None:
+        raise NotImplementedError
+
+    @classmethod
+    @abc.abstractmethod
+    def create(
+        cls, 
+        user_id: uuid.UUID, 
+        social_id: str, 
+        social_name: str
+    ) -> SAT:
+        raise NotImplementedError
+
+    @classmethod
+    @abc.abstractmethod
+    def get_filtered_by_user_id_and_social_id_and_social_name(
+        cls,
+        user_id: uuid.UUID, 
+        social_id: str, 
+        social_name: str
+    ) -> SAT | None:
         raise NotImplementedError

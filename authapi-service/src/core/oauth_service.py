@@ -6,7 +6,10 @@ from src.db.models.social_account import SocialAccount
 
 from flask_jwt_extended import create_access_token
 from flask import make_response
+
+from src.db.services.social_account import SocialAccountService
 from src.core.config import get_settings_instance
+from src.utils.password_generator import generator_pw
 
 
 def register_social_account(
@@ -14,7 +17,6 @@ def register_social_account(
     social_id: str,
     email: str,
     username: str,
-    request: None,
 ) -> tuple[dict[str, str], int]:
 
     response_status = HTTPStatus.OK
@@ -24,15 +26,21 @@ def register_social_account(
     if not current_user:
         current_user = UserService.create(
             username=username,
-            password="Qwerty123"
+            password=generator_pw()
         )
 
-    if not SocialAccount.raw_exists(
-        user_id=current_user.id, social_id=social_id, social_name=social_name
+    if not \
+        SocialAccountService.\
+        get_filtered_by_user_id_and_social_id_and_social_name(
+        user_id=current_user.id, 
+        social_id=social_id, 
+        social_name=social_name
     ):
-        SocialAccount(
-            user_id=current_user.id, social_id=social_id, social_name=social_name
-        ).save_to_db()
+        SocialAccountService.create(
+            user_id=current_user.id, 
+            social_id=social_id, 
+            social_name=social_name
+        )
 
     access_token = create_access_token(identity=current_user)
     response = make_response()

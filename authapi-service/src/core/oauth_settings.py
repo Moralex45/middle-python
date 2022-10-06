@@ -2,7 +2,7 @@ from enum import Enum
 from core.config import get_settings_instance
 import requests
 from flask import url_for
-from src.api.v1.oauth.extentions import oauth
+from src.core.extentions import oauth
 from src.core.oauth_service import register_social_account
 
 
@@ -20,10 +20,10 @@ class OAUTH_SERVICES(Enum):
     yandex: str = "yandex"
 
 
-class OAuthSignIn(object):
+class OAuthSignIn():
     providers = None
 
-    def __init__(self, provider_name: str):
+    def __init__(self, provider_name: Enum):
         self.provider_name: str = provider_name.value
         credentials: dict[str, str] = OAUTH_CREDENTIALS.get(provider_name.value)
         self.client_id: str = credentials.get("id")
@@ -62,7 +62,6 @@ class YandexSignIn(OAuthSignIn):
             display="popup",
             scope="login:info login:email",
         )
-        print(self.service)
 
     def get_profile_data(self, request=None):
         code: str = request.args.get("code")
@@ -88,7 +87,6 @@ class YandexSignIn(OAuthSignIn):
         email: str = user_info_response.get("default_email")
         username: str = user_info_response.get("login")
         return register_social_account(
-            request=request,
             social_name=self.provider_name,
             social_id=social_id,
             email=email,
