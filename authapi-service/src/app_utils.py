@@ -1,6 +1,6 @@
 import click
 from flask import Flask
-from src.api.v1.oauth.extentions import init_oauth
+from src.core.extentions import init_oauth
 
 __all__ = ('create_app', 'create_raw_app')
 

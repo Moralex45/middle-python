@@ -2,7 +2,6 @@ import datetime
 from http import HTTPStatus
 import secrets
 from src.db.services.user import UserService
-from src.db.models.social_account import SocialAccount
 
 from flask_jwt_extended import create_access_token
 from flask import make_response
@@ -31,14 +30,14 @@ def register_social_account(
 
     if not \
         SocialAccountService.\
-        get_filtered_by_user_id_and_social_id_and_social_name(
-        user_id=current_user.id, 
-        social_id=social_id, 
-        social_name=social_name
-    ):
+            get_filtered_by_user_id_and_social_id_and_social_name(
+                user_id=current_user.id,
+                social_id=social_id,
+                social_name=social_name
+            ):
         SocialAccountService.create(
-            user_id=current_user.id, 
-            social_id=social_id, 
+            user_id=current_user.id,
+            social_id=social_id,
             social_name=social_name
         )
 

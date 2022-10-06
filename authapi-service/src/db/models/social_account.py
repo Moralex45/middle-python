@@ -9,6 +9,7 @@ from src.db.core import db_session
 
 SAT = TypeVar('SAT')
 
+
 class SocialAccount(BaseModel):
 
     __tablename__ = "social_account"

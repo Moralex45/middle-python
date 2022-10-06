@@ -1,4 +1,6 @@
-import random, string
+import random
+import string
+
 
 def generator_pw():
     """
@@ -6,4 +8,3 @@ def generator_pw():
     """
     pwd = string.ascii_letters + string.digits + string.punctuation
     return "".join(random.choice(pwd) for x in range(random.randint(6, 12)))
-

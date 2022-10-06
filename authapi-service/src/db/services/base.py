@@ -7,6 +7,7 @@ from src.db.models.roles import RT, URT
 from src.db.models.users import AHT, UDT, UT
 from src.db.models.social_account import SAT
 
+
 class IAuthHistoryService(abc.ABC):
     @classmethod
     @abc.abstractmethod
@@ -224,6 +225,7 @@ class IRoleService(abc.ABC):
     def update(cls, _id: uuid.UUID, code: int, description: str) -> RT:
         raise NotImplementedError
 
+
 class ISocialAccountService(abc.ABC):
     @classmethod
     @abc.abstractmethod
@@ -233,9 +235,9 @@ class ISocialAccountService(abc.ABC):
     @classmethod
     @abc.abstractmethod
     def create(
-        cls, 
-        user_id: uuid.UUID, 
-        social_id: str, 
+        cls,
+        user_id: uuid.UUID,
+        social_id: str,
         social_name: str
     ) -> SAT:
         raise NotImplementedError
@@ -244,8 +246,8 @@ class ISocialAccountService(abc.ABC):
     @abc.abstractmethod
     def get_filtered_by_user_id_and_social_id_and_social_name(
         cls,
-        user_id: uuid.UUID, 
-        social_id: str, 
+        user_id: uuid.UUID,
+        social_id: str,
         social_name: str
     ) -> SAT | None:
         raise NotImplementedError
