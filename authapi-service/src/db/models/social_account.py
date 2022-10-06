@@ -5,17 +5,26 @@ from sqlalchemy import Column, ForeignKey, UniqueConstraint, String
 from src.db.models.base import BaseModel
 from src.db.models.users import User
 
-from src.db.core import db_session
-
 SAT = TypeVar('SAT')
+
+
+def create_partition(target, connection, **kw) -> None:
+    connection.execute(
+        """CREATE TABLE IF NOT EXISTS "social_account_yandex" PARTITION OF "social_account" FOR VALUES IN ('yandex')"""
+    )
 
 
 class SocialAccount(BaseModel):
 
     __tablename__ = "social_account"
 
-    __table_args__ = (UniqueConstraint("social_id", "social_name"),
-                      {'extend_existing': True},)
+    __table_args__ = (
+                        UniqueConstraint("social_id", "social_name"),
+                        {
+                            'postgresql_partition_by': 'LIST (social_name)',
+                            'listeners': [('after_create', create_partition)],
+                        }
+                    )
 
     user_id = Column(UUID(as_uuid=True), ForeignKey(User.id, ondelete='CASCADE'), nullable=False)
 
@@ -24,14 +33,3 @@ class SocialAccount(BaseModel):
 
     def __repr__(self) -> str:
         return f"{self.social_name} {self.user_id}>"
-
-    def save_to_db(self) -> None:
-        with db_session() as session:
-            session.add(self)
-            session.commit()
-
-    @classmethod
-    def raw_exists(cls, user_id: str, social_id: str, social_name: str):
-        return cls.query.filter_by(
-            user_id=user_id, social_id=social_id, social_name=social_name
-        ).first()
