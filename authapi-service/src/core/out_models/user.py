@@ -3,6 +3,10 @@ from typing import Any
 from src.core.out_models.base import Base
 
 
+class CheckUserPermissions(Base):
+    result: bool
+
+
 class UserLoginHistory(Base):
     ip: str
     user_agent: str

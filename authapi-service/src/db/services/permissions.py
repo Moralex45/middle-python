@@ -26,7 +26,7 @@ class PermissionService(IPermissionService):
             return session.query(Permission).all()
 
     @classmethod
-    def get_filtered_by_user_id(cls, user_id: str) -> [Permission]:
+    def get_filtered_by_user_id(cls, user_id: str | uuid.UUID) -> [Permission]:
         with db_session() as session:
             user_permissions = session.query(Permission) \
                 .join(RolePermissions, Permission.id == RolePermissions.perm_id) \
