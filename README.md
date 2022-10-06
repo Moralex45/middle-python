@@ -1,7 +1,7 @@
 # Секция для ревьюера
 
 Ссылка на гит-репозиторий проекта: 
-https://github.com/M1LKYWVYs/Auth_sprint_1
+https://github.com/M1LKYWVYs/Auth_sprint_2
 
 # Запуск тестов
 
