@@ -6,6 +6,7 @@ import jwt
 from flask import Blueprint, Response, make_response, request
 from flask_jwt_extended import create_access_token
 
+from core.utils import rate_limit
 from src import cache
 from src.core.config import get_settings_instance
 from src.core.in_models.auth import RefreshSession
@@ -17,6 +18,7 @@ blueprint = Blueprint('refresh', __name__, url_prefix='/api/v1/auth/refresh')
 
 
 @blueprint.route('/body', methods=['POST'])
+@rate_limit
 def body_refresh():
     response_body = ''
     response_status = HTTPStatus.OK
@@ -80,6 +82,7 @@ def body_refresh():
 
 
 @blueprint.route('/', methods=['POST'])
+@rate_limit
 def cookie_refresh():
     access_token = request.cookies.get(get_settings_instance().JWT_ACCESS_COOKIE_NAME)
     if access_token is None:

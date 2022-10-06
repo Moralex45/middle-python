@@ -34,6 +34,8 @@ class Settings(BaseSettings):
     REFRESH_TOKEN_EXPIRES_LONG: int = Field(env='REFRESH_TOKEN_EXPIRES_LONG_DAYS')
     REFRESH_TOKEN_EXPIRES_SHORT: int = Field(env='REFRESH_TOKEN_EXPIRES_SHORT_DAYS')
 
+    USER_REQUEST_LIMIT_PER_MINUTE: int = Field(env='USER_REQUEST_LIMIT_PER_MINUTE')
+
     @property
     def POSTGRES_DSN(self) -> str:
         return f'postgresql+psycopg2://{self.POSTGRES_DB_USER}:{self.POSTGRES_DB_PASSWORD}' \
