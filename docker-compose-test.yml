@@ -8,7 +8,7 @@ services:
     depends_on:
       - elasticsearch
     networks:
-      - docker_compose_sprint6_network
+      - cinema_backend_test_network
 
   data_faker_service:
     build: data-faker-service
@@ -18,7 +18,7 @@ services:
       - movies_postgres
       - admin_service
     networks:
-      - docker_compose_sprint6_network
+      - cinema_backend_test_network
 
   asyncapi_service:
     build: asyncapi-service
@@ -31,7 +31,7 @@ services:
       - movies_redis
       - elasticsearch
     networks:
-      - docker_compose_sprint6_network
+      - cinema_backend_test_network
 
   admin_service:
     build: admin-service
@@ -41,11 +41,11 @@ services:
       - "8000"
     restart: always
     volumes:
-      - sprint6_static:/opt/app/src/static/
+      - cinema_backend_test_static
     depends_on:
       - movies_postgres
     networks:
-      - docker_compose_sprint6_network
+      - cinema_backend_test_network
 
   authapi_service:
     build: authapi-service
@@ -58,7 +58,7 @@ services:
       - auth_postgres
       - auth_redis
     networks:
-      - docker_compose_sprint6_network
+      - cinema_backend_test_network
 
   movies_postgres:
     image: postgres:13
@@ -71,9 +71,9 @@ services:
     restart: always
     volumes:
       - ./docker/movies_postgresql/init_scripts:/docker-entrypoint-initdb.d
-      - sprint6_movies_pg_data:/var/lib/movies_postgresql/data
+      - cinema_backend_test_pg_data
     networks:
-      - docker_compose_sprint6_network
+      - cinema_backend_test_network
 
   auth_postgres:
     image: postgres:13
@@ -86,9 +86,9 @@ services:
     restart: always
     volumes:
       - ./docker/auth_postgresql/init_scripts:/docker-entrypoint-initdb.d
-      - sprint6_auth_pg_data:/var/lib/auth_postgresql/data
+      - cinema_backend_test_auth_pg_data
     networks:
-      - docker_compose_sprint6_network
+      - cinema_backend_test_network
 
   elasticsearch:
     image: elasticsearch:7.17.5
@@ -101,9 +101,9 @@ services:
       - "9200:9200"
     restart: always
     volumes:
-      - sprint6_elasticsearch_data:/usr/share/elasticsearch/data
+      - cinema_backend_test_elasticsearch_data
     networks:
-      - docker_compose_sprint6_network
+      - cinema_backend_test_network
 
   movies_redis:
     image: redis:7.0.4-alpine
@@ -113,7 +113,7 @@ services:
       - "63790:6379"
     restart: always
     networks:
-      - docker_compose_sprint6_network
+      - cinema_backend_test_network
 
   auth_redis:
     image: redis:7.0.4-alpine
@@ -123,12 +123,12 @@ services:
       - "63791:6379"
     restart: always
     networks:
-      - docker_compose_sprint6_network
+      - cinema_backend_test_network
 
   nginx:
     image: nginx:latest
     volumes:
-      - sprint6_static:/static/:ro
+      - cinema_backend_test_static
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./docker/nginx/configs:/etc/nginx/conf.d
     expose:
@@ -141,14 +141,14 @@ services:
       - asyncapi_service
       - authapi_service
     networks:
-      - docker_compose_sprint6_network
+      - cinema_backend_test_network
 
 volumes:
-  sprint6_auth_pg_data:
-  sprint6_movies_pg_data:
-  sprint6_elasticsearch_data:
-  sprint6_static:
+  cinema_backend_test_auth_pg_data:
+  cinema_backend_test_pg_data:
+  cinema_backend_test_elasticsearch_data:
+  cinema_backend_test_static:
 
 networks:
-  docker_compose_sprint6_network:
+  cinema_backend_test_network:
     driver: bridge
