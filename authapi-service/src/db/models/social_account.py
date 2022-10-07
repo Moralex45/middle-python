@@ -19,7 +19,7 @@ class SocialAccount(BaseModel):
     __tablename__ = "social_account"
 
     __table_args__ = (
-                        UniqueConstraint("social_id", "social_name"),
+                        UniqueConstraint('id', 'social_name'),
                         {
                             'postgresql_partition_by': 'LIST (social_name)',
                             'listeners': [('after_create', create_partition)],
@@ -29,7 +29,7 @@ class SocialAccount(BaseModel):
     user_id = Column(UUID(as_uuid=True), ForeignKey(User.id, ondelete='CASCADE'), nullable=False)
 
     social_id = Column(String(length=100), nullable=False)
-    social_name = Column(String(length=100), nullable=False)
+    social_name = Column(String(length=100), primary_key=True, nullable=False)
 
     def __repr__(self) -> str:
         return f"{self.social_name} {self.user_id}>"
