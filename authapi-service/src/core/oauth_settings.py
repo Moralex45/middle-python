@@ -1,10 +1,11 @@
 from enum import Enum
-from core.config import get_settings_instance
+
 import requests
 from flask import url_for
+
+from core.config import get_settings_instance
 from src.core.extentions import oauth
 from src.core.oauth_service import register_social_account
-
 
 OAUTH_CREDENTIALS: dict[str, dict[str, str]] = {
     "yandex": {

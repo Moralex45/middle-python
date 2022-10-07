@@ -12,6 +12,9 @@ from src.core.config import get_settings_instance
 def rate_limit(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
+        if not get_settings_instance().ENABLE_DDOS_PROTECTION:
+            return func(*args, **kwargs)
+
         current_minute = datetime.datetime.now().minute
         current_request_count = cache.cache_service.get_address_requests_amount(request.remote_addr,
                                                                                 current_minute)
@@ -20,14 +23,13 @@ def rate_limit(func):
             return Response(response='Request limit exceeded',
                             status=HTTPStatus.TOO_MANY_REQUESTS)
 
+        if current_request_count is not None:
+            cache.cache_service.increment_address_requests_amount(request.remote_addr, current_minute)
+
         else:
-            if current_request_count is not None:
-                cache.cache_service.increment_address_requests_amount(request.remote_addr, current_minute)
+            cache.cache_service.set_address_requests_amount(request.remote_addr, current_minute, str(1))
 
-            else:
-                cache.cache_service.set_address_requests_amount(request.remote_addr, current_minute, str(1))
-
-            return func(*args, **kwargs)
+        return func(*args, **kwargs)
 
     return wrapper
 
@@ -48,8 +50,8 @@ def permissions_required(*permissions):
 
             if is_super or access_allowed:
                 return fn(*args, **kwargs)
-            else:
-                return Response(response='Lack of permissions', status=HTTPStatus.FORBIDDEN)
+
+            return Response(response='Lack of permissions', status=HTTPStatus.FORBIDDEN)
 
         return decorator
 

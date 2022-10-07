@@ -1,7 +1,8 @@
 from typing import TypeVar
 
+from sqlalchemy import Column, ForeignKey, String, UniqueConstraint
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy import Column, ForeignKey, UniqueConstraint, String
+
 from src.db.models.base import BaseModel
 from src.db.models.users import User
 
@@ -19,12 +20,12 @@ class SocialAccount(BaseModel):
     __tablename__ = "social_account"
 
     __table_args__ = (
-                        UniqueConstraint('id', 'social_name'),
-                        {
-                            'postgresql_partition_by': 'LIST (social_name)',
-                            'listeners': [('after_create', create_partition)],
-                        }
-                    )
+        UniqueConstraint('id', 'social_name'),
+        {
+            'postgresql_partition_by': 'LIST (social_name)',
+            'listeners': [('after_create', create_partition)],
+        }
+    )
 
     user_id = Column(UUID(as_uuid=True), ForeignKey(User.id, ondelete='CASCADE'), nullable=False)
 

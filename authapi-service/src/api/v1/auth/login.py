@@ -54,8 +54,9 @@ def login_user():
         days=refresh_token_expire_days)
 
     try:
-        AuthHistoryService.stop_by_id(
-            AuthHistoryService.get_by_user_id_and_user_agent(db_user.id, request.user_agent.string).id)
+        exist_session = AuthHistoryService.get_by_user_id_and_user_agent(db_user.id, request.user_agent.string)
+        if exist_session is not None:
+            AuthHistoryService.stop_by_id(exist_session.id)
         AuthHistoryService.create(db_user.id, request.user_agent.string, request.remote_addr)
 
     except ValueError:

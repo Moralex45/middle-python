@@ -1,4 +1,5 @@
-from flask import request, Blueprint
+from flask import Blueprint, request
+
 from src.core.oauth_settings import OAuthSignIn
 
 blueprint = Blueprint("oauth", __name__, url_prefix="/api/v1/oauth")

@@ -1,5 +1,7 @@
 import click
 from flask import Flask
+
+from src.core.config import get_settings_instance
 from src.core.extentions import init_oauth
 from src.core.tracer import init_tracer
 
@@ -21,7 +23,8 @@ def create_app() -> Flask:
     configure_db()
     configure_cli(app)
     init_oauth(app)
-    init_tracer(app)
+    if get_settings_instance().ENABLE_TRACER:
+        init_tracer(app)
 
     return app
 
@@ -30,8 +33,8 @@ def configure_db() -> None:
     from src.db.core import Base, engine
     from src.db.models.permissions import Permission, RolePermissions  # noqa
     from src.db.models.roles import Role, UserRole  # noqa
+    from src.db.models.social_account import SocialAccount  # noqa
     from src.db.models.users import AuthHistory, User, UserData  # noqa
-    from src.db.models.social_account import SocialAccount # noqa
     Base.metadata.create_all(bind=engine)
 
 

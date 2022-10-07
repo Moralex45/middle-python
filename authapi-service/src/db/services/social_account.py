@@ -1,6 +1,7 @@
 import uuid
 
 from sqlalchemy.exc import IntegrityError
+
 from src.db.core import db_session
 from src.db.models.social_account import SAT, SocialAccount
 from src.db.services.base import ISocialAccountService

@@ -1,15 +1,10 @@
 from functools import lru_cache
-# from logging import config as logging_config
 from pathlib import Path
 
 from pydantic import BaseSettings, Field
 
-# from core.logger import LOGGING
-
 
 class Settings(BaseSettings):
-    # logging_config.dictConfig(LOGGING)
-
     PROJECT_NAME: str = Field(env='PROJECT_NAME')
 
     REDIS_HOST: str = Field(env='REDIS_HOST')
@@ -46,6 +41,9 @@ class Settings(BaseSettings):
 
     JAEGER_HOST: str = Field(env="JAEGER_HOST")
     JAEGER_PORT: int = Field(env="JAEGER_PORT")
+
+    ENABLE_TRACER: bool = Field(env='ENABLE_TRACER')
+    ENABLE_DDOS_PROTECTION: bool = Field(env='ENABLE_DDOS_PROTECTION')
 
     @property
     def POSTGRES_DSN(self) -> str:

@@ -1,13 +1,13 @@
 import datetime
-from http import HTTPStatus
 import secrets
-from src.db.services.user import UserService
+from http import HTTPStatus
 
-from flask_jwt_extended import create_access_token
 from flask import make_response
+from flask_jwt_extended import create_access_token
 
-from src.db.services.social_account import SocialAccountService
 from src.core.config import get_settings_instance
+from src.db.services.social_account import SocialAccountService
+from src.db.services.user import UserService
 from src.utils.password_generator import generator_pw
 
 

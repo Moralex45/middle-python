@@ -4,8 +4,8 @@ import uuid
 
 from src.db.models.permissions import PT, RPT
 from src.db.models.roles import RT, URT
-from src.db.models.users import AHT, UDT, UT
 from src.db.models.social_account import SAT
+from src.db.models.users import AHT, UDT, UT
 
 
 class IAuthHistoryService(abc.ABC):
