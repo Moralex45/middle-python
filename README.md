@@ -24,12 +24,13 @@ https://github.com/M1LKYWVYs/Auth_sprint_2
 5. Инициализировать директорию admin-service как проект в IDE
 6. Инициализировать директорию data-faker-service как проект в IDE
 7. Заполнить docker/auth_postgresql/.env/.env.dev и docker/auth_postgresql/.env/.env.prod файлы окружения
-8. Заполнить etl-service/.env/.env.dev и etl-service/.env/.env.prod файлы окружения
-9. Заполнить asyncapi-service/tests/.env/.env.dev и asyncapi-service/tests/.env/.env.prod файлы окружения
-10. Заполнить asyncapi-service/.env/.env.dev и asyncapi-service/.env/.env.prod файлы окружения
-11. Заполнить authapi-service/.env/.env.dev и authapi-service/.env/.env.prod файлы окружения
-12. Заполнить data-faker/.env/.env.dev и data-faker/.env/.env.prod файлы окружения
-13. Заполнить admin-service/.env/.env.dev и admin-service/.env/.env.prod файлы окружения
+8. Заполнить docker/movies_postgresql/.env/.env.dev и docker/movies_postgresql/.env/.env.prod файлы окружения
+9. Заполнить etl-service/.env/.env.dev и etl-service/.env/.env.prod файлы окружения
+10. Заполнить asyncapi-service/tests/.env/.env.dev и asyncapi-service/tests/.env/.env.prod файлы окружения
+11. Заполнить asyncapi-service/.env/.env.dev и asyncapi-service/.env/.env.prod файлы окружения
+12. Заполнить authapi-service/.env/.env.dev и authapi-service/.env/.env.prod файлы окружения
+13. Заполнить data-faker/.env/.env.dev и data-faker/.env/.env.prod файлы окружения
+14. Заполнить admin-service/.env/.env.dev и admin-service/.env/.env.prod файлы окружения
 
 # Запуск postgres
 
