@@ -6,7 +6,7 @@ from opentelemetry.sdk.resources import SERVICE_NAME, Resource
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 
-from core.config import get_settings_instance
+from src.core.config import get_settings_instance
 
 
 def configure_tracer() -> None:

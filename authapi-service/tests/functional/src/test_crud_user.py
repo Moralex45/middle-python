@@ -1,6 +1,6 @@
 import pytest
 
-from db.services.permissions import PermissionService
+from src.db.services.permissions import PermissionService
 from src.db.services.user import UserService
 from src.db.services.userdata import UserDataService
 from tests.functional.testdata.database_fake_data import users, permissions
