@@ -1,7 +1,4 @@
-`SHELL := /bin/bash
-
-run:
-	python3 src/wsgi.py
+SHELL := /bin/bash
 
 flake8:
 	flake8
