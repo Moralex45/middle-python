@@ -59,9 +59,7 @@ class RedisCacheService(CacheService):
                  value, expire_seconds * 60 * 60 * 60)
 
     def get_user_session_by_user_id_and_user_agent(self, user_id: uuid.UUID, user_agent: str) -> str | None:
-        session = self.get(f'user_id::{user_id}::user_agent::{user_agent}')
-
-        return session
+        return self.get(f'user_id::{user_id}::user_agent::{user_agent}')
 
     def delete_user_session_by_user_id_and_user_agent(self, user_id: uuid.UUID, user_agent: str):
         self.unset(f'user_id::{user_id}::user_agent::{user_agent}')
@@ -71,5 +69,5 @@ class RedisCacheService(CacheService):
 
     def delete_user_sessions_by_user_id(self, user_id: uuid.UUID) -> [str]:
         keys = self.redis.keys(f'user_id::{user_id}::user_agent::*')
-        if len(keys):
+        if len(keys) >= 0:
             self.redis.delete(*keys)

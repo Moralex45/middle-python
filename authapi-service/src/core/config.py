@@ -39,8 +39,8 @@ class Settings(BaseSettings):
 
     USER_REQUEST_LIMIT_PER_MINUTE: int = Field(env='USER_REQUEST_LIMIT_PER_MINUTE')
 
-    JAEGER_HOST: str = Field(env="JAEGER_HOST")
-    JAEGER_PORT: int = Field(env="JAEGER_PORT")
+    JAEGER_HOST: str = Field(env='JAEGER_HOST')
+    JAEGER_PORT: int = Field(env='JAEGER_PORT')
 
     ENABLE_TRACER: bool = Field(env='ENABLE_TRACER')
     ENABLE_DDOS_PROTECTION: bool = Field(env='ENABLE_DDOS_PROTECTION')

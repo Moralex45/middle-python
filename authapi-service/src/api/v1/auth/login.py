@@ -69,14 +69,14 @@ def login_user():
         key=get_settings_instance().JWT_ACCESS_COOKIE_NAME,
         value=access_token,
         httponly=True,
-        expires=datetime.datetime.now() + datetime.timedelta(seconds=get_settings_instance().JWT_ACCESS_TOKEN_EXPIRES)
+        expires=datetime.datetime.now() + datetime.timedelta(seconds=get_settings_instance().JWT_ACCESS_TOKEN_EXPIRES),
     )
 
     response.set_cookie(
         key=get_settings_instance().REFRESH_TOKEN_COOKIE_NAME,
         value=refresh_token,
         httponly=True,
-        expires=refresh_token_expire
+        expires=refresh_token_expire,
     )
 
     cache.cache_service.set_user_session_by_user_id_and_user_agent(db_user.id,

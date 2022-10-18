@@ -28,13 +28,11 @@ class PermissionService(IPermissionService):
     @classmethod
     def get_filtered_by_user_id(cls, user_id: str | uuid.UUID) -> [Permission]:
         with db_session() as session:
-            user_permissions = session.query(Permission) \
+            return session.query(Permission) \
                 .join(RolePermissions, Permission.id == RolePermissions.perm_id) \
                 .join(UserRole, RolePermissions.role_id == UserRole.role_id) \
                 .filter(UserRole.user_id == user_id) \
                 .all()
-
-            return user_permissions
 
     @classmethod
     def delete_by_id(cls, _id: uuid.UUID) -> None:
@@ -50,7 +48,7 @@ class PermissionService(IPermissionService):
     def create(cls, code: int) -> PT:
         with db_session() as session:
             db_permission = Permission(
-                code=code
+                code=code,
             )
 
             session.add_all([db_permission])
@@ -60,7 +58,7 @@ class PermissionService(IPermissionService):
             except IntegrityError:
                 raise ValueError(
                     'Unable to create permission with passed code. '
-                    'Instance already exists'
+                    'Instance already exists',
                 )
 
             return cls.get_by_id(db_permission.id)

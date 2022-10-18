@@ -1,5 +1,5 @@
-import random
 import string
+import secrets
 
 
 def generator_pw():
@@ -7,4 +7,5 @@ def generator_pw():
         Генерация рандомного пароля для пользователя.
     """
     pwd = string.ascii_letters + string.digits + string.punctuation
-    return "".join(random.choice(pwd) for x in range(random.randint(6, 12)))
+    safe_random = secrets.SystemRandom()
+    return ''.join(safe_random.choice(pwd) for _ in range(safe_random.randint(6, 12)))

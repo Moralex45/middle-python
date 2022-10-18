@@ -15,7 +15,7 @@ UDT = TypeVar('UDT')
 AHT = TypeVar('AHT')
 
 
-class PasswordConstants:
+class PasswordConstants: # noqa
     algorithm = 'sha256'
     iterations = 100000
 
@@ -44,7 +44,7 @@ class User(BaseModel):
             PasswordConstants.algorithm,
             value.encode('utf-8'),
             salt,
-            PasswordConstants.iterations
+            PasswordConstants.iterations,
         ) + b'$' + salt
 
     def check_password(self, value: str):
@@ -53,7 +53,7 @@ class User(BaseModel):
             PasswordConstants.algorithm,
             value.encode('utf-8'),
             received_salt,
-            PasswordConstants.iterations
+            PasswordConstants.iterations,
         ) + b'$' + received_salt
 
         return self.pwd_hash == received_pwd_hash

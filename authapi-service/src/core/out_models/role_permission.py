@@ -5,7 +5,7 @@ from src.core.out_models.base import Base
 
 
 class RolePermission(Base):
-    id: uuid.UUID
+    id: uuid.UUID # noqa
     role_id: uuid.UUID
     permission_id: uuid.UUID
 

@@ -243,7 +243,7 @@ class ISocialAccountService(abc.ABC):
         cls,
         user_id: uuid.UUID,
         social_id: str,
-        social_name: str
+        social_name: str,
     ) -> SAT:
         raise NotImplementedError
 
@@ -253,6 +253,6 @@ class ISocialAccountService(abc.ABC):
         cls,
         user_id: uuid.UUID,
         social_id: str,
-        social_name: str
+        social_name: str,
     ) -> SAT | None:
         raise NotImplementedError

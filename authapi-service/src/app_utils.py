@@ -54,7 +54,7 @@ def configure_cache():
 def configure_jwt(app):
     from src.core.config import get_settings_instance
 
-    app.config["SECRET_KEY"] = get_settings_instance().APP_SECRET_KEY
+    app.config['SECRET_KEY'] = get_settings_instance().APP_SECRET_KEY
     app.config['JWT_SECRET_KEY'] = get_settings_instance().JWT_SECRET_KEY
     app.config['JWT_TOKEN_LOCATION'] = ['cookies']
     app.config['JWT_ACCESS_TOKEN_EXPIRES'] = get_settings_instance().JWT_ACCESS_TOKEN_EXPIRES
@@ -74,18 +74,17 @@ def configure_jwt(app):
 
     @jwt.user_lookup_loader
     def user_lookup_callback(_jwt_header, jwt_data):
-        identity = jwt_data["sub"]
+        identity = jwt_data['sub']
         return UserService.get_by_id(identity)
 
     @jwt.additional_claims_loader
     def add_claims_to_access_token(identity):
         user_permissions = PermissionService.get_filtered_by_user_id(identity.id)
-        claims = {
+        return {
             'iss': get_settings_instance().PROJECT_NAME,
             'permissions': [user_permission.code for user_permission in user_permissions],
-            'is_super': identity.is_superuser
+            'is_super': identity.is_superuser,
         }
-        return claims
 
 
 def configure_blueprints(app) -> None:
@@ -131,31 +130,31 @@ def configure_cli(app):
 
         with db_session() as session:
             db_role_admin = Role(
-                **ADMIN_ROLE
+                **ADMIN_ROLE,
             )
 
             db_role_user = Role(
-                **SAMPLE_USER_ROLE
+                **SAMPLE_USER_ROLE,
             )
 
             db_can_add_role = Permission(
-                **CAN_ACCESS_ROLE
+                **CAN_ACCESS_ROLE,
             )
 
             db_can_add_permission = Permission(
-                **CAN_ACCESS_PERMISSION
+                **CAN_ACCESS_PERMISSION,
             )
 
             db_can_add_role_permission = Permission(
-                **CAN_ACCESS_ROLE_PERMISSION
+                **CAN_ACCESS_ROLE_PERMISSION,
             )
 
             db_can_add_user_role = Permission(
-                **CAN_ACCESS_USER_ROLE
+                **CAN_ACCESS_USER_ROLE,
             )
 
             db_can_edit_profile = Permission(
-                **CAN_EDIT_PROFILE
+                **CAN_EDIT_PROFILE,
             )
 
             session.add_all(
@@ -166,30 +165,30 @@ def configure_cli(app):
                     db_can_add_permission,
                     db_can_add_role_permission,
                     db_can_add_user_role,
-                    db_can_edit_profile
-                ]
+                    db_can_edit_profile,
+                ],
             )
             session.commit()
 
             role_admin_can_add_role = RolePermissions(
                 role_id=db_role_admin.id,
-                perm_id=db_can_add_role.id
+                perm_id=db_can_add_role.id,
             )
             role_admin_can_add_permission = RolePermissions(
                 role_id=db_role_admin.id,
-                perm_id=db_can_add_permission.id
+                perm_id=db_can_add_permission.id,
             )
             role_admin_can_add_role_permission = RolePermissions(
                 role_id=db_role_admin.id,
-                perm_id=db_can_add_role_permission.id
+                perm_id=db_can_add_role_permission.id,
             )
             role_admin_can_add_user_role = RolePermissions(
                 role_id=db_role_admin.id,
-                perm_id=db_can_add_user_role.id
+                perm_id=db_can_add_user_role.id,
             )
             role_sample_user_can_edit_profile = RolePermissions(
                 role_id=db_role_user.id,
-                perm_id=db_can_edit_profile.id
+                perm_id=db_can_edit_profile.id,
             )
 
             session.add_all(
@@ -198,8 +197,8 @@ def configure_cli(app):
                     role_admin_can_add_permission,
                     role_admin_can_add_role_permission,
                     role_admin_can_add_user_role,
-                    role_sample_user_can_edit_profile
-                ]
+                    role_sample_user_can_edit_profile,
+                ],
             )
             session.commit()
 

@@ -7,7 +7,7 @@ from src.db.models.base import Base
 engine = create_engine(
     get_settings_instance().POSTGRES_DSN,
     echo=False,
-    connect_args={'options': f'-csearch_path={get_settings_instance().POSTGRES_SCHEMA}'}
+    connect_args={'options': f'-csearch_path={get_settings_instance().POSTGRES_SCHEMA}'},
 )
 
 db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
