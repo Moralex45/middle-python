@@ -29,6 +29,6 @@ jobs:
     - name: Flake8 authapi
       run: flake8 authapi-service
     - name: Flake8 ugc
-      run: flake8 authapi-service
+      run: flake8 ugc-service
     - name: Flake8 etl-kafka-clickhouse
-      run: flake8 authapi-service
+      run: flake8 etl-kafka-clickhouse
