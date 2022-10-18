@@ -7,7 +7,6 @@ from asgiref.wsgi import WsgiToAsgi
 from app_utils import create_app
 from core.config import get_settings_instance
 
-
 SOURCE_DIR = os.path.dirname(__file__)
 if SOURCE_DIR not in sys.path:
     sys.path.append(SOURCE_DIR)

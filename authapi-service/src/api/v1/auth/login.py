@@ -5,10 +5,10 @@ from http import HTTPStatus
 from flask import Blueprint, Response, make_response, request
 from flask_jwt_extended import create_access_token
 
-from src.core.utils import rate_limit
 from src import cache
 from src.core.config import get_settings_instance
 from src.core.in_models.user import UserLogin as InUserLogin
+from src.core.utils import rate_limit
 from src.db.services.auth_history import AuthHistoryService
 from src.db.services.user import UserService
 

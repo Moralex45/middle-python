@@ -5,7 +5,7 @@ from src.core.out_models.base import Base
 
 
 class Role(Base):
-    id: uuid.UUID # noqa
+    id: uuid.UUID  # noqa
     code: int
     description: str
 

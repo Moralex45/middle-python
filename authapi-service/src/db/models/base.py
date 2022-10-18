@@ -11,7 +11,7 @@ Base = declarative_base()
 class BaseModel(Base):
     __abstract__ = True
 
-    id = Column(UUID(as_uuid=True), nullable=False, primary_key=True, default=uuid.uuid4) # noqa
+    id = Column(UUID(as_uuid=True), nullable=False, primary_key=True, default=uuid.uuid4)  # noqa
     created_at = Column(TIMESTAMP, nullable=False, default=datetime.datetime.now)
     updated_at = Column(TIMESTAMP, nullable=False, default=datetime.datetime.now, onupdate=datetime.datetime.now)
 

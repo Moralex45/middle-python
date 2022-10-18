@@ -15,7 +15,7 @@ UDT = TypeVar('UDT')
 AHT = TypeVar('AHT')
 
 
-class PasswordConstants: # noqa
+class PasswordConstants:  # noqa
     algorithm = 'sha256'
     iterations = 100000
 
