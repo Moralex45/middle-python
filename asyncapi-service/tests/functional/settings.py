@@ -5,7 +5,7 @@ from pydantic import BaseSettings, Field
 
 class TestSettings(BaseSettings):
     REDIS_HOST: str = Field(env='REDIS_HOST', default='127.0.0.1')
-    REDIS_PORT: int = Field(env='REDIS_PORT', default=6379)
+    REDIS_PORT: int = Field(env='REDIS_PORT', default=63790)
 
     ELASTIC_HOST: str = Field(env='ELASTIC_HOST', default='127.0.0.1')
     ELASTIC_PORT = Field(env='ELASTIC_PORT', default=9200)

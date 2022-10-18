@@ -36,8 +36,7 @@ class AsyncRedisCacheService(AsyncRedisCache, AsyncCacheService):
         if not data:
             return None
 
-        obj = base_class.parse_raw(data)
-        return obj
+        return base_class.parse_raw(data)
 
     async def set_single(self, key: str, data: T, expire: int):
         await self.redis.set(key, data.json(), expire=expire)
@@ -47,8 +46,7 @@ class AsyncRedisCacheService(AsyncRedisCache, AsyncCacheService):
         if not data:
             return None
 
-        objs = parse_obj_as(list[base_class], orjson.loads(data))
-        return objs
+        return parse_obj_as(list[base_class], orjson.loads(data))
 
     async def set_list(self, key: str, data: list[T], expire: int):
         await self.redis.set(key, orjson.dumps(data, default=pydantic_encoder).decode(), expire=expire)
