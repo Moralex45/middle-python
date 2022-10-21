@@ -2,7 +2,8 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 
-from core.config import get_settings
+from src.core.config import get_settings
+from src.api.v1.events import router as events_router
 
 app = FastAPI(
     title=get_settings().PROJECT_NAME,
@@ -13,6 +14,8 @@ app = FastAPI(
     openapi_url='/api/docs/openapi.json',
     default_response_class=ORJSONResponse,
 )
+
+app.include_router(events_router, tags=['events'])
 
 if __name__ == '__main__':
     uvicorn.run(

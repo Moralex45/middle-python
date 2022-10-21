@@ -69,7 +69,7 @@ def login_user():
         key=get_settings_instance().JWT_ACCESS_COOKIE_NAME,
         value=access_token,
         httponly=True,
-        expires=datetime.datetime.now() + datetime.timedelta(seconds=get_settings_instance().JWT_ACCESS_TOKEN_EXPIRES),
+        expires=refresh_token_expire,
     )
 
     response.set_cookie(

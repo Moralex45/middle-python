@@ -17,20 +17,24 @@ https://github.com/M1LKYWVYs/Auth_sprint_2
 
 # Инициализация рабочих проектов
 
-1. Инициализировать корневую директорию как проект в IDE
-2. Инициализировать директорию etl-service как проект в IDE
-3. Инициализировать директорию asyncapi-service как проект в IDE
-4. Инициализировать директорию authapi-service как проект в IDE
-5. Инициализировать директорию admin-service как проект в IDE
-6. Инициализировать директорию data-faker-service как проект в IDE
-7. Заполнить docker/auth_postgresql/.env/.env.dev и docker/auth_postgresql/.env/.env.prod файлы окружения
-8. Заполнить docker/movies_postgresql/.env/.env.dev и docker/movies_postgresql/.env/.env.prod файлы окружения
-9. Заполнить etl-service/.env/.env.dev и etl-service/.env/.env.prod файлы окружения
-10. Заполнить asyncapi-service/tests/.env/.env.dev и asyncapi-service/tests/.env/.env.prod файлы окружения
-11. Заполнить asyncapi-service/.env/.env.dev и asyncapi-service/.env/.env.prod файлы окружения
-12. Заполнить authapi-service/.env/.env.dev и authapi-service/.env/.env.prod файлы окружения
-13. Заполнить data-faker/.env/.env.dev и data-faker/.env/.env.prod файлы окружения
-14. Заполнить admin-service/.env/.env.dev и admin-service/.env/.env.prod файлы окружения
+* Инициализировать корневую директорию как проект в IDE
+* Инициализировать директорию etl-service как проект в IDE
+* Инициализировать директорию asyncapi-service как проект в IDE
+* Инициализировать директорию ugc-service как проект в IDE
+* Инициализировать директорию etl-kafka-clickhouse как проект в IDE
+* Инициализировать директорию authapi-service как проект в IDE
+* Инициализировать директорию admin-service как проект в IDE
+* Инициализировать директорию data-faker-service как проект в IDE
+* Заполнить docker/auth_postgresql/.env/.env.dev и docker/auth_postgresql/.env/.env.prod файлы окружения
+* Заполнить docker/movies_postgresql/.env/.env.dev и docker/movies_postgresql/.env/.env.prod файлы окружения
+* Заполнить etl-service/.env/.env.dev и etl-service/.env/.env.prod файлы окружения
+* Заполнить asyncapi-service/tests/.env/.env.dev и asyncapi-service/tests/.env/.env.prod файлы окружения
+* Заполнить asyncapi-service/.env/.env.dev и asyncapi-service/.env/.env.prod файлы окружения
+* Заполнить ugc-service/.env/.env.dev и ugc-service/.env/.env.prod файлы окружения
+* Заполнить etl-kafka-clickhouse/.env/.env.dev и etl-kafka-clickhouse/.env/.env.prod файлы окружения
+* Заполнить authapi-service/.env/.env.dev и authapi-service/.env/.env.prod файлы окружения
+* Заполнить data-faker/.env/.env.dev и data-faker/.env/.env.prod файлы окружения
+* Заполнить admin-service/.env/.env.dev и admin-service/.env/.env.prod файлы окружения
 
 # Запуск postgres
 
@@ -50,3 +54,9 @@ https://github.com/M1LKYWVYs/Auth_sprint_2
 `docker run -d --name yp_movies_redis -p 63790:6379 redis`
 
 `docker run -d --name yp_auth_redis -p 63791:6379 redis`
+
+`docker run -d --name yp_ugc_redis -p 63792:6379 redis`
+
+# Запуск kafka
+
+https://developer.confluent.io/quickstart/kafka-docker/
