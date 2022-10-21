@@ -43,6 +43,8 @@ class ProjectSettings(BaseConfig):
 
     PROJECT_NAME: str = 'UGC service'
 
+    MOVIE_WATCHING_EVENT_KAFKA_TOPIC = 'views'
+
     JWT_ACCESS_COOKIE_NAME: str = 'access_token_cookie'
     REFRESH_TOKEN_COOKIE_NAME: str = 'refresh_token_cookie'
 
