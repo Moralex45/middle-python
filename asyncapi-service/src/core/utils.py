@@ -43,14 +43,12 @@ async def verify_auth_tokens(request: Request, response: Response):
                 raise HTTPException(status_code=HTTPStatus.UNAUTHORIZED, detail='Unable to refresh tokens')
 
             response_body = await auth_response.json()
-            cookie_expires_seconds = (datetime.datetime.fromtimestamp(response_body['access_token_expire_timestamp']) -
+            cookie_expires_seconds = (datetime.datetime.fromtimestamp(response_body['refresh_token_expire_timestamp']) -
                                       datetime.datetime.now()).seconds
             response.set_cookie(key=get_settings_instance().JWT_ACCESS_COOKIE_NAME,
                                 value=response_body['access_token'],
                                 httponly=True,
                                 expires=cookie_expires_seconds)
-            cookie_expires_seconds = (datetime.datetime.fromtimestamp(response_body['refresh_token_expire_timestamp']) -
-                                      datetime.datetime.now()).seconds
             response.set_cookie(key=get_settings_instance().REFRESH_TOKEN_COOKIE_NAME,
                                 value=response_body['refresh_token'],
                                 httponly=True,
