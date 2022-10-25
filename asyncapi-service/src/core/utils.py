@@ -15,6 +15,9 @@ from models.base import Base
 
 
 async def verify_auth_tokens(request: Request, response: Response):
+    if get_settings_instance().DEBUG:
+        return
+
     access_token = request.cookies.get(get_settings_instance().JWT_ACCESS_COOKIE_NAME, None)
     refresh_token = request.cookies.get(get_settings_instance().REFRESH_TOKEN_COOKIE_NAME, None)
     if not (access_token is not None and refresh_token is not None):
@@ -27,7 +30,7 @@ async def verify_auth_tokens(request: Request, response: Response):
     token_refresh_body = {
         'access_token': access_token,
         'refresh_token': refresh_token,
-        'user_agent': request.headers.get('user-agent')
+        'user_agent': request.headers.get('user-agent'),
     }
 
     headers = {'user-agent': request.headers.get('user-agent')}
@@ -40,14 +43,12 @@ async def verify_auth_tokens(request: Request, response: Response):
                 raise HTTPException(status_code=HTTPStatus.UNAUTHORIZED, detail='Unable to refresh tokens')
 
             response_body = await auth_response.json()
-            cookie_expires_seconds = (datetime.datetime.fromtimestamp(response_body['access_token_expire_timestamp']) -
+            cookie_expires_seconds = (datetime.datetime.fromtimestamp(response_body['refresh_token_expire_timestamp']) -
                                       datetime.datetime.now()).seconds
             response.set_cookie(key=get_settings_instance().JWT_ACCESS_COOKIE_NAME,
                                 value=response_body['access_token'],
                                 httponly=True,
                                 expires=cookie_expires_seconds)
-            cookie_expires_seconds = (datetime.datetime.fromtimestamp(response_body['refresh_token_expire_timestamp']) -
-                                      datetime.datetime.now()).seconds
             response.set_cookie(key=get_settings_instance().REFRESH_TOKEN_COOKIE_NAME,
                                 value=response_body['refresh_token'],
                                 httponly=True,

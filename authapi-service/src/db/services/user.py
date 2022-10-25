@@ -3,10 +3,10 @@ import uuid
 
 from sqlalchemy.exc import IntegrityError
 
-from src.db.services.permissions import PermissionService
 from src.db.core import db_session
 from src.db.models.users import User
 from src.db.services.base import IUserService
+from src.db.services.permissions import PermissionService
 
 
 class UserService(IUserService):

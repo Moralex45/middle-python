@@ -39,7 +39,7 @@ class RoleService(IRoleService):
         with db_session() as session:
             db_role = Role(
                 code=code,
-                description=description
+                description=description,
             )
             session.add_all([db_role])
 
@@ -48,7 +48,7 @@ class RoleService(IRoleService):
             except IntegrityError:
                 raise ValueError(
                     'Unable to create role with passed code. '
-                    'Instance already exists'
+                    'Instance already exists',
                 )
 
             return cls.get_by_id(db_role.id)

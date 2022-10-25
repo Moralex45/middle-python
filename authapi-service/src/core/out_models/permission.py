@@ -5,7 +5,7 @@ from src.core.out_models.base import Base
 
 
 class Permission(Base):
-    id: uuid.UUID
+    id: uuid.UUID  # noqa
     code: int
 
     @classmethod

@@ -44,7 +44,7 @@ class FilmService:
             body = {
                 'from': (page_number - 1) * page_size,
                 'size': page_size,
-                'sort': [{sort_field: {'order': 'desc' if sort_desc else 'asc'}}]
+                'sort': [{sort_field: {'order': 'desc' if sort_desc else 'asc'}}],
             }
             if filter_genre_id is not None:
                 body['query'] = {
@@ -54,12 +54,12 @@ class FilmService:
                             'bool': {
                                 'filter': {
                                     'term': {
-                                        'genre.id': filter_genre_id
-                                    }
-                                }
-                            }
-                        }
-                    }
+                                        'genre.id': filter_genre_id,
+                                    },
+                                },
+                            },
+                        },
+                    },
                 }
             films = await self.storage_service.search(index='movies', body=body, base_class=FilmBase)
             if not films:
@@ -84,10 +84,10 @@ class FilmService:
                                         'multi_match': {
                                             'query': query,
                                             'fuzziness': 'auto',
-                                            'fields': ['genre.name']
-                                        }
-                                    }
-                                }
+                                            'fields': ['genre.name'],
+                                        },
+                                    },
+                                },
                             },
                             {
                                 'multi_match': {
@@ -99,12 +99,12 @@ class FilmService:
                                         'directors_names',
                                         'title',
                                         'description',
-                                    ]
-                                }
-                            }
-                        ]
-                    }
-                }
+                                    ],
+                                },
+                            },
+                        ],
+                    },
+                },
             }
             films = await self.storage_service.search(index='movies', body=body, base_class=FilmBase)
             if not films:

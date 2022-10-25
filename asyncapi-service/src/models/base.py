@@ -4,8 +4,8 @@ import orjson
 from pydantic import BaseModel
 
 
-def orjson_dumps(v, *, default):
-    return orjson.dumps(v, default=default).decode()
+def orjson_dumps(value, *, default):
+    return orjson.dumps(value, default=default).decode()
 
 
 class Base(BaseModel, ABC):

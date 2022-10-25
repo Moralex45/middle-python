@@ -25,7 +25,7 @@ def get_permission_list():
 
     permission = orjson.dumps(
         [OutPermission.from_orm(db_permission) for db_permission in db_permissions],
-        default=pydantic_encoder
+        default=pydantic_encoder,
     )
     response_body = permission
 
@@ -68,7 +68,7 @@ def create_permission():
 
     try:
         db_permission = PermissionService.create(
-            request_permission.code
+            request_permission.code,
         )
 
         permission = OutPermission.from_orm(db_permission)
@@ -99,7 +99,7 @@ def change_permission(permission_id: uuid.UUID):
     try:
         db_permission = PermissionService.update(
             permission_id,
-            request_permission.code
+            request_permission.code,
         )
         permission = OutPermission.from_orm(db_permission)
         response_body = permission.json()

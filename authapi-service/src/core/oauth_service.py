@@ -16,7 +16,7 @@ def register_social_account(
     social_id: str,
     email: str,
     username: str,
-) -> tuple[dict[str, str], int]:
+):
 
     response_status = HTTPStatus.OK
 
@@ -25,7 +25,7 @@ def register_social_account(
     if not current_user:
         current_user = UserService.create(
             username=username,
-            password=generator_pw()
+            password=generator_pw(),
         )
 
     if not \
@@ -33,12 +33,12 @@ def register_social_account(
             get_filtered_by_user_id_and_social_id_and_social_name(
                 user_id=current_user.id,
                 social_id=social_id,
-                social_name=social_name
+                social_name=social_name,
             ):
         SocialAccountService.create(
             user_id=current_user.id,
             social_id=social_id,
-            social_name=social_name
+            social_name=social_name,
         )
 
     access_token = create_access_token(identity=current_user)
@@ -54,14 +54,14 @@ def register_social_account(
         key=get_settings_instance().JWT_ACCESS_COOKIE_NAME,
         value=access_token,
         httponly=True,
-        expires=datetime.datetime.now() + datetime.timedelta(seconds=get_settings_instance().JWT_ACCESS_TOKEN_EXPIRES)
+        expires=datetime.datetime.now() + datetime.timedelta(seconds=get_settings_instance().JWT_ACCESS_TOKEN_EXPIRES),
     )
 
     response.set_cookie(
         key=get_settings_instance().REFRESH_TOKEN_COOKIE_NAME,
         value=refresh_token,
         httponly=True,
-        expires=refresh_token_expire
+        expires=refresh_token_expire,
     )
 
     return response

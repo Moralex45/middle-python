@@ -7,8 +7,6 @@ from asgiref.wsgi import WsgiToAsgi
 from app_utils import create_app
 from core.config import get_settings_instance
 
-# from core.logger import LOGGING
-
 SOURCE_DIR = os.path.dirname(__file__)
 if SOURCE_DIR not in sys.path:
     sys.path.append(SOURCE_DIR)
@@ -21,5 +19,4 @@ if __name__ == '__main__':
         'asgi:asgi_app',
         host=get_settings_instance().FLASK_HOST,
         port=get_settings_instance().FLASK_PORT,
-        # log_config=LOGGING
     )

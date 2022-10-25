@@ -5,10 +5,10 @@ from http import HTTPStatus
 from flask import Blueprint, Response, make_response, request
 from flask_jwt_extended import create_access_token
 
-from src.core.utils import rate_limit
 from src import cache
 from src.core.config import get_settings_instance
 from src.core.in_models.user import UserLogin as InUserLogin
+from src.core.utils import rate_limit
 from src.db.services.auth_history import AuthHistoryService
 from src.db.services.user import UserService
 
@@ -69,14 +69,14 @@ def login_user():
         key=get_settings_instance().JWT_ACCESS_COOKIE_NAME,
         value=access_token,
         httponly=True,
-        expires=datetime.datetime.now() + datetime.timedelta(seconds=get_settings_instance().JWT_ACCESS_TOKEN_EXPIRES)
+        expires=refresh_token_expire,
     )
 
     response.set_cookie(
         key=get_settings_instance().REFRESH_TOKEN_COOKIE_NAME,
         value=refresh_token,
         httponly=True,
-        expires=refresh_token_expire
+        expires=refresh_token_expire,
     )
 
     cache.cache_service.set_user_session_by_user_id_and_user_agent(db_user.id,

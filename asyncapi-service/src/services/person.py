@@ -61,7 +61,7 @@ class PersonService:
                                               page_number: int,
                                               page_size: int,
                                               query: str) -> list[Person] | None:
-        person = list()
+        person = []
         body = {
             'from': (page_number - 1) * page_size,
             'size': page_size,
@@ -70,10 +70,10 @@ class PersonService:
                     'query': query,
                     'fuzziness': 'auto',
                     'fields': [
-                        'full_name'
-                    ]
-                }
-            }
+                        'full_name',
+                    ],
+                },
+            },
         }
 
         try:
@@ -102,8 +102,8 @@ class PersonService:
 
     @backoff.on_exception(backoff.expo, [exceptions.ConnectionError], max_time=10)
     async def _get_person_roles_filmids_from_elastic(self, person_name: str):
-        roles = list()
-        film_ids = list()
+        roles = []
+        film_ids = []
         for role, query in person_roles_find.items():
             results = await self.storage_service.elastic.search(index='movies', body=query % person_name)
             for entry in results['hits']['hits']:
@@ -114,7 +114,7 @@ class PersonService:
 
     @backoff.on_exception(backoff.expo, [exceptions.ConnectionError], max_time=10)
     async def _get_person_films_from_elastic(self, person_name: str) -> list[FilmBase]:
-        films = list()
+        films = []
         for query in person_roles_find.values():
             body = query % person_name
             results = await self.storage_service.search(index='movies', body=body, base_class=FilmBase)

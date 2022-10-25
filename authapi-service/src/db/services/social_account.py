@@ -18,13 +18,13 @@ class SocialAccountService(ISocialAccountService):
         cls,
         user_id: uuid.UUID,
         social_id: str,
-        social_name: str
+        social_name: str,
     ) -> SAT:
         with db_session() as session:
             db_social_account = SocialAccount(
                 user_id=user_id,
                 social_id=social_id,
-                social_name=social_name
+                social_name=social_name,
             )
 
             session.add(db_social_account)
@@ -43,11 +43,11 @@ class SocialAccountService(ISocialAccountService):
         cls,
         user_id: uuid.UUID,
         social_id: str,
-        social_name: str
+        social_name: str,
     ) -> SAT | None:
         with db_session() as session:
             return session.query(SocialAccount).filter_by(
                 user_id=user_id,
                 social_id=social_id,
-                social_name=social_name
+                social_name=social_name,
             ).first()

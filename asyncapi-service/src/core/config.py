@@ -24,6 +24,8 @@ class Settings(BaseSettings):
     AUTH_SERVICE_TOKENS_REFRESH_URL: str = Field(env='AUTH_SERVICE_TOKENS_REFRESH_URL',
                                                  default='127.0.0.1:5000/api/v1/auth/refresh/body')
 
+    DEBUG: bool = Field(env='DEBUG', default=False)
+
     FILM_CACHE_EXPIRE_IN_SECONDS: int = 60 * 5
     GENRE_CACHE_EXPIRE_IN_SECONDS: int = 60 * 5
     PERSON_CACHE_EXPIRE_IN_SECONDS: int = 60 * 5

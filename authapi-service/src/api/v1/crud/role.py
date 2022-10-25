@@ -25,7 +25,7 @@ def get_role_list():
 
     role = orjson.dumps(
         [OutRole.from_orm(db_role) for db_role in db_roles],
-        default=pydantic_encoder
+        default=pydantic_encoder,
     )
     response_body = role
 
@@ -70,7 +70,7 @@ def create_role():
     try:
         db_role = RoleService.create(
             request_role.code,
-            request_role.description
+            request_role.description,
         )
         role = OutRole.from_orm(db_role)
         response_body = role.json()
@@ -102,7 +102,7 @@ def change_role(role_id: uuid.UUID):
         db_role = RoleService.update(
             role_id,
             request_role.code,
-            request_role.description
+            request_role.description,
         )
         role = OutRole.from_orm(db_role)
         response_body = role.json()

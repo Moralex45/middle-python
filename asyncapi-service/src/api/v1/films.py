@@ -17,15 +17,15 @@ router = APIRouter()
             description='Полнотекстовый поиск по кинопроизведениям',
             summary='Endpoint позволяет проводить поиск по кинопроизведениям',
             response_description='Лист объектов FilmBase',
-            tags=['Полнотекстовый поиск элементов'])
+            tags=['Полнотекстовый поиск элементов'],
+            dependencies=[Depends(verify_auth_tokens)])
 async def film_search(
         _query: str = Query(alias='query'),
         paginated_parameters: PaginatedParams = Depends(PaginatedParams.query_paginated_parameters),
         film_service: FilmService = Depends(get_film_service)) -> list[FilmBase]:
     page_number, page_size = paginated_parameters.page_number, paginated_parameters.page_size
-    films = await film_service.search(page_number, page_size, _query)
 
-    return films
+    return await film_service.search(page_number, page_size, _query)
 
 
 @router.get('/{film_id}',
@@ -59,7 +59,7 @@ async def film_list(_filter: UUID | None = Query(alias='filter[genre]', default=
     films = await film_service.get_list_filter_sort_paginate(page_size,
                                                              page_number,
                                                              _sort.replace('-', ''),
-                                                             True if '-' in _sort else False,
+                                                             '-' in _sort,
                                                              _filter)
     if not films:
         return []

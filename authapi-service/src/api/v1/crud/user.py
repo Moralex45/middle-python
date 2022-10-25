@@ -30,7 +30,7 @@ def check_permissions(user_id: uuid.UUID):
     response_status = HTTPStatus.OK
     required_permissions = [int(required_permission) for required_permission in request.args.getlist('permission')]
 
-    if not len(required_permissions):
+    if len(required_permissions) == 0:
         response_status = HTTPStatus.BAD_REQUEST
         return Response(response_body, status=response_status, mimetype='application/json')
 
@@ -101,11 +101,7 @@ def update_credentials():
             or user_update.email is not None \
             or user_update.birth_date is not None:
         if user_update.birth_date is not None:
-            try:
-                birth_date = datetime.datetime.fromtimestamp(birth_date)
-            except Exception:
-                response_status = HTTPStatus.BAD_REQUEST
-                return Response(response_body, status=response_status, mimetype='application/json')
+            birth_date = datetime.datetime.fromtimestamp(birth_date)
 
         UserDataService.update(user_id=db_user.id, first_name=user_update.first_name, last_name=user_update.last_name,
                                email=user_update.email, birth_date=birth_date)

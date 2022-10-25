@@ -15,7 +15,7 @@ class AuthHistoryService(IAuthHistoryService):
             db_auth_history = AuthHistory(
                 ip=ip,
                 user_id=user_id,
-                user_agent=user_agent
+                user_agent=user_agent,
             )
             session.add(db_auth_history)
 
@@ -24,7 +24,7 @@ class AuthHistoryService(IAuthHistoryService):
             except IntegrityError:
                 raise ValueError(
                     'Unable to create auth history with passed data. '
-                    'Instance already exists'
+                    'Instance already exists',
                 )
 
             return cls.get_by_id(db_auth_history.id)
@@ -85,18 +85,16 @@ class AuthHistoryService(IAuthHistoryService):
     @classmethod
     def get_by_user_name_and_user_agent(cls, user_name: str, user_agent: str) -> AuthHistory | None:
         with db_session() as session:
-            auth_history = session.query(AuthHistory) \
+            return session.query(AuthHistory) \
                 .join(User, User.id == AuthHistory.user_id) \
                 .filter(User.username == user_name)\
                 .filter(AuthHistory.user_agent == user_agent) \
                 .first()
-            return auth_history
 
     @classmethod
     def get_by_user_name(cls, user_name: str) -> [AuthHistory]:
         with db_session() as session:
-            auth_histories = session.query(AuthHistory) \
+            return session.query(AuthHistory) \
                 .join(User, User.id == AuthHistory.user_id) \
                 .filter(User.username == user_name) \
                 .all()
-            return auth_histories

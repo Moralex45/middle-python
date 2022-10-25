@@ -5,7 +5,7 @@ from src.core.out_models.base import Base
 
 
 class UserRole(Base):
-    id: uuid.UUID
+    id: uuid.UUID  # noqa
     user_id: uuid.UUID
     role_id: uuid.UUID
 

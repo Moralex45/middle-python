@@ -24,9 +24,8 @@ async def film_search(query: str,
                       paginated_parameters: PaginatedParams = Depends(PaginatedParams.query_paginated_parameters),
                       person_service: PersonService = Depends(get_persons_service)) -> list[Person]:
     page_number, page_size = paginated_parameters.page_number, paginated_parameters.page_size
-    persons = await person_service.search(page_number, page_size, query)
 
-    return persons
+    return await person_service.search(page_number, page_size, query)
 
 
 @router.get('/{person_id}',

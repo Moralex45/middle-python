@@ -2,9 +2,9 @@ from http import HTTPStatus
 
 from flask import Blueprint, Response, request
 
-from src.core.utils import rate_limit
 from src.core.constants import SAMPLE_USER_ROLE
 from src.core.in_models.user import UserRegister as InUserRegister
+from src.core.utils import rate_limit
 from src.db.services.role import RoleService
 from src.db.services.user import UserService
 from src.db.services.user_role import UserRoleService

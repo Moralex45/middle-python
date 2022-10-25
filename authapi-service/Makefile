@@ -1,4 +1,4 @@
-SHELL := /bin/bash
+`SHELL := /bin/bash
 
 run:
 	python3 src/wsgi.py

@@ -10,14 +10,14 @@ from src.core.config import get_settings_instance
 
 
 def configure_tracer() -> None:
-    trace.set_tracer_provider(TracerProvider(resource=Resource.create({SERVICE_NAME: "authapi_service"})))
+    trace.set_tracer_provider(TracerProvider(resource=Resource.create({SERVICE_NAME: 'authapi_service'})))
     trace.get_tracer_provider().add_span_processor(
         BatchSpanProcessor(
             JaegerExporter(
                 agent_host_name=get_settings_instance().JAEGER_HOST,
                 agent_port=get_settings_instance().JAEGER_PORT,
-            )
-        )
+            ),
+        ),
     )
 
 
