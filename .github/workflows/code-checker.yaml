@@ -1,0 +1,34 @@
+name: Static flake8 code checking
+on: push
+jobs:
+  linter_async_service:
+    name: Linter
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Python setting up
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.10.0
+    - name: Installing dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8
+        pip install flake8-print
+        pip install flake8-bugbear
+        pip install flake8-simplify
+        pip install flake8-pie
+        pip install flake8-commas
+        pip install flake8-comprehensions
+        pip install flake8-eradicate
+        pip install flake8-quotes
+        pip install flake8-variables-names
+        pip install dlint
+    - name: Flake8 asyncapi
+      run: flake8 asyncapi-service
+    - name: Flake8 authapi
+      run: flake8 authapi-service
+    - name: Flake8 ugc
+      run: flake8 ugc-service
+    - name: Flake8 etl-kafka-clickhouse
+      run: flake8 etl-kafka-clickhouse

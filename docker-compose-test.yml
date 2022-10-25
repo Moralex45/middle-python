@@ -1,0 +1,154 @@
+version: '3'
+services:
+  etl_service:
+    build: etl-service
+    env_file:
+      - etl-service/.env/.env.prod
+    restart: always
+    depends_on:
+      - elasticsearch
+    networks:
+      - cinema_backend_test_network
+
+  data_faker_service:
+    build: data-faker-service
+    env_file:
+      - data-faker-service/.env/.env.prod
+    depends_on:
+      - movies_postgres
+      - admin_service
+    networks:
+      - cinema_backend_test_network
+
+  asyncapi_service:
+    build: asyncapi-service
+    env_file:
+      - asyncapi-service/.env/.env.prod
+    expose:
+      - "8000"
+    restart: always
+    depends_on:
+      - movies_redis
+      - elasticsearch
+    networks:
+      - cinema_backend_test_network
+
+  admin_service:
+    build: admin-service
+    env_file:
+      - admin-service/.env/.env.prod
+    expose:
+      - "8000"
+    restart: always
+    volumes:
+      - cinema_backend_test_static
+    depends_on:
+      - movies_postgres
+    networks:
+      - cinema_backend_test_network
+
+  authapi_service:
+    build: authapi-service
+    env_file:
+      - authapi-service/.env/.env.prod
+    expose:
+      - "8000"
+    restart: always
+    depends_on:
+      - auth_postgres
+      - auth_redis
+    networks:
+      - cinema_backend_test_network
+
+  movies_postgres:
+    image: postgres:13
+    env_file:
+      - docker/movies_postgresql/.env/.env.prod
+    expose:
+      - "5432"
+    ports:
+      - "54320:5432"
+    restart: always
+    volumes:
+      - ./docker/movies_postgresql/init_scripts:/docker-entrypoint-initdb.d
+      - cinema_backend_test_pg_data
+    networks:
+      - cinema_backend_test_network
+
+  auth_postgres:
+    image: postgres:13
+    env_file:
+      - docker/auth_postgresql/.env/.env.prod
+    expose:
+      - "5432"
+    ports:
+      - "54321:5432"
+    restart: always
+    volumes:
+      - ./docker/auth_postgresql/init_scripts:/docker-entrypoint-initdb.d
+      - cinema_backend_test_auth_pg_data
+    networks:
+      - cinema_backend_test_network
+
+  elasticsearch:
+    image: elasticsearch:7.17.5
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    expose:
+      - "9200"
+    ports:
+      - "9200:9200"
+    restart: always
+    volumes:
+      - cinema_backend_test_elasticsearch_data
+    networks:
+      - cinema_backend_test_network
+
+  movies_redis:
+    image: redis:7.0.4-alpine
+    expose:
+      - "6379"
+    ports:
+      - "63790:6379"
+    restart: always
+    networks:
+      - cinema_backend_test_network
+
+  auth_redis:
+    image: redis:7.0.4-alpine
+    expose:
+      - "6379"
+    ports:
+      - "63791:6379"
+    restart: always
+    networks:
+      - cinema_backend_test_network
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - cinema_backend_test_static
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/configs:/etc/nginx/conf.d
+    expose:
+      - "80"
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - admin_service
+      - asyncapi_service
+      - authapi_service
+    networks:
+      - cinema_backend_test_network
+
+volumes:
+  cinema_backend_test_auth_pg_data:
+  cinema_backend_test_pg_data:
+  cinema_backend_test_elasticsearch_data:
+  cinema_backend_test_static:
+
+networks:
+  cinema_backend_test_network:
+    driver: bridge
