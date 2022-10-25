@@ -112,6 +112,14 @@ services:
     networks:
       - cinema_backend_network
 
+  ugc_etl_service:
+    build: ugc-etl
+    env_file:
+      - - ugc-etl/.env/.env.prod
+    restart: always
+    depends_on:
+      - kafka_broker
+
   movies_postgres:
     image: postgres:13
     env_file:
