@@ -52,10 +52,10 @@ services:
     networks:
       - cinema_backend_network
 
-  etl_service:
-    build: etl-service
+  movies_etl_service:
+    build: movies-etl-service
     env_file:
-      - etl-service/.env/.env.prod
+      - movies-etl-service/.env/.env.prod
     restart: always
     depends_on:
       - elasticsearch
