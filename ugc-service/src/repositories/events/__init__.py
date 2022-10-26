@@ -4,5 +4,5 @@ from .base import EventRepositoryProtocol
 from .kafka import KafkaEventRepository
 
 __all__ = [
-    'EventRepositoryProtocol', 'KafkaEventRepository', 'get_event_repository'
+    'EventRepositoryProtocol', 'KafkaEventRepository', 'get_event_repository',
 ]

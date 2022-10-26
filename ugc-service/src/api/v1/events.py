@@ -17,6 +17,6 @@ async def film_search(
         events_repository_instance: events_repository.EventRepositoryProtocol = fastapi.Depends(events_repository.get_event_repository)  # noqa
 ):
     movie_watching_event: events_inner_models.MovieWatchingEvent = events_inner_models.MovieWatchingEvent(
-        **movie_watching_event_request_model.dict()
+        **movie_watching_event_request_model.dict(),
     )
     await events_repository_instance.produce(movie_watching_event)
