@@ -8,6 +8,11 @@ class KafkaSettings(BaseConfig):
     HOST: str = '127.0.0.1'
     PORT: int = 9092
 
+    # auto-commit settings
+    # these values should be large, since the commit is done manually
+    COMMIT_SECONDS: float = 86400
+    COMMIT_RECORDS: int = 1000000
+
     class Config:
         env_prefix = 'KAFKA_'
 
@@ -23,6 +28,9 @@ class CHSettings(BaseConfig):
     USER: str = 'admin'
     PASSWORD: str = 'password'
     DATABASE: str = 'movies_db'
+
+    # the number of records recorded at a time
+    MAX_BATCH: int = 1000
 
     class Config:
         env_prefix = 'CH_'

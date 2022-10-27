@@ -113,9 +113,9 @@ services:
       - cinema_backend_network
 
   ugc_etl_service:
-    build: ugc-etl
+    build: ugc-etl-service
     env_file:
-      - - ugc-etl/.env/.env.prod
+      - ugc-etl-service/.env/.env.prod
     restart: always
     depends_on:
       - kafka_broker
