@@ -19,7 +19,7 @@ class KafkaSettings(BaseConfig):
     @property
     def dsn(self) -> KafkaDsn:
         dsn: KafkaDsn = f'kafka://{self.HOST}:{self.PORT}'
-        return dsn
+        return dsn  # noqa
 
 
 class CHSettings(BaseConfig):
