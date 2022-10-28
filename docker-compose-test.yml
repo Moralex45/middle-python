@@ -1,9 +1,61 @@
 version: '3'
 services:
-  etl_service:
-    build: etl-service
+  jaeger:
+    container_name: jaeger
+    image: jaegertracing/all-in-one:1.7
+    ports:
+      - "6831:6831/udp"
+      - "5778:5778"
+      - "16686:16686"
+      - "14250:14250"
+      - "14268:14268"
+      - "14269:14269"
+    networks:
+      - cinema_backend_network
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.0.1
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - cinema_backend_network
+
+  kafka_broker:
+    image: confluentinc/cp-kafka:7.0.1
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka_broker:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    networks:
+      - cinema_backend_network
+
+  ugc_service:
+    build: ugc-service
     env_file:
-      - etl-service/.env/.env.prod
+      - ugc-service/.env/.env.prod
+    expose:
+      - "8000"
+    restart: always
+    depends_on:
+      - kafka_broker
+      - zookeeper
+    networks:
+      - cinema_backend_network
+
+  movies_etl_service:
+    build: movies-etl-service
+    env_file:
+      - movies-etl-service/.env/.env.prod
     restart: always
     depends_on:
       - elasticsearch

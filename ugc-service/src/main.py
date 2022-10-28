@@ -1,41 +1,40 @@
 import asyncio
 
 import uvicorn
-from aiokafka import AIOKafkaProducer
-from fastapi import FastAPI
-from fastapi.responses import ORJSONResponse
+import aiokafka
+import fastapi
 
-from src.core.config import get_settings
-from src.api.v1.events import router as events_router
-from src.storages import kafka
+import src.core.config as project_config
+import src.api.v1.events as events_endpoints
+import src.services.kafka as kafka_service
 
-app = FastAPI(
-    title=get_settings().PROJECT_NAME,
+app = fastapi.FastAPI(
+    title=project_config.get_settings().project_name,
     description='Сервиса для обработки активностей пользователя',
     version='0.1',
     redoc_url='/api/docs/redoc',
     docs_url='/api/docs/openapi',
     openapi_url='/api/docs/openapi.json',
-    default_response_class=ORJSONResponse,
+    default_response_class=fastapi.responses.ORJSONResponse,
 )
 
-app.include_router(events_router, tags=['events'])
+app.include_router(events_endpoints.router, tags=['events'])
 
 
 @app.on_event('startup')
 async def startup_event():
     loop = asyncio.get_event_loop()
-    kafka.producer = AIOKafkaProducer(
+    kafka_service.kafka_instance = aiokafka.AIOKafkaProducer(
         loop=loop,
-        client_id=get_settings().PROJECT_NAME,
-        bootstrap_servers=get_settings().kafka_settings.url,
+        client_id=project_config.get_settings().project_name,
+        bootstrap_servers=project_config.get_settings().kafka_settings.url,
     )
-    await kafka.producer.start()
+    await kafka_service.kafka_instance.start()
 
 
 @app.on_event('shutdown')
 async def shutdown_event():
-    await kafka.producer.stop()
+    await kafka_service.kafka_instance.stop()
 
 
 if __name__ == '__main__':

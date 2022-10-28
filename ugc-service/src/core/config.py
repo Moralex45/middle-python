@@ -14,45 +14,45 @@ class BaseConfig(BaseSettings):
 
 
 class KafKaSettings(BaseConfig):
-    HOST: str = 'localhost'
-    PORT: int = 9092
+    host: str = 'localhost'
+    port: int = 9092
 
     class Config:
         env_prefix = 'KAFKA_'
 
     @property
     def url(self):
-        return f'{self.HOST}:{self.PORT}'
+        return f'{self.host}:{self.port}'
 
 
 class RedisSettings(BaseConfig):
-    HOST: str = 'localhost'
-    PORT: int = 6379
+    host: str = 'localhost'
+    port: int = 6379
 
     class Config:
         env_prefix = 'REDIS_'
 
     @property
     def url(self):
-        return f'{self.HOST}:{self.PORT}'
+        return f'{self.host}:{self.port}'
 
 
 class ProjectSettings(BaseConfig):
     kafka_settings: KafKaSettings = KafKaSettings()
     redis_settings: RedisSettings = RedisSettings()
 
-    PROJECT_NAME: str = 'UGC service'
+    project_name: str = 'UGC service'
 
-    MOVIE_WATCHING_EVENT_KAFKA_TOPIC = 'views'
+    movie_watching_event_kafka_topic = 'views'
 
-    JWT_ACCESS_COOKIE_NAME: str = 'access_token_cookie'
-    REFRESH_TOKEN_COOKIE_NAME: str = 'refresh_token_cookie'
+    jwt_access_cookie_name: str = 'access_token_cookie'
+    refresh_token_cookie_name: str = 'refresh_token_cookie'
 
-    JWT_SECRET: str = Field(env='JWT_SECRET')
+    jwt_secret: str = Field(env='JWT_SECRET')
 
-    AUTH_SERVICE_TOKENS_REFRESH_URL: str = 'http://localhost:5000/api/v1/auth/refresh/body'
+    auth_service_tokens_refresh_url: str = 'http://localhost:5000/api/v1/auth/refresh/body'
 
-    DEBUG: bool = False
+    debug: bool = False
 
 
 __settings = ProjectSettings()
