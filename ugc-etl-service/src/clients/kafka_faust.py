@@ -10,5 +10,9 @@ from core.config import etl_logger, settings
                       logger=etl_logger,
                       max_time=10)
 def get_faust_app():
-    app = App('kafka-etl', broker=settings.kafka_settings.dsn)
-    return app
+    return App(
+        'kafka-etl',
+        broker=settings.kafka_settings.dsn,
+        broker_commit_every=settings.kafka_settings.COMMIT_RECORDS,
+        broker_commit_interval=settings.kafka_settings.COMMIT_SECONDS,
+    )
