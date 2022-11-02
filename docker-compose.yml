@@ -1,5 +1,87 @@
 version: '3'
 services:
+  ugc_service:
+    build: ugc-service
+    env_file:
+      - ugc-service/.env/.env.prod
+    expose:
+      - "8000"
+    restart: always
+    depends_on:
+      - kafka_broker
+      - zookeeper
+    networks:
+      - cinema_backend_network
+
+  movies_etl_service:
+    build: movies-etl-service
+    env_file:
+      - movies-etl-service/.env/.env.prod
+    restart: always
+    depends_on:
+      - elasticsearch
+    networks:
+      - cinema_backend_network
+
+  ugc_etl_service:
+    build: ugc-etl-service
+    env_file:
+      - ugc-etl-service/.env/.env.prod
+    restart: always
+    depends_on:
+      - kafka_broker
+      - clickhouse-node1
+
+  data_faker_service:
+    build: data-faker-service
+    env_file:
+      - data-faker-service/.env/.env.prod
+    depends_on:
+      - movies_postgres
+      - admin_service
+    networks:
+      - cinema_backend_network
+
+  asyncapi_service:
+    build: asyncapi-service
+    env_file:
+      - asyncapi-service/.env/.env.prod
+    expose:
+      - "8000"
+    restart: always
+    depends_on:
+      - movies_redis
+      - elasticsearch
+    networks:
+      - cinema_backend_network
+
+  admin_service:
+    build: admin-service
+    env_file:
+      - admin-service/.env/.env.prod
+    expose:
+      - "8000"
+    restart: always
+    volumes:
+      - cinema_backend_static
+    depends_on:
+      - movies_postgres
+    networks:
+      - cinema_backend_network
+
+  authapi_service:
+    build: authapi-service
+    env_file:
+      - authapi-service/.env/.env.prod
+    expose:
+      - "8000"
+    restart: always
+    depends_on:
+      - auth_postgres
+      - auth_redis
+    networks:
+      - cinema_backend_network
+
   jaeger:
     container_name: jaeger
     image: jaegertracing/all-in-one:1.7
@@ -10,15 +92,6 @@ services:
       - "14250"
       - "14268"
       - "14269"
-    networks:
-      - cinema_backend_network
-
-  zookeeper:
-    image: confluentinc/cp-zookeeper:7.0.1
-    container_name: zookeeper
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
     networks:
       - cinema_backend_network
 
@@ -86,85 +159,12 @@ services:
     networks:
       - cinema_backend_network
 
-  ugc_service:
-    build: ugc-service
-    env_file:
-      - ugc-service/.env/.env.prod
-    expose:
-      - "8000"
-    restart: always
-    depends_on:
-      - kafka_broker
-      - zookeeper
-    networks:
-      - cinema_backend_network
-
-  movies_etl_service:
-    build: movies-etl-service
-    env_file:
-      - movies-etl-service/.env/.env.prod
-    restart: always
-    depends_on:
-      - elasticsearch
-    networks:
-      - cinema_backend_network
-
-  ugc_etl_service:
-    build: ugc-etl-service
-    env_file:
-      - ugc-etl-service/.env/.env.prod
-    restart: always
-    depends_on:
-      - kafka_broker
-      - clickhouse-node1
-
-  data_faker_service:
-    build: data-faker-service
-    env_file:
-      - data-faker-service/.env/.env.prod
-    depends_on:
-      - movies_postgres
-      - admin_service
-    networks:
-      - cinema_backend_network
-  
-  asyncapi_service:
-    build: asyncapi-service
-    env_file:
-      - asyncapi-service/.env/.env.prod
-    expose:
-      - "8000"
-    restart: always
-    depends_on:
-      - movies_redis
-      - elasticsearch
-    networks:
-      - cinema_backend_network
-
-  admin_service:
-    build: admin-service
-    env_file:
-      - admin-service/.env/.env.prod
-    expose:
-      - "8000"
-    restart: always
-    volumes:
-      - cinema_backend_static
-    depends_on:
-      - movies_postgres
-    networks:
-      - cinema_backend_network
-
-  authapi_service:
-    build: authapi-service
-    env_file:
-      - authapi-service/.env/.env.prod
-    expose:
-      - "8000"
-    restart: always
-    depends_on:
-      - auth_postgres
-      - auth_redis
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.0.1
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
     networks:
       - cinema_backend_network
 
@@ -216,6 +216,22 @@ services:
       - cinema_backend_network
 
   auth_redis:
+    image: redis:7.0.4-alpine
+    expose:
+      - "6379"
+    restart: always
+    networks:
+      - cinema_backend_network
+
+  ugc_redis:
+    image: redis:7.0.4-alpine
+    expose:
+      - "6379"
+    restart: always
+    networks:
+      - cinema_backend_network
+
+  ugc_extra_redis:
     image: redis:7.0.4-alpine
     expose:
       - "6379"

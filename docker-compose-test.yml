@@ -1,91 +1,5 @@
 version: '3'
 services:
-  jaeger:
-    container_name: jaeger
-    image: jaegertracing/all-in-one:1.7
-    ports:
-      - "6831:6831/udp"
-      - "5778:5778"
-      - "16686:16686"
-      - "14250:14250"
-      - "14268:14268"
-      - "14269:14269"
-    networks:
-      - cinema_backend_test_networ
-
-  zookeeper:
-    image: confluentinc/cp-zookeeper:7.0.1
-    container_name: zookeeper
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-    networks:
-      - cinema_backend_test_network
-
-  clickhouse-node1:
-    image: yandex/clickhouse-server:20.4
-    container_name: clickhouse-node1
-    hostname: clickhouse-node1
-    ports:
-      - "8123:8123"
-      - "9000:9000"
-    volumes:
-      - ./clickhouse-data/node1:/etc/clickhouse-server
-    depends_on:
-      - zookeeper
-    networks:
-      - cinema_backend_test_network
-
-  clickhouse-node2:
-    image: yandex/clickhouse-server:20.4
-    container_name: clickhouse-node2
-    hostname: clickhouse-node2
-    volumes:
-      - ./clickhouse-data/node2:/etc/clickhouse-server
-    depends_on:
-      - zookeeper
-    networks:
-      - cinema_backend_test_network
-
-  clickhouse-node3:
-    image: yandex/clickhouse-server:20.4
-    container_name: clickhouse-node3
-    hostname: clickhouse-node3
-    volumes:
-      - ./clickhouse-data/node3:/etc/clickhouse-server
-    depends_on:
-      - zookeeper
-    networks:
-      - cinema_backend_test_network
-
-  clickhouse-node4:
-    image: yandex/clickhouse-server:20.4
-    container_name: clickhouse-node4
-    hostname: clickhouse-node4
-    volumes:
-      - ./clickhouse-data/node4:/etc/clickhouse-server
-    depends_on:
-      - zookeeper
-    networks:
-      - cinema_backend_test_network
-
-  kafka_broker:
-    image: confluentinc/cp-kafka:7.0.1
-    ports:
-      - "9092:9092"
-    depends_on:
-      - zookeeper
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka_broker:29092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-    networks:
-      - cinema_backend_test_network
-
   ugc_service:
     build: ugc-service
     env_file:
@@ -169,6 +83,92 @@ services:
     networks:
       - cinema_backend_test_network
 
+  jaeger:
+    container_name: jaeger
+    image: jaegertracing/all-in-one:1.7
+    ports:
+      - "6831:6831/udp"
+      - "5778:5778"
+      - "16686:16686"
+      - "14250:14250"
+      - "14268:14268"
+      - "14269:14269"
+    networks:
+      - cinema_backend_test_networ
+
+  clickhouse-node1:
+    image: yandex/clickhouse-server:20.4
+    container_name: clickhouse-node1
+    hostname: clickhouse-node1
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    volumes:
+      - ./clickhouse-data/node1:/etc/clickhouse-server
+    depends_on:
+      - zookeeper
+    networks:
+      - cinema_backend_test_network
+
+  clickhouse-node2:
+    image: yandex/clickhouse-server:20.4
+    container_name: clickhouse-node2
+    hostname: clickhouse-node2
+    volumes:
+      - ./clickhouse-data/node2:/etc/clickhouse-server
+    depends_on:
+      - zookeeper
+    networks:
+      - cinema_backend_test_network
+
+  clickhouse-node3:
+    image: yandex/clickhouse-server:20.4
+    container_name: clickhouse-node3
+    hostname: clickhouse-node3
+    volumes:
+      - ./clickhouse-data/node3:/etc/clickhouse-server
+    depends_on:
+      - zookeeper
+    networks:
+      - cinema_backend_test_network
+
+  clickhouse-node4:
+    image: yandex/clickhouse-server:20.4
+    container_name: clickhouse-node4
+    hostname: clickhouse-node4
+    volumes:
+      - ./clickhouse-data/node4:/etc/clickhouse-server
+    depends_on:
+      - zookeeper
+    networks:
+      - cinema_backend_test_network
+
+  kafka_broker:
+    image: confluentinc/cp-kafka:7.0.1
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka_broker:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    networks:
+      - cinema_backend_test_network
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.0.1
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - cinema_backend_test_network
+
   movies_postgres:
     image: postgres:13
     env_file:
@@ -233,6 +233,22 @@ services:
     restart: always
     networks:
       - cinema_backend_test_network
+
+  ugc_redis:
+    image: redis:7.0.4-alpine
+    expose:
+      - "6379"
+    restart: always
+    networks:
+      - cinema_backend_network
+
+  ugc_extra_redis:
+    image: redis:7.0.4-alpine
+    expose:
+      - "6379"
+    restart: always
+    networks:
+      - cinema_backend_network
 
   nginx:
     image: nginx:latest
