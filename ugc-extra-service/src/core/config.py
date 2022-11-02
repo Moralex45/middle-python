@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from functools import lru_cache
 from pathlib import Path
 
@@ -56,6 +58,6 @@ class ProjectSettings(BaseConfig):
 __settings = ProjectSettings()
 
 
-@lru_cache
+@lru_cache()
 def get_settings() -> ProjectSettings:
     return __settings
