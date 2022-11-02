@@ -25,7 +25,7 @@ jobs:
         pip install flake8-variables-names
         pip install dlint
         pip install mypy
-        mypy --install-types --non-interactive ugc-extra-service
+        pip install uvicorn-stubs
     - name: Flake8 asyncapi
       run: flake8 asyncapi-service
     - name: Flake8 authapi
