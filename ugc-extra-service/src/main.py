@@ -1,6 +1,8 @@
 import uvicorn
 import fastapi
+from motor import motor_asyncio
 
+import src.services.storage as storage_service
 import src.core.config as project_config
 
 
@@ -17,12 +19,15 @@ app = fastapi.FastAPI(
 
 @app.on_event('startup')
 async def startup_event():
-    pass
+    storage_service.mongodb_instance = motor_asyncio.AsyncIOMotorClient(
+        host=project_config.get_settings().mongodb_settings.host,
+        port=project_config.get_settings().mongodb_settings.port,
+    )
 
 
 @app.on_event('shutdown')
 async def shutdown_event():
-    pass
+    ...
 
 
 if __name__ == '__main__':

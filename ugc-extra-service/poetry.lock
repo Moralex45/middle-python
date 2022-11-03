@@ -442,6 +442,14 @@ srv = ["pymongo[srv] (>=4.1,<5)"]
 zstd = ["pymongo[zstd] (>=4.1,<5)"]
 
 [[package]]
+name = "motor-stubs"
+version = "1.7.1"
+description = ""
+category = "main"
+optional = false
+python-versions = ">=3.9,<4.0"
+
+[[package]]
 name = "multidict"
 version = "6.0.2"
 description = "multidict implementation"
@@ -855,7 +863,7 @@ tokenize-rt = ">=2.1"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "8e44a81388427cc239deb6ab1518f6a219a06155937320fc924d0e28d4d79b2d"
+content-hash = "fc13971ef085933f9f0cc79befaafee1ffb2138754bc42cc9c94c7b391127a0f"
 
 [metadata.files]
 aiohttp = [
@@ -1168,6 +1176,10 @@ mccabe = [
 motor = [
     {file = "motor-3.1.1-py3-none-any.whl", hash = "sha256:01d93d7c512810dcd85f4d634a7244ba42ff6be7340c869791fe793561e734da"},
     {file = "motor-3.1.1.tar.gz", hash = "sha256:a4bdadf8a08ebb186ba16e557ba432aa867f689a42b80f2e9f8b24bbb1604742"},
+]
+motor-stubs = [
+    {file = "motor-stubs-1.7.1.tar.gz", hash = "sha256:e24340e3e80ca92b081834268a7e6264bb8196cd5e238913b6ebed7c4afd1270"},
+    {file = "motor_stubs-1.7.1-py3-none-any.whl", hash = "sha256:35a9b57a338c2c82d3dce23e863f6cec8051a8200fe91de5acd2b2b318059acd"},
 ]
 multidict = [
     {file = "multidict-6.0.2-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:0b9e95a740109c6047602f4db4da9949e6c5945cefbad34a1299775ddc9a62e2"},

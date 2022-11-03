@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from functools import lru_cache
+import functools
 from pathlib import Path
 
 from pydantic import BaseSettings, Field
@@ -40,7 +40,7 @@ class RedisSettings(BaseConfig):
 
 
 class ProjectSettings(BaseConfig):
-    kafka_settings: MongodbSettings = MongodbSettings()
+    mongodb_settings: MongodbSettings = MongodbSettings()
     redis_settings: RedisSettings = RedisSettings()
 
     project_name: str = 'UGC extra service'
@@ -58,6 +58,6 @@ class ProjectSettings(BaseConfig):
 __settings = ProjectSettings()
 
 
-@lru_cache()
+@functools.lru_cache()
 def get_settings() -> ProjectSettings:
     return __settings

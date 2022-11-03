@@ -35,6 +35,7 @@ mypy = "^0.982"
 autopep8 = "1.7.0"
 pytest = "7.2.0"
 pytest-aiohttp = "^1.0.4"
+motor-stubs = "^1.7.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
