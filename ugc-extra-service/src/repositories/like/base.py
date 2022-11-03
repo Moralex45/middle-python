@@ -1,13 +1,14 @@
 from __future__ import annotations
 import uuid
 from abc import ABC, abstractmethod
+from typing import AsyncGenerator
 
 from src.models.inner.events.like import Like
 
 
 class AsyncLikeRepositoryProtocol(ABC):
     @abstractmethod
-    async def get_movie_likes(self, movie_id: uuid.UUID) -> list[Like]:
+    async def get_movie_likes(self, movie_id: uuid.UUID) -> AsyncGenerator[Like, None]:
         raise NotImplementedError
 
     @abstractmethod
