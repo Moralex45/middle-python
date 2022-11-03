@@ -27,6 +27,8 @@ services:
     build: ugc-etl-service
     env_file:
       - ugc-etl-service/.env/.env.prod
+    expose:
+      - "8000"
     restart: always
     depends_on:
       - kafka_broker
@@ -238,6 +240,8 @@ services:
     image: redis:7.0.4-alpine
     expose:
       - "6379"
+    ports:
+      - "63792:6379"
     restart: always
     networks:
       - cinema_backend_network
@@ -246,6 +250,8 @@ services:
     image: redis:7.0.4-alpine
     expose:
       - "6379"
+    ports:
+      - "63793:6379"
     restart: always
     networks:
       - cinema_backend_network

@@ -27,6 +27,8 @@ services:
     build: ugc-etl-service
     env_file:
       - ugc-etl-service/.env/.env.prod
+    expose:
+      - "8000"
     restart: always
     depends_on:
       - kafka_broker
