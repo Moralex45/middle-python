@@ -1,19 +1,26 @@
 from __future__ import annotations
 import uuid
 
+from motor import motor_asyncio
+
 from src.models.inner.events.like import Like
-from src.repositories.like.base import LikeRepositoryProtocol
+from src.repositories.like.base import AsyncLikeRepositoryProtocol
+import src.core.config as project_config
 
 
-class MongoDBLikeRepository(LikeRepositoryProtocol):
-    def get_movie_likes(self, movie_id: uuid.UUID) -> list[Like]:
+class AsyncMongoDBLikeRepository(AsyncLikeRepositoryProtocol):
+    def __init__(self, mongodb_instance: motor_asyncio.AsyncIOMotorClient):
+        database = mongodb_instance[project_config.get_settings().mongodb_settings.mongodb_database]
+        self.collection = database[project_config.get_settings().mongodb_settings.mongodb_likes_collection]
+
+    async def get_movie_likes(self, movie_id: uuid.UUID) -> list[Like]:
         pass
 
-    def get_user_likes(self, user_id: uuid.UUID) -> list[Like]:
+    async def get_user_likes(self, user_id: uuid.UUID) -> list[Like]:
         pass
 
-    def create_like(self, like: Like) -> Like:
+    async def create_like(self, like: Like) -> Like:
         pass
 
-    def delete_like(self, user_id: uuid.UUID, movie_id: uuid.UUID):
+    async def delete_like(self, user_id: uuid.UUID, movie_id: uuid.UUID):
         pass

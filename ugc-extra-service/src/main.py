@@ -19,7 +19,7 @@ app = fastapi.FastAPI(
 
 @app.on_event('startup')
 async def startup_event():
-    storage_service.mongodb_instance = motor_asyncio.AsyncIOMotorClient(
+    storage_service.mongodb.mongodb_instance = motor_asyncio.AsyncIOMotorClient(
         host=project_config.get_settings().mongodb_settings.host,
         port=project_config.get_settings().mongodb_settings.port,
     )
