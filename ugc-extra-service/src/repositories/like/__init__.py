@@ -1,3 +1,4 @@
+from __future__ import annotations
 import functools
 
 from src.repositories.like.mongodb import MongoDBLikeRepository
