@@ -10,13 +10,19 @@ class AsyncLikeRepositoryProtocol(ABC):
     async def get_movie_likes_amount(self, movie_id: uuid.UUID) -> int:
         raise NotImplementedError
 
-    async def get_average_movie_mark(self, movie_id: uuid.UUID) -> int | None:
+    async def get_average_movie_mark(self, movie_id: uuid.UUID) -> float | None:
         raise NotImplementedError
 
     @abstractmethod
-    async def create_like(self,  user_id: uuid.UUID, movie_id: uuid.UUID, mark: int, device_fingerprint: str) -> Like:
+    async def create_like(
+            self,  user_id: uuid.UUID, movie_id: uuid.UUID, mark: int, device_fingerprint: str, _id: uuid.UUID = None,
+    ) -> Like:
         raise NotImplementedError
 
     @abstractmethod
     async def delete_like(self, user_id: uuid.UUID, movie_id: uuid.UUID) -> None:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def get_like(self, user_id: uuid.UUID, movie_id: uuid.UUID) -> Like | None:
         raise NotImplementedError
