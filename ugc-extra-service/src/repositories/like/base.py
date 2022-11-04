@@ -15,7 +15,7 @@ class AsyncLikeRepositoryProtocol(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def create_like(self, like: Like) -> None:
+    async def create_like(self,  user_id: uuid.UUID, movie_id: uuid.UUID, device_fingerprint: str) -> Like:
         raise NotImplementedError
 
     @abstractmethod

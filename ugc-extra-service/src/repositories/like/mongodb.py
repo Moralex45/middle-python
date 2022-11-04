@@ -5,6 +5,7 @@ from motor import motor_asyncio
 
 from src.models.inner.events.like import Like
 from src.repositories.like.base import AsyncLikeRepositoryProtocol
+import src.core.exceptions.repositories as repositories_exception
 import src.core.config as project_config
 
 
@@ -27,8 +28,18 @@ class AsyncMongoDBLikeRepository(AsyncLikeRepositoryProtocol):
         documents = await self.collection.find(query).to_list(await self.__count_documents(query))
         return [Like(**document) for document in documents]
 
-    async def create_like(self, like: Like) -> None:
+    async def create_like(self, user_id: uuid.UUID, movie_id: uuid.UUID, device_fingerprint: str) -> Like:
+        """
+        Raises:
+            repositories_exception.DataAlreadyExistsError: on inability to create like
+
+        """
+        like = Like(_id=uuid.uuid4(), user_id=user_id, movie_id=movie_id, device_fingerprint=device_fingerprint)
+        query = {'user_id': str(like.user_id), 'movie_id': str(like.movie_id)}
+        if self.collection.find_one(query) is not None:
+            raise repositories_exception.DataAlreadyExistsError()
         await self.collection.insert_one(like.to_dict())
+        return like
 
     async def delete_like(self, user_id: uuid.UUID, movie_id: uuid.UUID) -> None:
         query = {'user_id': str(user_id), 'movie_id': str(movie_id)}

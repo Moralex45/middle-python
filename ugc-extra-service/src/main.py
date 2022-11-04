@@ -4,7 +4,7 @@ from motor import motor_asyncio
 
 import src.services.storage as storage_service
 import src.core.config as project_config
-
+from src.api.v1.likes import router
 
 app = fastapi.FastAPI(
     title=project_config.get_settings().project_name,
@@ -15,6 +15,8 @@ app = fastapi.FastAPI(
     openapi_url='/api/docs/openapi.json',
     default_response_class=fastapi.responses.ORJSONResponse,
 )
+
+app.include_router(router, tags=['events'])
 
 
 @app.on_event('startup')
