@@ -1,25 +1,27 @@
 import uuid
 
-from pydantic import Field
+import pydantic
 
-from src.models.inner.base import Base
+from src.models.http.base import Base
 
 
 class LikeCreation(Base):
     user_id: uuid.UUID
     movie_id: uuid.UUID
     mark: int
-    device_fingerprint: str
 
 
 class Like(Base):
-    id: uuid.UUID = Field(..., alias='_id')  # noqa
+    id: uuid.UUID  # noqa
     user_id: uuid.UUID
     movie_id: uuid.UUID
     mark: int
-    device_fingerprint: str
 
 
 class AverageLikeMarkByFilm(Base):
     mark: float
     amount: int
+
+    @pydantic.validator('mark')
+    def mark_check(cls, value: float):
+        return round(value, 1)

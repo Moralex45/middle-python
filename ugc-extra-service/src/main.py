@@ -1,9 +1,9 @@
-import uvicorn
 import fastapi
+import uvicorn
 from motor import motor_asyncio
 
-import src.services.storage as storage_service
 import src.core.config as project_config
+import src.services.storage as storage_service
 from src.api.v1.likes import router
 
 app = fastapi.FastAPI(

@@ -1,15 +1,14 @@
 import uuid
 
-import pydantic
+from pydantic import Field
 
 from src.models.http.base import Base
 
 
-class Like(Base):
-    id: uuid.UUID = pydantic.Field(..., alias='_id')  # noqa
+class Bookmark(Base):
+    id: uuid.UUID = Field(..., alias='_id')  # noqa
     user_id: uuid.UUID
     movie_id: uuid.UUID
-    mark: int
 
     def to_dict(self, by_alias=True) -> dict:
         data = self.dict(by_alias=by_alias)

@@ -4,10 +4,11 @@ import uuid
 
 import fastapi
 
-from src.core.utils import verify_auth_tokens
-import src.models.http.events.like as http_likes_models
 import src.core.exceptions.repositories as repositories_exception
-from src.repositories.like import AsyncMongoDBLikeRepository, get_like_repository
+import src.models.http.events.like as http_likes_models
+from src.core.utils import verify_auth_tokens
+from src.repositories.like import (AsyncMongoDBLikeRepository,
+                                   get_like_repository)
 
 router = fastapi.APIRouter(prefix='/api/v1/likes')
 
@@ -25,9 +26,9 @@ async def create_like(
 ) -> http_likes_models.Like:
     try:
         like = await like_repository.create_like(
-            http_like.user_id, http_like.movie_id, http_like.mark, http_like.device_fingerprint,
+            http_like.user_id, http_like.movie_id, http_like.mark,
         )
-        return http_likes_models.Like(**like.to_dict())
+        return http_likes_models.Like(**like.to_dict(False))
 
     except repositories_exception.DataAlreadyExistsError:
         raise fastapi.HTTPException(status_code=fastapi.status.HTTP_400_BAD_REQUEST, detail='Like already exist')
@@ -65,8 +66,8 @@ async def update_like(
     if like is None:
         raise fastapi.HTTPException(status_code=fastapi.status.HTTP_400_BAD_REQUEST, detail='Like does not exist')
     await like_repository.delete_like(user_id, movie_id)
-    like = await like_repository.create_like(like.user_id, like.movie_id, mark, like.device_fingerprint, _id=like.id)
-    return http_likes_models.Like(**like.to_dict())
+    like = await like_repository.create_like(like.user_id, like.movie_id, mark, _id=like.id)
+    return http_likes_models.Like(**like.to_dict(False))
 
 
 @router.post('/average_mark',

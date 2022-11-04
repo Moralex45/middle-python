@@ -1,12 +1,13 @@
 from __future__ import annotations
+
 import uuid
 
 from motor import motor_asyncio
 
+import src.core.config as project_config
+import src.core.exceptions.repositories as repositories_exception
 from src.models.inner.events.like import Like
 from src.repositories.like.base import AsyncLikeRepositoryProtocol
-import src.core.exceptions.repositories as repositories_exception
-import src.core.config as project_config
 
 
 class AsyncMongoDBLikeRepository(AsyncLikeRepositoryProtocol):
@@ -34,7 +35,7 @@ class AsyncMongoDBLikeRepository(AsyncLikeRepositoryProtocol):
         return None
 
     async def create_like(
-            self, user_id: uuid.UUID, movie_id: uuid.UUID, mark: int, device_fingerprint: str, _id: uuid.UUID = None,
+            self, user_id: uuid.UUID, movie_id: uuid.UUID, mark: int, _id: uuid.UUID = None,
     ) -> Like:
         """
         Raises:
@@ -45,7 +46,6 @@ class AsyncMongoDBLikeRepository(AsyncLikeRepositoryProtocol):
             _id=uuid.uuid4() if _id is None else _id,
             user_id=user_id,
             movie_id=movie_id,
-            device_fingerprint=device_fingerprint,
             mark=mark,
         )
         if await self.get_like(like.user_id, like.movie_id) is not None:
