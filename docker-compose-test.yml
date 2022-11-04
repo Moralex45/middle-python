@@ -256,6 +256,16 @@ services:
     networks:
       - cinema_backend_network
 
+  ugc_mongodb:
+    image: mongo
+    expose:
+      - "27017"
+    ports:
+      - "27017:27017"
+    restart: always
+    networks:
+      - cinema_backend_network
+
   nginx:
     image: nginx:latest
     volumes:
