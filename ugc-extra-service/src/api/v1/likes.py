@@ -6,7 +6,6 @@ import fastapi
 
 from src.core.utils import verify_auth_tokens
 import src.models.http.events.like as http_likes_models
-import src.models.inner.events.like as inner_likes_models
 import src.core.exceptions.repositories as repositories_exception
 from src.repositories.like import AsyncMongoDBLikeRepository, get_like_repository
 
@@ -85,6 +84,6 @@ async def count_average_mark(
     marks_amount = await like_repository.get_movie_likes_amount(movie_id)
     if marks_amount == 0 or movie_mark is None:
         raise fastapi.HTTPException(
-            status_code=fastapi.status.HTTP_417_EXPECTATION_FAILED, detail='Like does not exist'
+            status_code=fastapi.status.HTTP_417_EXPECTATION_FAILED, detail='Like does not exist',
         )
     return http_likes_models.AverageLikeMarkByFilm(mark=movie_mark, amount=marks_amount)
