@@ -20,7 +20,8 @@ class MongodbSettings(BaseConfig):
     port: int = 27017
 
     mongodb_database: str = 'events'
-    mongodb_likes_collection: str = 'likes'
+    mongodb_users_to_movies_likes_collection: str = 'users_to_movies_likes'
+    mongodb_users_to_reviews_likes_collection: str = 'users_to_reviews_likes'
     mongodb_reviews_collection: str = 'reviews'
     mongodb_bookmark_collection: str = 'bookmarks'
 

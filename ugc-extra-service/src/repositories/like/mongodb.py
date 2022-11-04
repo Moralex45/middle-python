@@ -16,7 +16,7 @@ class AsyncMongoDBLikeRepository(AsyncLikeRepositoryProtocol):
             project_config.get_settings().mongodb_settings.mongodb_database
         ]
         self.collection: motor_asyncio.AsyncIOMotorCollection = database[
-            project_config.get_settings().mongodb_settings.mongodb_likes_collection
+            project_config.get_settings().mongodb_settings.mongodb_users_to_movies_likes_collection
         ]
 
     async def get_movie_likes_amount(self, movie_id: uuid.UUID) -> int:
