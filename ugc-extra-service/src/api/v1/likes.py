@@ -1,6 +1,4 @@
 from __future__ import annotations
-import uuid
-from contextlib import suppress
 
 import fastapi
 
@@ -16,8 +14,8 @@ router = fastapi.APIRouter(prefix='/api/v1/likes')
 @router.post('/',
              response_model=inner_likes_models.Like,
              status_code=fastapi.status.HTTP_201_CREATED,
-             description='Создание нового лайка в системе',
-             summary='Endpoint позволяет создать новый лайк в системе',
+             description='Создание новой оценки кинопроизведения в системе',
+             summary='Endpoint позволяет создать новую оценку кинопроизведения в системе',
              tags=['Лайки'],
              dependencies=[fastapi.Depends(verify_auth_tokens)])
 async def create_like(
@@ -25,8 +23,9 @@ async def create_like(
         like_repository: AsyncMongoDBLikeRepository = fastapi.Depends(get_like_repository),
 ) -> inner_likes_models.Like:
     try:
-        return await like_repository.create_like(http_like.user_id, http_like.movie_id, http_like.device_fingerprint)
+        return await like_repository.create_like(
+            http_like.user_id, http_like.movie_id, http_like.mark, http_like.device_fingerprint,
+        )
 
     except repositories_exception.DataAlreadyExistsError:
         raise fastapi.HTTPException(status_code=400, detail='Like already exist')
-

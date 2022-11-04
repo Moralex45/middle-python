@@ -9,6 +9,7 @@ class Like(Base):
     id: uuid.UUID = Field(..., alias='_id')  # noqa
     user_id: uuid.UUID
     movie_id: uuid.UUID
+    mark: int
     device_fingerprint: str
 
     def to_dict(self, by_alias=True) -> dict:
