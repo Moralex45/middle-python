@@ -9,6 +9,6 @@ class BookmarkCreation(Base):
 
 
 class Bookmark(Base):
-    id: uuid.UUID  # noqa
+    id: uuid.UUID  # noqa: VNE003
     user_id: uuid.UUID
     movie_id: uuid.UUID

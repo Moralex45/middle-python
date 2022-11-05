@@ -8,7 +8,7 @@ from src.models.http.base import Base
 
 
 class Review(Base):
-    id: uuid.UUID = pydantic.Field(..., alias='_id')  # noqa
+    id: uuid.UUID = pydantic.Field(..., alias='_id')  # noqa: VNE003
     user_id: uuid.UUID
     movie_id: uuid.UUID
     text: str

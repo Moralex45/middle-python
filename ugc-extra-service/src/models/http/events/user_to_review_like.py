@@ -19,7 +19,7 @@ class UserToReviewLikeCreation(Base):
 
 
 class UserToReviewLike(Base):
-    id: uuid.UUID  # noqa
+    id: uuid.UUID  # noqa: VNE003
     user_id: uuid.UUID
     review_id: uuid.UUID
     mark: int

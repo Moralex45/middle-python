@@ -19,7 +19,7 @@ class UserToFilmLikeCreation(Base):
 
 
 class UserToFilmLike(Base):
-    id: uuid.UUID  # noqa
+    id: uuid.UUID  # noqa: VNE003
     user_id: uuid.UUID
     movie_id: uuid.UUID
     mark: int

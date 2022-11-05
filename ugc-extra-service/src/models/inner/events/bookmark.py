@@ -6,7 +6,7 @@ from src.models.http.base import Base
 
 
 class Bookmark(Base):
-    id: uuid.UUID = Field(..., alias='_id')  # noqa
+    id: uuid.UUID = Field(..., alias='_id')  # noqa: VNE003
     user_id: uuid.UUID
     movie_id: uuid.UUID
 
