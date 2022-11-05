@@ -22,6 +22,7 @@ class AsyncMongoDBUserToFilmLikeRepository(AsyncUserToFilmLikeRepositoryProtocol
 
     async def get_movie_likes_amount(self, movie_id: uuid.UUID) -> int:
         query = {'movie_id': str(movie_id)}
+
         return await self.collection.count_documents(query)
 
     async def get_average_movie_mark(self, movie_id: uuid.UUID) -> float | None:
@@ -52,6 +53,7 @@ class AsyncMongoDBUserToFilmLikeRepository(AsyncUserToFilmLikeRepositoryProtocol
         if await self.get_like(like.user_id, like.movie_id) is not None:
             raise repositories_exception.DataAlreadyExistsError()
         await self.collection.insert_one(like.to_dict())
+
         return like
 
     async def delete_like(self, user_id: uuid.UUID, movie_id: uuid.UUID) -> None:
@@ -63,6 +65,7 @@ class AsyncMongoDBUserToFilmLikeRepository(AsyncUserToFilmLikeRepositoryProtocol
         if await self.get_like(user_id, movie_id) is None:
             raise repositories_exception.DataDoesNotExistError()
         query = {'user_id': str(user_id), 'movie_id': str(movie_id)}
+
         await self.collection.delete_one(query)
 
     async def get_like(self, user_id: uuid.UUID, movie_id: uuid.UUID) -> UserToFilmLike | None:

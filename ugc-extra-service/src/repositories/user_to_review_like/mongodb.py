@@ -37,6 +37,7 @@ class AsyncMongoDBUserToReviewLikeRepository(AsyncUserToReviewLikeRepositoryProt
         if await self.get_like(like.user_id, like.review_id) is not None:
             raise repositories_exception.DataAlreadyExistsError()
         await self.collection.insert_one(like.to_dict())
+
         return like
 
     async def delete_like(self, user_id: uuid.UUID, review_id: uuid.UUID) -> None:

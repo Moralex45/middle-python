@@ -27,4 +27,4 @@ class Review(Base):
         if value is not None:
             return round(value, 1)
 
-        return value
+        return None

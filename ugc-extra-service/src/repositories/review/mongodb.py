@@ -41,6 +41,7 @@ class AsyncMongoDBReviewRepository(ReviewRepositoryProtocol):
                 await self.get_review_by_user_id_and_movie_id(user_id, movie_id) is not None:
             raise repositories_exception.DataAlreadyExistsError()
         await self.collection.insert_one(review.to_dict())
+
         return review
 
     async def get_review_by_user_id_and_movie_id(self, user_id: uuid.UUID, movie_id: uuid.UUID) -> Review | None:
@@ -62,11 +63,13 @@ class AsyncMongoDBReviewRepository(ReviewRepositoryProtocol):
     async def get_reviews_by_user_id(self, user_id: uuid.UUID) -> list[Review]:
         query = {'user_id': str(user_id)}
         documents = await self.collection.find(query).to_list(await self.__count_documents(query))
+
         return [Review(**document) for document in documents]
 
     async def get_reviews_by_movie_id(self, movie_id: uuid.UUID) -> list[Review]:
         query = {'movie_id': str(movie_id)}
         documents = await self.collection.find(query).to_list(await self.__count_documents(query))
+
         return [Review(**document) for document in documents]
 
     async def __count_documents(self, query: dict) -> int:

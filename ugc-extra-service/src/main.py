@@ -31,11 +31,6 @@ async def startup_event():
     )
 
 
-@app.on_event('shutdown')
-async def shutdown_event():
-    ...
-
-
 if __name__ == '__main__':
     uvicorn.run(
         'main:app',

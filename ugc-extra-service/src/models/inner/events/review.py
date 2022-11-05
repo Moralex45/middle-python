@@ -14,7 +14,7 @@ class Review(Base):
     text: str
     publication_timestamp: int
 
-    def to_dict(self, by_alias=True) -> dict:
+    def to_dict(self, by_alias: bool = True) -> dict:
         data = self.dict(by_alias=by_alias)
         data['_id' if by_alias else 'id'] = str(self.id)
         data['movie_id'] = str(self.movie_id)
