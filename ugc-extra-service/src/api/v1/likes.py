@@ -5,10 +5,10 @@ import uuid
 import fastapi
 
 import src.core.exceptions.repositories as repositories_exception
-import src.models.http.events.like as http_likes_models
+import src.models.http.events.user_to_film_like as http_likes_models
 from src.core.utils import verify_auth_tokens
-from src.repositories.like import (AsyncMongoDBLikeRepository,
-                                   get_like_repository)
+from src.repositories.user_to_film_like import (AsyncMongoDBUserToFilmLikeRepository,
+                                                get_like_repository)
 
 router = fastapi.APIRouter(prefix='/api/v1/likes')
 
@@ -22,7 +22,7 @@ router = fastapi.APIRouter(prefix='/api/v1/likes')
              dependencies=[fastapi.Depends(verify_auth_tokens)])
 async def create_like(
         http_like: http_likes_models.UserToFilmLikeCreation,
-        like_repository: AsyncMongoDBLikeRepository = fastapi.Depends(get_like_repository),
+        like_repository: AsyncMongoDBUserToFilmLikeRepository = fastapi.Depends(get_like_repository),
 ) -> http_likes_models.UserToFilmLike:
     try:
         like = await like_repository.create_like(
@@ -42,7 +42,7 @@ async def create_like(
                dependencies=[fastapi.Depends(verify_auth_tokens)])
 async def delete_like(
         user_id: uuid.UUID, movie_id: uuid.UUID,
-        like_repository: AsyncMongoDBLikeRepository = fastapi.Depends(get_like_repository),
+        like_repository: AsyncMongoDBUserToFilmLikeRepository = fastapi.Depends(get_like_repository),
 ) -> None:
     try:
         await like_repository.delete_like(user_id, movie_id)
@@ -60,7 +60,7 @@ async def delete_like(
               dependencies=[fastapi.Depends(verify_auth_tokens)])
 async def update_like(
         user_id: uuid.UUID, movie_id: uuid.UUID, mark: int = fastapi.Query(ge=0.0, le=10.0),
-        like_repository: AsyncMongoDBLikeRepository = fastapi.Depends(get_like_repository),
+        like_repository: AsyncMongoDBUserToFilmLikeRepository = fastapi.Depends(get_like_repository),
 ) -> http_likes_models.UserToFilmLike:
     like = await like_repository.get_like(user_id, movie_id)
     if like is None:
@@ -79,7 +79,7 @@ async def update_like(
              dependencies=[fastapi.Depends(verify_auth_tokens)])
 async def count_average_mark(
         movie_id: uuid.UUID,
-        like_repository: AsyncMongoDBLikeRepository = fastapi.Depends(get_like_repository),
+        like_repository: AsyncMongoDBUserToFilmLikeRepository = fastapi.Depends(get_like_repository),
 ) -> http_likes_models.AverageUserToFilmMarkByFilm:
     movie_mark = await like_repository.get_average_movie_mark(movie_id)
     marks_amount = await like_repository.get_movie_likes_amount(movie_id)

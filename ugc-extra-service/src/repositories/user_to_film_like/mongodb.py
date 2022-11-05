@@ -6,11 +6,11 @@ from motor import motor_asyncio
 
 import src.core.config as project_config
 import src.core.exceptions.repositories as repositories_exception
-from src.models.inner.events.like import UserToFilmLike
-from src.repositories.like.base import AsyncLikeRepositoryProtocol
+from src.models.inner.events.user_to_film_like import UserToFilmLike
+from src.repositories.user_to_film_like.base import AsyncUserToFilmLikeRepositoryProtocol
 
 
-class AsyncMongoDBLikeRepository(AsyncLikeRepositoryProtocol):
+class AsyncMongoDBUserToFilmLikeRepository(AsyncUserToFilmLikeRepositoryProtocol):
     def __init__(self, mongodb_instance: motor_asyncio.AsyncIOMotorClient):
         database = mongodb_instance[
             project_config.get_settings().mongodb_settings.mongodb_database
@@ -39,7 +39,7 @@ class AsyncMongoDBLikeRepository(AsyncLikeRepositoryProtocol):
     ) -> UserToFilmLike:
         """
         Raises:
-            repositories_exception.DataAlreadyExistsError: on inability to create like
+            repositories_exception.DataAlreadyExistsError: on inability to create user_to_film_like
 
         """
         like = UserToFilmLike(
@@ -56,7 +56,7 @@ class AsyncMongoDBLikeRepository(AsyncLikeRepositoryProtocol):
     async def delete_like(self, user_id: uuid.UUID, movie_id: uuid.UUID) -> None:
         """
         Raises:
-            repositories_exception.DataDoesNotExistError: on inability to delete like
+            repositories_exception.DataDoesNotExistError: on inability to delete user_to_film_like
 
         """
         if await self.get_like(user_id, movie_id) is None:

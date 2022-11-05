@@ -27,7 +27,7 @@ class AsyncMongoDBBookmarkRepository(AsyncBookmarkRepositoryProtocol):
     async def create_bookmark(self, user_id: uuid.UUID, movie_id: uuid.UUID, _id: uuid.UUID | None = None) -> Bookmark:
         """
         Raises:
-            repositories_exception.DataAlreadyExistsError: on inability to create like
+            repositories_exception.DataAlreadyExistsError: on inability to create user_to_film_like
 
         """
         bookmark = Bookmark(
@@ -43,7 +43,7 @@ class AsyncMongoDBBookmarkRepository(AsyncBookmarkRepositoryProtocol):
     async def delete_bookmark(self, user_id: uuid.UUID, movie_id: uuid.UUID) -> None:
         """
         Raises:
-            repositories_exception.DataDoesNotExistError: on inability to delete like
+            repositories_exception.DataDoesNotExistError: on inability to delete user_to_film_like
 
         """
         if await self.get_bookmark(user_id, movie_id) is None:

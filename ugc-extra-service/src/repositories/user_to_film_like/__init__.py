@@ -4,12 +4,12 @@ import functools
 
 import fastapi
 
-from src.repositories.like.mongodb import AsyncMongoDBLikeRepository
+from src.repositories.user_to_film_like.mongodb import AsyncMongoDBUserToFilmLikeRepository
 from src.services.storage import get_mongodb_instance
 
 
 @functools.lru_cache()
 def get_like_repository(
         mongodb_instance=fastapi.Depends(get_mongodb_instance),
-) -> AsyncMongoDBLikeRepository:
-    return AsyncMongoDBLikeRepository(mongodb_instance)
+) -> AsyncMongoDBUserToFilmLikeRepository:
+    return AsyncMongoDBUserToFilmLikeRepository(mongodb_instance)
