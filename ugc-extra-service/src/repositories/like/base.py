@@ -3,7 +3,7 @@ from __future__ import annotations
 import uuid
 from abc import ABC, abstractmethod
 
-from src.models.inner.events.like import Like
+from src.models.inner.events.like import UserToFilmLike
 
 
 class AsyncLikeRepositoryProtocol(ABC):
@@ -17,7 +17,7 @@ class AsyncLikeRepositoryProtocol(ABC):
     @abstractmethod
     async def create_like(
             self, user_id: uuid.UUID, movie_id: uuid.UUID, mark: int, _id: uuid.UUID = None,
-    ) -> Like:
+    ) -> UserToFilmLike:
         raise NotImplementedError
 
     @abstractmethod
@@ -25,5 +25,5 @@ class AsyncLikeRepositoryProtocol(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def get_like(self, user_id: uuid.UUID, movie_id: uuid.UUID) -> Like | None:
+    async def get_like(self, user_id: uuid.UUID, movie_id: uuid.UUID) -> UserToFilmLike | None:
         raise NotImplementedError

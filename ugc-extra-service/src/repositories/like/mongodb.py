@@ -6,7 +6,7 @@ from motor import motor_asyncio
 
 import src.core.config as project_config
 import src.core.exceptions.repositories as repositories_exception
-from src.models.inner.events.like import Like
+from src.models.inner.events.like import UserToFilmLike
 from src.repositories.like.base import AsyncLikeRepositoryProtocol
 
 
@@ -36,13 +36,13 @@ class AsyncMongoDBLikeRepository(AsyncLikeRepositoryProtocol):
 
     async def create_like(
             self, user_id: uuid.UUID, movie_id: uuid.UUID, mark: int, _id: uuid.UUID = None,
-    ) -> Like:
+    ) -> UserToFilmLike:
         """
         Raises:
             repositories_exception.DataAlreadyExistsError: on inability to create like
 
         """
-        like = Like(
+        like = UserToFilmLike(
             _id=uuid.uuid4() if _id is None else _id,
             user_id=user_id,
             movie_id=movie_id,
@@ -64,10 +64,10 @@ class AsyncMongoDBLikeRepository(AsyncLikeRepositoryProtocol):
         query = {'user_id': str(user_id), 'movie_id': str(movie_id)}
         await self.collection.delete_one(query)
 
-    async def get_like(self, user_id: uuid.UUID, movie_id: uuid.UUID) -> Like | None:
+    async def get_like(self, user_id: uuid.UUID, movie_id: uuid.UUID) -> UserToFilmLike | None:
         query = {'user_id': str(user_id), 'movie_id': str(movie_id)}
         document: dict | None = await self.collection.find_one(query)  # type:ignore
         if document is not None:
-            return Like(**document)
+            return UserToFilmLike(**document)
 
         return None

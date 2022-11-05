@@ -5,7 +5,7 @@ import pydantic
 from src.models.http.base import Base
 
 
-class Like(Base):
+class UserToFilmLike(Base):
     id: uuid.UUID = pydantic.Field(..., alias='_id')  # noqa
     user_id: uuid.UUID
     movie_id: uuid.UUID

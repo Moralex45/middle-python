@@ -5,20 +5,20 @@ import pydantic
 from src.models.http.base import Base
 
 
-class LikeCreation(Base):
+class UserToFilmLikeCreation(Base):
     user_id: uuid.UUID
     movie_id: uuid.UUID
     mark: int
 
 
-class Like(Base):
+class UserToFilmLike(Base):
     id: uuid.UUID  # noqa
     user_id: uuid.UUID
     movie_id: uuid.UUID
     mark: int
 
 
-class AverageLikeMarkByFilm(Base):
+class AverageUserToFilmMarkByFilm(Base):
     mark: float
     amount: int
 
