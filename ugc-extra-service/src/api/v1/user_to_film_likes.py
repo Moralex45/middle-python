@@ -7,8 +7,8 @@ import fastapi
 import src.core.exceptions.repositories as repositories_exception
 import src.models.http.events.user_to_film_like as http_likes_models
 from src.core.utils import verify_auth_tokens
-from src.repositories.user_to_film_like import (AsyncMongoDBUserToFilmLikeRepository,
-                                                get_user_to_film_like_repository)
+from src.repositories.user_to_film_like import (
+    AsyncMongoDBUserToFilmLikeRepository, get_user_to_film_like_repository)
 
 router = fastapi.APIRouter(prefix='/api/v1/user_to_film_likes')
 

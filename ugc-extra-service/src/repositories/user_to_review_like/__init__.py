@@ -4,7 +4,8 @@ import functools
 
 import fastapi
 
-from src.repositories.user_to_review_like.mongodb import AsyncMongoDBUserToReviewLikeRepository
+from src.repositories.user_to_review_like.mongodb import \
+    AsyncMongoDBUserToReviewLikeRepository
 from src.services.storage import get_mongodb_instance
 
 

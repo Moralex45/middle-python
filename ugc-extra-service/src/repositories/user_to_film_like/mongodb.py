@@ -7,7 +7,8 @@ from motor import motor_asyncio
 import src.core.config as project_config
 import src.core.exceptions.repositories as repositories_exception
 from src.models.inner.events.user_to_film_like import UserToFilmLike
-from src.repositories.user_to_film_like.base import AsyncUserToFilmLikeRepositoryProtocol
+from src.repositories.user_to_film_like.base import \
+    AsyncUserToFilmLikeRepositoryProtocol
 
 
 class AsyncMongoDBUserToFilmLikeRepository(AsyncUserToFilmLikeRepositoryProtocol):

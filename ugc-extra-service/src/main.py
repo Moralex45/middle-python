@@ -2,8 +2,8 @@ import fastapi
 import uvicorn
 from motor import motor_asyncio
 
-import src.api.v1.reviews as reviews_routing
 import src.api.v1.bookmarks as bookmarks_routing
+import src.api.v1.reviews as reviews_routing
 import src.api.v1.user_to_film_likes as user_to_film_likes_routing
 import src.core.config as project_config
 import src.services.storage as storage_service

@@ -7,7 +7,8 @@ from motor import motor_asyncio
 import src.core.config as project_config
 import src.core.exceptions.repositories as repositories_exception
 from src.models.inner.events.user_to_review_like import UserToReviewLike
-from src.repositories.user_to_review_like.base import AsyncUserToReviewLikeRepositoryProtocol
+from src.repositories.user_to_review_like.base import \
+    AsyncUserToReviewLikeRepositoryProtocol
 
 
 class AsyncMongoDBUserToReviewLikeRepository(AsyncUserToReviewLikeRepositoryProtocol):

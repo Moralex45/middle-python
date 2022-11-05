@@ -4,7 +4,8 @@ import functools
 
 import fastapi
 
-from src.repositories.user_to_film_like.mongodb import AsyncMongoDBUserToFilmLikeRepository
+from src.repositories.user_to_film_like.mongodb import \
+    AsyncMongoDBUserToFilmLikeRepository
 from src.services.storage import get_mongodb_instance
 
 
