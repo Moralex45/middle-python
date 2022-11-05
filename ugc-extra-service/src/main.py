@@ -2,6 +2,7 @@ import fastapi
 import uvicorn
 from motor import motor_asyncio
 
+import src.api.v1.reviews as reviews_routing
 import src.api.v1.bookmarks as bookmarks_routing
 import src.api.v1.user_to_film_likes as user_to_film_likes_routing
 import src.core.config as project_config
@@ -17,8 +18,9 @@ app = fastapi.FastAPI(
     default_response_class=fastapi.responses.ORJSONResponse,
 )
 
-app.include_router(user_to_film_likes_routing.router, tags=['events'])
-app.include_router(bookmarks_routing.router, tags=['events'])
+app.include_router(user_to_film_likes_routing.router, tags=['likes'])
+app.include_router(bookmarks_routing.router, tags=['bookmarks'])
+app.include_router(reviews_routing.router, tags=['reviews'])
 
 
 @app.on_event('startup')

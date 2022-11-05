@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import uuid
 
+import pydantic
+
 from src.models.http.base import Base
 
 
@@ -9,7 +11,6 @@ class ReviewCreation(Base):
     user_id: uuid.UUID
     movie_id: uuid.UUID
     text: str
-    publication_timestamp: int
 
 
 class Review(Base):
@@ -18,5 +19,12 @@ class Review(Base):
     movie_id: uuid.UUID
     text: str
     publication_timestamp: int
-    user_to_film_like: int | None
-    average_review_mark: float | None
+    user_to_film_like: int | None = ...
+    average_review_mark: float | None = ...
+
+    @pydantic.validator('average_review_mark')
+    def average_review_mark_check(cls, value: float | None):
+        if value is not None:
+            return round(value, 1)
+
+        return value

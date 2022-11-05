@@ -20,7 +20,7 @@ class AsyncMongoDBReviewRepository(ReviewRepositoryProtocol):
             project_config.get_settings().mongodb_settings.mongodb_database
         ]
         self.collection: motor_asyncio.AsyncIOMotorCollection = database[
-            project_config.get_settings().mongodb_settings.mongodb_users_to_movies_likes_collection
+            project_config.get_settings().mongodb_settings.mongodb_reviews_collection
         ]
 
     async def create_review(
@@ -37,7 +37,8 @@ class AsyncMongoDBReviewRepository(ReviewRepositoryProtocol):
             text=review_text,
             publication_timestamp=datetime.datetime.now().timestamp(),
         )
-        if await self.get_review(review.id) is not None:
+        if await self.get_review(review.id) is not None or \
+                await self.get_review_by_user_id_and_movie_id(user_id, movie_id) is not None:
             raise repositories_exception.DataAlreadyExistsError()
         await self.collection.insert_one(review.to_dict())
         return review
