@@ -56,3 +56,14 @@ class AsyncMongoDBUserToReviewLikeRepository(AsyncUserToReviewLikeRepositoryProt
             return UserToReviewLike(**document)
 
         return None
+
+    async def get_average_review_mark(self, review_id: uuid.UUID) -> float | None:
+        pipeline = [
+            {'$match': {'review_id': f'{str(review_id)}'}},
+            {'$group': {'_id': '$review_id', 'count': {'$avg': '$mark'}}},
+        ]
+        aggregation_result = await self.collection.aggregate(pipeline).to_list(1)  # type:ignore
+        if len(aggregation_result) != 0:
+            return aggregation_result[0]['count']
+
+        return None

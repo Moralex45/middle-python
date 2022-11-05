@@ -13,7 +13,6 @@ class Review(Base):
     movie_id: uuid.UUID
     text: str
     publication_timestamp: int
-    average_mark: float | None
 
     def to_dict(self, by_alias=True) -> dict:
         data = self.dict(by_alias=by_alias)

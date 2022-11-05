@@ -20,3 +20,7 @@ class AsyncUserToReviewLikeRepositoryProtocol(ABC):
     @abstractmethod
     async def get_like(self, user_id: uuid.UUID, review_id: uuid.UUID) -> UserToReviewLike | None:
         raise NotImplementedError
+
+    @abstractmethod
+    async def get_average_review_mark(self, review_id: uuid.UUID) -> float | None:
+        raise NotImplementedError

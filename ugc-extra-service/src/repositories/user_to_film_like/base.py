@@ -11,6 +11,7 @@ class AsyncUserToFilmLikeRepositoryProtocol(ABC):
     async def get_movie_likes_amount(self, movie_id: uuid.UUID) -> int:
         raise NotImplementedError
 
+    @abstractmethod
     async def get_average_movie_mark(self, movie_id: uuid.UUID) -> float | None:
         raise NotImplementedError
 

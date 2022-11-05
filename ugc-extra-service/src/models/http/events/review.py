@@ -18,4 +18,5 @@ class Review(Base):
     movie_id: uuid.UUID
     text: str
     publication_timestamp: int
-    average_mark: float | None
+    user_to_film_like: int | None
+    average_review_mark: float | None
