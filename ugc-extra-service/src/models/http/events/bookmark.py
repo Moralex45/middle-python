@@ -1,6 +1,6 @@
 import uuid
 
-from src.models.http.base import Base
+from src.models.base import Base
 
 
 class BookmarkCreation(Base):

@@ -2,7 +2,7 @@ import uuid
 
 import pydantic
 
-from src.models.http.base import Base
+from src.models.base import Base
 
 
 class UserToFilmLikeCreation(Base):

@@ -2,7 +2,7 @@ import uuid
 
 from pydantic import Field
 
-from src.models.http.base import Base
+from src.models.base import Base
 
 
 class Bookmark(Base):
