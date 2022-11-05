@@ -37,7 +37,7 @@ def configure_sentry() -> None:
         integrations=[
             FlaskIntegration(),
         ],
-        traces_sample_rate=1.0
+        traces_sample_rate=1.0,
     )
 
 
