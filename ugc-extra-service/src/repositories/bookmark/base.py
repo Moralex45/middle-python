@@ -12,7 +12,7 @@ class AsyncBookmarkRepositoryProtocol(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def create_bookmark(self, user_id: uuid.UUID, movie_id: uuid.UUID, _id: uuid.UUID = None) -> Bookmark:
+    async def create_bookmark(self, user_id: uuid.UUID, movie_id: uuid.UUID, _id: uuid.UUID | None = None) -> Bookmark:
         raise NotImplementedError
 
     @abstractmethod

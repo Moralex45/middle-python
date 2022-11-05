@@ -24,7 +24,7 @@ class AsyncMongoDBBookmarkRepository(AsyncBookmarkRepositoryProtocol):
         documents = await self.collection.find(query).to_list(await self.__count_documents(query))
         return [Bookmark(**document) for document in documents]
 
-    async def create_bookmark(self, user_id: uuid.UUID, movie_id: uuid.UUID, _id: uuid.UUID = None) -> Bookmark:
+    async def create_bookmark(self, user_id: uuid.UUID, movie_id: uuid.UUID, _id: uuid.UUID | None = None) -> Bookmark:
         """
         Raises:
             repositories_exception.DataAlreadyExistsError: on inability to create like
