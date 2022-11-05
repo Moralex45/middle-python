@@ -5,6 +5,10 @@ from pathlib import Path
 from dotenv import load_dotenv
 from split_settings.tools import include
 
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
+
 # Load local .env file
 ENV_DIR_FILE_PATH = Path(__file__).parent.parent.parent / '.env'
 load_dotenv(ENV_DIR_FILE_PATH / '.env.dev')
@@ -108,3 +112,11 @@ if DEBUG:
 CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:8080',
 ]
+
+sentry_sdk.init(
+    integrations=[
+        DjangoIntegration(),
+    ],
+    traces_sample_rate=1.0,
+    send_default_pii=True
+)
