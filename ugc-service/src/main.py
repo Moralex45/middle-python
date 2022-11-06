@@ -15,7 +15,7 @@ sentry_sdk.init(
 
 app = fastapi.FastAPI(
     title=project_config.get_settings().project_name,
-    description='Сервиса для обработки активностей пользователя',
+    description='Сервис для обработки активностей пользователя',
     version='0.1',
     redoc_url='/api/docs/redoc',
     docs_url='/api/docs/openapi',
