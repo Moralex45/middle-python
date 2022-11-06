@@ -1,12 +1,18 @@
 import fastapi
 import uvicorn
 from motor import motor_asyncio
+import sentry_sdk
 
 import src.api.v1.bookmarks as bookmarks_routing
 import src.api.v1.reviews as reviews_routing
 import src.api.v1.user_to_film_likes as user_to_film_likes_routing
 import src.core.config as project_config
 import src.services.storage as storage_service
+
+
+sentry_sdk.init(
+    traces_sample_rate=1.0,
+)
 
 app = fastapi.FastAPI(
     title=project_config.get_settings().project_name,
