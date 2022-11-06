@@ -13,6 +13,18 @@ services:
     networks:
       - cinema_backend_test_network
 
+  ugc_extra_service:
+    build: ugc-extra-service
+    env_file:
+      - ugc-extra-service/.env/.env.prod
+    expose:
+      - "8000"
+    restart: always
+    depends_on:
+      - ugc_mongodb
+    networks:
+      - cinema_backend_network
+
   movies_etl_service:
     build: movies-etl-service
     env_file:
