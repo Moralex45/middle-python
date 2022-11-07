@@ -31,11 +31,12 @@ jobs:
         pip install flake8-variables-names
         pip install dlint
         pip install mypy
-        mypy --install-types --non-interactive ugc-extra-service/src
-#        pip install orjson
-#        pip install motor
-#        pip install aiohttp
-#        pip install fastapi
+        pip install pydantic
+        pip install orjson
+        pip install motor
+        pip install aiohttp
+        pip install fastapi
+        pip install jwt
     - name: Flake8
       run: |
         flake8 ugc-extra-service --count --select=E9,F63,F7,F82 --show-source --statistics
