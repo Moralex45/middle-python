@@ -31,6 +31,8 @@ jobs:
         pip install flake8-variables-names
         pip install dlint
         pip install mypy
+        pip install motor-stubs
+        pip install orjson
     - name: Flake8
       run: |
         flake8 ugc-extra-service --count --select=E9,F63,F7,F82 --show-source --statistics
