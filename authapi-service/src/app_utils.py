@@ -1,5 +1,7 @@
 import click
 from flask import Flask
+import sentry_sdk
+from sentry_sdk.integrations.flask import FlaskIntegration
 
 from src.core.config import get_settings_instance
 from src.core.extentions import init_oauth
@@ -19,6 +21,7 @@ def create_raw_app() -> Flask:
 
 
 def create_app() -> Flask:
+    configure_sentry()
     app = create_raw_app()
     configure_db()
     configure_cli(app)
@@ -27,6 +30,15 @@ def create_app() -> Flask:
         init_tracer(app)
 
     return app
+
+
+def configure_sentry() -> None:
+    sentry_sdk.init(
+        integrations=[
+            FlaskIntegration(),
+        ],
+        traces_sample_rate=1.0,
+    )
 
 
 def configure_db() -> None:

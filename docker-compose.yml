@@ -1,5 +1,136 @@
 version: '3'
 services:
+  ugc_service:
+    build: ugc-service
+    env_file:
+      - ugc-service/.env/.env.prod
+    expose:
+      - "8000"
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://localhost:5044
+        tag: ugc
+    restart: always
+    depends_on:
+      - kafka_broker
+      - zookeeper
+    networks:
+      - cinema_backend_network
+
+  ugc_extra_service:
+    build: ugc-extra-service
+    env_file:
+      - ugc-extra-service/.env/.env.prod
+    expose:
+      - "8000"
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://localhost:5044
+        tag: ugc_extra
+    restart: always
+    depends_on:
+      - ugc_mongodb
+    networks:
+      - cinema_backend_network
+
+  movies_etl_service:
+    build: movies-etl-service
+    env_file:
+      - movies-etl-service/.env/.env.prod
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://localhost:5044
+        tag: movies_etl
+    restart: always
+    depends_on:
+      - elasticsearch
+    networks:
+      - cinema_backend_network
+
+  ugc_etl_service:
+    build: ugc-etl-service
+    env_file:
+      - ugc-etl-service/.env/.env.prod
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://localhost:5044
+        tag: ugc_etl
+    expose:
+      - "8000"
+    restart: always
+    depends_on:
+      - kafka_broker
+      - clickhouse-node1
+
+  data_faker_service:
+    build: data-faker-service
+    env_file:
+      - data-faker-service/.env/.env.prod
+    depends_on:
+      - movies_postgres
+      - admin_service
+    networks:
+      - cinema_backend_network
+
+  asyncapi_service:
+    build: asyncapi-service
+    env_file:
+      - asyncapi-service/.env/.env.prod
+    expose:
+      - "8000"
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://localhost:5044
+        tag: asyncapi
+    restart: always
+    depends_on:
+      - movies_redis
+      - elasticsearch
+    networks:
+      - cinema_backend_network
+
+  admin_service:
+    build: admin-service
+    env_file:
+      - admin-service/.env/.env.prod
+    expose:
+      - "8000"
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://localhost:5044
+        tag: admin
+    restart: always
+    volumes:
+      - cinema_backend_static
+    depends_on:
+      - movies_postgres
+    networks:
+      - cinema_backend_network
+
+  authapi_service:
+    build: authapi-service
+    env_file:
+      - authapi-service/.env/.env.prod
+    expose:
+      - "8000"
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://localhost:5044
+        tag: authapi
+    restart: always
+    depends_on:
+      - auth_postgres
+      - auth_redis
+    networks:
+      - cinema_backend_network
+
   jaeger:
     container_name: jaeger
     image: jaegertracing/all-in-one:1.7
@@ -10,15 +141,6 @@ services:
       - "14250"
       - "14268"
       - "14269"
-    networks:
-      - cinema_backend_network
-
-  zookeeper:
-    image: confluentinc/cp-zookeeper:7.0.1
-    container_name: zookeeper
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
     networks:
       - cinema_backend_network
 
@@ -86,85 +208,12 @@ services:
     networks:
       - cinema_backend_network
 
-  ugc_service:
-    build: ugc-service
-    env_file:
-      - ugc-service/.env/.env.prod
-    expose:
-      - "8000"
-    restart: always
-    depends_on:
-      - kafka_broker
-      - zookeeper
-    networks:
-      - cinema_backend_network
-
-  movies_etl_service:
-    build: movies-etl-service
-    env_file:
-      - movies-etl-service/.env/.env.prod
-    restart: always
-    depends_on:
-      - elasticsearch
-    networks:
-      - cinema_backend_network
-
-  ugc_etl_service:
-    build: ugc-etl-service
-    env_file:
-      - ugc-etl-service/.env/.env.prod
-    restart: always
-    depends_on:
-      - kafka_broker
-      - clickhouse-node1
-
-  data_faker_service:
-    build: data-faker-service
-    env_file:
-      - data-faker-service/.env/.env.prod
-    depends_on:
-      - movies_postgres
-      - admin_service
-    networks:
-      - cinema_backend_network
-  
-  asyncapi_service:
-    build: asyncapi-service
-    env_file:
-      - asyncapi-service/.env/.env.prod
-    expose:
-      - "8000"
-    restart: always
-    depends_on:
-      - movies_redis
-      - elasticsearch
-    networks:
-      - cinema_backend_network
-
-  admin_service:
-    build: admin-service
-    env_file:
-      - admin-service/.env/.env.prod
-    expose:
-      - "8000"
-    restart: always
-    volumes:
-      - cinema_backend_static
-    depends_on:
-      - movies_postgres
-    networks:
-      - cinema_backend_network
-
-  authapi_service:
-    build: authapi-service
-    env_file:
-      - authapi-service/.env/.env.prod
-    expose:
-      - "8000"
-    restart: always
-    depends_on:
-      - auth_postgres
-      - auth_redis
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.0.1
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
     networks:
       - cinema_backend_network
 
@@ -223,6 +272,30 @@ services:
     networks:
       - cinema_backend_network
 
+  ugc_redis:
+    image: redis:7.0.4-alpine
+    expose:
+      - "6379"
+    restart: always
+    networks:
+      - cinema_backend_network
+
+  ugc_extra_redis:
+    image: redis:7.0.4-alpine
+    expose:
+      - "6379"
+    restart: always
+    networks:
+      - cinema_backend_network
+
+  ugc_mongodb:
+    image: mongo
+    expose:
+      - "27017"
+    restart: always
+    networks:
+      - cinema_backend_network
+
   nginx:
     image: nginx:latest
     volumes:
@@ -234,10 +307,60 @@ services:
     restart: always
     ports:
       - "80:80"
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://localhost:5044
+        tag: nginx
     depends_on:
       - admin_service
       - asyncapi_service
       - authapi_service
+    networks:
+      - cinema_backend_network
+
+  logstash:
+    image: logstash:7.17.5
+    environment:
+      XPACK_MONITORING_ENABLED: "false"
+      ES_HOST: "elasticsearch-logstash:9200"
+    expose:
+      - "5044"
+    ports:
+      - "5044:5044/udp"
+    restart: always
+    depends_on:
+      - elasticsearch-logstash
+    volumes:
+      - ./docker/logstash/logstash.conf:/config/logstash.conf:ro
+    command: logstash -f /config/logstash.conf
+    networks:
+      - cinema_backend_network
+
+  elasticsearch-logstash:
+    image: elasticsearch:7.17.5
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    expose:
+      - "9200"
+    restart: always
+    volumes:
+      - cinema_backend_elasticsearch_elk_data
+    networks:
+      - cinema_backend_network
+
+  kibana:
+    image: kibana:7.17.5
+    environment:
+      ELASTICSEARCH_HOSTS: 'http://elasticsearch-logstash:9200'
+    ports:
+      - "5601:5601"
+    restart: always
+    depends_on:
+      - elasticsearch-logstash
+    volumes:
+      - cinema_backend_kibana_elk_data
     networks:
       - cinema_backend_network
 
@@ -246,6 +369,8 @@ volumes:
   cinema_backend_movies_pg_data:
   cinema_backend_elasticsearch_data:
   cinema_backend_static:
+  cinema_backend_elasticsearch_elk_data:
+  cinema_backend_kibana_elk_data:
 
 networks:
   cinema_backend_network:
