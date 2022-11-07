@@ -11,4 +11,4 @@ RUN pip install --upgrade pip  \
 
 COPY src src
 
-CMD cd src && faust -A src/main.py worker -l info
+CMD cd src && faust -A main worker -l info

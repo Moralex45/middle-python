@@ -6,6 +6,11 @@ services:
       - ugc-service/.env/.env.prod
     expose:
       - "8000"
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://localhost:5044
+        tag: ugc
     restart: always
     depends_on:
       - kafka_broker
@@ -19,6 +24,11 @@ services:
       - ugc-extra-service/.env/.env.prod
     expose:
       - "8000"
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://localhost:5044
+        tag: ugc_extra
     restart: always
     depends_on:
       - ugc_mongodb
@@ -29,6 +39,11 @@ services:
     build: movies-etl-service
     env_file:
       - movies-etl-service/.env/.env.prod
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://localhost:5044
+        tag: movies_etl
     restart: always
     depends_on:
       - elasticsearch
@@ -39,6 +54,11 @@ services:
     build: ugc-etl-service
     env_file:
       - ugc-etl-service/.env/.env.prod
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://localhost:5044
+        tag: ugc_etl
     expose:
       - "8000"
     restart: always
@@ -62,6 +82,11 @@ services:
       - asyncapi-service/.env/.env.prod
     expose:
       - "8000"
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://localhost:5044
+        tag: asyncapi
     restart: always
     depends_on:
       - movies_redis
@@ -75,6 +100,11 @@ services:
       - admin-service/.env/.env.prod
     expose:
       - "8000"
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://localhost:5044
+        tag: admin
     restart: always
     volumes:
       - cinema_backend_static
@@ -89,6 +119,11 @@ services:
       - authapi-service/.env/.env.prod
     expose:
       - "8000"
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://localhost:5044
+        tag: authapi
     restart: always
     depends_on:
       - auth_postgres
@@ -272,10 +307,60 @@ services:
     restart: always
     ports:
       - "80:80"
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://localhost:5044
+        tag: nginx
     depends_on:
       - admin_service
       - asyncapi_service
       - authapi_service
+    networks:
+      - cinema_backend_network
+
+  logstash:
+    image: logstash:7.17.5
+    environment:
+      XPACK_MONITORING_ENABLED: "false"
+      ES_HOST: "elasticsearch-logstash:9200"
+    expose:
+      - "5044"
+    ports:
+      - "5044:5044/udp"
+    restart: always
+    depends_on:
+      - elasticsearch-logstash
+    volumes:
+      - ./docker/logstash/logstash.conf:/config/logstash.conf:ro
+    command: logstash -f /config/logstash.conf
+    networks:
+      - cinema_backend_network
+
+  elasticsearch-logstash:
+    image: elasticsearch:7.17.5
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    expose:
+      - "9200"
+    restart: always
+    volumes:
+      - cinema_backend_elasticsearch_elk_data
+    networks:
+      - cinema_backend_network
+
+  kibana:
+    image: kibana:7.17.5
+    environment:
+      ELASTICSEARCH_HOSTS: 'http://elasticsearch-logstash:9200'
+    ports:
+      - "5601:5601"
+    restart: always
+    depends_on:
+      - elasticsearch-logstash
+    volumes:
+      - cinema_backend_kibana_elk_data
     networks:
       - cinema_backend_network
 
@@ -284,6 +369,8 @@ volumes:
   cinema_backend_movies_pg_data:
   cinema_backend_elasticsearch_data:
   cinema_backend_static:
+  cinema_backend_elasticsearch_elk_data:
+  cinema_backend_kibana_elk_data:
 
 networks:
   cinema_backend_network:
