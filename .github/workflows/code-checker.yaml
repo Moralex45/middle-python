@@ -34,6 +34,7 @@ jobs:
         pip install pydantic
         pip install orjson
         pip install motor
+        pip install motor-stubs
         pip install aiohttp
         pip install fastapi
         pip install jwt
