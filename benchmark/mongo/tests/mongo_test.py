@@ -5,8 +5,6 @@ from faker import Faker
 
 pytestmark = pytest.mark.asyncio
 
-pytestmark = pytest.mark.asyncio
-
 
 @pytest.mark.parametrize(
     'limit',
