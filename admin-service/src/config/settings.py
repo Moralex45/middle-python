@@ -17,7 +17,7 @@ load_dotenv(ENV_DIR_FILE_PATH / '.env.dev')
 include(
     'components/database.py',
     'components/application.py',
-    'components/localization.py'
+    'components/localization.py',
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -72,7 +72,7 @@ LOGGING = {
     'filters': {
         'require_debug_true': {
             '()': 'django.utils.log.RequireDebugTrue',
-        }
+        },
     },
     'formatters': {
         'default': {
@@ -91,7 +91,7 @@ LOGGING = {
             'level': 'DEBUG',
             'handlers': ['debug-console'],
             'propagate': False,
-        }
+        },
     },
 }
 
@@ -102,7 +102,7 @@ REST_FRAMEWORK = {
     ],
 
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 50
+    'PAGE_SIZE': 50,
 }
 
 if DEBUG:
@@ -113,10 +113,5 @@ CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:8080',
 ]
 
-sentry_sdk.init(
-    integrations=[
-        DjangoIntegration(),
-    ],
-    traces_sample_rate=1.0,
-    send_default_pii=True
-)
+if not DEBUG:
+    sentry_sdk.init(integrations=[DjangoIntegration()])
