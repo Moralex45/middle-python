@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import uuid
-from typing import List
 
 import fastapi
 
@@ -53,7 +52,7 @@ async def delete_bookmark(
 
 
 @router.get('/',
-            response_model=List[http_bookmarks_models.Bookmark],
+            response_model=list[http_bookmarks_models.Bookmark],  # type:ignore
             status_code=fastapi.status.HTTP_200_OK,
             description='Получение закладок пользователя в системе',
             summary='Endpoint позволяет получить закладки пользователя в системе',
@@ -62,6 +61,6 @@ async def delete_bookmark(
 async def get_user_bookmarks(
         user_id: uuid.UUID,
         bookmark_repository: AsyncMongoDBBookmarkRepository = fastapi.Depends(get_bookmark_repository),
-) -> List[http_bookmarks_models.Bookmark]:
+) -> list[http_bookmarks_models.Bookmark]:
     bookmarks = await bookmark_repository.get_user_bookmarks(user_id)
     return [http_bookmarks_models.Bookmark(**bookmark.to_dict(False)) for bookmark in bookmarks]
