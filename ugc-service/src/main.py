@@ -9,9 +9,9 @@ import src.core.config as project_config
 import src.api.v1.events as events_endpoints
 import src.services.kafka as kafka_service
 
-sentry_sdk.init(
-    traces_sample_rate=1.0,
-)
+
+if not project_config.get_settings().debug:
+    sentry_sdk.init()
 
 app = fastapi.FastAPI(
     title=project_config.get_settings().project_name,

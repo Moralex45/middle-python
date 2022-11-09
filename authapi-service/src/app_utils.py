@@ -33,12 +33,9 @@ def create_app() -> Flask:
 
 
 def configure_sentry() -> None:
-    sentry_sdk.init(
-        integrations=[
-            FlaskIntegration(),
-        ],
-        traces_sample_rate=1.0,
-    )
+    from src.core.config import get_settings_instance
+    if not get_settings_instance().DEBUG:
+        sentry_sdk.init(integrations=[FlaskIntegration()])
 
 
 def configure_db() -> None:

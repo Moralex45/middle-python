@@ -10,9 +10,8 @@ import src.core.config as project_config
 import src.services.storage as storage_service
 
 
-sentry_sdk.init(
-    traces_sample_rate=1.0,
-)
+if not project_config.get_settings().debug:
+    sentry_sdk.init()
 
 app = fastapi.FastAPI(
     title=project_config.get_settings().project_name,
