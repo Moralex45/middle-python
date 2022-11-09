@@ -39,4 +39,4 @@ jobs:
       with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          args: Checks ${{ github.run_id }} was successful
+          args: Checks ${{ github.run_id }} in ${{ github.repository }} by ${{ github.actor }} was successful!
