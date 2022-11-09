@@ -13,9 +13,8 @@ from db.cache.redis import AsyncRedisCacheService
 from db.storage.elastic import AsyncElasticStorageService
 
 
-sentry_sdk.init(
-    traces_sample_rate=1.0,
-)
+if not get_settings_instance().DEBUG:
+    sentry_sdk.init()
 
 app = FastAPI(
     title=get_settings_instance().PROJECT_NAME,

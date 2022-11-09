@@ -6,6 +6,7 @@ from pydantic import BaseSettings, Field
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = Field(env='PROJECT_NAME')
+    DEBUG: bool = Field(env='DEBUG')
 
     REDIS_HOST: str = Field(env='REDIS_HOST')
     REDIS_PORT: int = Field(env='REDIS_PORT')
