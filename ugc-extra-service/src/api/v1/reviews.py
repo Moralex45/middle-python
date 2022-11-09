@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import uuid
-from typing import List
 
 import fastapi
 
@@ -57,7 +56,7 @@ async def create_review(
 
 
 @router.get('/',
-            response_model=List[http_reviews_models.Review],
+            response_model=list[http_reviews_models.Review],  # type:ignore
             status_code=fastapi.status.HTTP_201_CREATED,
             description='Просмотр рецензий в системе',
             summary='Endpoint позволяет просмотреть рецензии в системе',
