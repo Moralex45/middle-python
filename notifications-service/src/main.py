@@ -1,13 +1,12 @@
 import aio_pika
 import fastapi
+import sentry_sdk
 import uvicorn
 from motor import motor_asyncio
-import sentry_sdk
 
 import src.core.config as project_config
-import src.services.storage as storage_service
 import src.services.amqp as amqp_service
-
+import src.services.storage as storage_service
 
 if not project_config.get_settings().debug:
     sentry_sdk.init()
@@ -31,9 +30,8 @@ async def startup_event():
     )
 
     amqp_service.rabbitmq.rabbitmq_connection = await aio_pika.connect_robust(
-        "amqp://guest:guest@127.0.0.1/",
+        project_config.get_settings().rabbitmq_settings.url,
     )
-
 
 
 if __name__ == '__main__':

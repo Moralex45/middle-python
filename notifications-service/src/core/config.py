@@ -3,7 +3,7 @@ from __future__ import annotations
 import functools
 from pathlib import Path
 
-from pydantic import BaseSettings, Field
+from pydantic import BaseSettings
 
 
 class BaseConfig(BaseSettings):
