@@ -24,6 +24,7 @@ https://github.com/KenKi2002/ugc_sprint_1
 * Инициализировать директорию asyncapi-service как проект в IDE
 * Инициализировать директорию ugc-service как проект в IDE
 * Инициализировать директорию ugc-extra-service как проект в IDE
+* Инициализировать директорию notifications-service как проект в IDE
 * Инициализировать директорию etl-kafka-clickhouse как проект в IDE
 * Инициализировать директорию authapi-service как проект в IDE
 * Инициализировать директорию admin-service как проект в IDE
@@ -35,6 +36,7 @@ https://github.com/KenKi2002/ugc_sprint_1
 * Заполнить asyncapi-service/.env/.env.dev и asyncapi-service/.env/.env.prod файлы окружения
 * Заполнить ugc-service/.env/.env.dev и ugc-service/.env/.env.prod файлы окружения
 * Заполнить ugc-extra-service/.env/.env.dev и ugc-extra-service/.env/.env.prod файлы окружения
+* Заполнить notifications-service/.env/.env.dev и notifications-service/.env/.env.prod файлы окружения
 * Заполнить etl-kafka-clickhouse/.env/.env.dev и etl-kafka-clickhouse/.env/.env.prod файлы окружения
 * Заполнить authapi-service/.env/.env.dev и authapi-service/.env/.env.prod файлы окружения
 * Заполнить data-faker/.env/.env.dev и data-faker/.env/.env.prod файлы окружения
@@ -69,4 +71,6 @@ https://developer.confluent.io/quickstart/kafka-docker
 
 # Запуск MongoDB
 
-`docker run -d --name yp_ugc_mongo -p 27017:27017 mongo`
+`docker run -d --name yp_ugc_mongo -p 270170:27017 mongo`
+
+`docker run -d --name yp_notifcations_mongo -p 270171:27017 mongo`
