@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.7", "3.8", "3.9", "3.10"]
-        service: ["3.7", "3.8"]
+        service: ["ugc-extra-service/src", "notifications-service/src"]
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python "3.10"
@@ -24,18 +24,12 @@ jobs:
         cd .github/ci_env
         poetry config virtualenvs.create false
         poetry install
-    - name: Flake8 ugc-extra-service
+    - name: Flake8
       run: |
-        flake8 ugc-extra-service --count --select=E9,F63,F7,F82 --show-source --statistics
-        flake8 ugc-extra-service --count --exit-zero --statistics
-    - name: Mypy ugc-extra-service
-      run: mypy --python-version=${{ matrix.python-version }} ugc-extra-service/src
-    - name: Flake8 notification-service
-      run: |
-        flake8 notifications-service --count --select=E9,F63,F7,F82 --show-source --statistics
-        flake8 notifications-service --count --exit-zero --statistics
-    - name: Mypy notification-service
-      run: mypy --python-version=${{ matrix.python-version }} notifications-service/src
+        flake8 ${{ matrix.service }} --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 ${{ matrix.service }} --count --exit-zero --statistics
+    - name: Mypy
+      run: mypy --python-version=${{ matrix.python-version }} ${{ matrix.service }}
   notification:
     name: Telegram notification
     needs: tests
