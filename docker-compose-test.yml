@@ -25,6 +25,23 @@ services:
     networks:
       - cinema_backend_network
 
+  notifications_service:
+    build: notifications-service
+    env_file:
+      - notifications-service/.env/.env.prod
+    expose:
+      - "8000"
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://localhost:5044
+        tag: notifications
+    restart: always
+    depends_on:
+      - notifications_mongodb
+    networks:
+      - cinema_backend_network
+
   movies_etl_service:
     build: movies-etl-service
     env_file:
@@ -269,6 +286,16 @@ services:
       - cinema_backend_network
 
   ugc_mongodb:
+    image: mongo
+    expose:
+      - "27017"
+    ports:
+      - "27017:27017"
+    restart: always
+    networks:
+      - cinema_backend_network
+
+  notifications_mongodb:
     image: mongo
     expose:
       - "27017"
