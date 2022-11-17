@@ -1,15 +1,12 @@
 import aio_pika
 import fastapi
-import sentry_sdk
 import uvicorn
 from motor import motor_asyncio
 
+import src.api.v1.service_notification as service_notifications_routing
 import src.core.config as project_config
 import src.services.amqp_producer as amqp_service
 import src.services.storage as storage_service
-
-if not project_config.get_settings().debug:
-    sentry_sdk.init()
 
 app = fastapi.FastAPI(
     title=project_config.get_settings().project_name,
@@ -20,6 +17,8 @@ app = fastapi.FastAPI(
     openapi_url='/api/docs/openapi.json',
     default_response_class=fastapi.responses.ORJSONResponse,
 )
+
+app.include_router(service_notifications_routing.router, tags=['service notifications'])
 
 
 @app.on_event('startup')

@@ -5,9 +5,9 @@ import uuid
 from motor import motor_asyncio
 
 import src.core.config as project_config
-
 from src.models.storage import service_notification as storage_notifications
-from src.repositories.storage.service_notification.base import AsyncNotificationsRepositoryProtocol
+from src.repositories.storage.service_notification.base import \
+    AsyncNotificationsRepositoryProtocol
 
 
 class AsyncMongoDBNotificationRepository(AsyncNotificationsRepositoryProtocol):

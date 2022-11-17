@@ -4,7 +4,8 @@ import functools
 
 import fastapi
 
-from src.repositories.storage.service_notification.mongodb import AsyncMongoDBNotificationRepository
+from src.repositories.storage.service_notification.mongodb import \
+    AsyncMongoDBNotificationRepository
 from src.services.storage import get_mongodb_instance
 
 

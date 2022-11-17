@@ -7,10 +7,16 @@ from src.models.base import Base
 
 
 class ServiceNotificationCreation(Base):
-    type: ServiceNotificationType  # noqa: VNE003
+    type: str  # noqa: VNE003
     content: dict
     sending_time_timestamp: int | None
     sending_timeout: int | None
+
+    @pydantic.validator('type')
+    def check_correct_notification_type(cls, value: str):
+        if not ServiceNotificationType.has_value(value):
+            raise ValueError('Ready to compute only registered notification types')
+        return value
 
     @pydantic.validator('sending_timeout')
     def prevent_negative_timeout(cls, value: int):
