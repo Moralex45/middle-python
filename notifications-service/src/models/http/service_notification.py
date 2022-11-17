@@ -9,7 +9,7 @@ from src.models.base import Base
 class ServiceNotificationCreation(Base):
     type: ServiceNotificationType  # noqa: VNE003
     content: dict
-    sending_time_timestamp: str | None
+    sending_time_timestamp: int | None
     sending_timeout: int | None
 
     @pydantic.validator('sending_timeout')

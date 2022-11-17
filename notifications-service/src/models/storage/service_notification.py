@@ -9,7 +9,7 @@ class ServiceNotification(Base):
     id: uuid.UUID = pydantic.Field(..., alias='_id')  # noqa: VNE003
     type: str  # noqa: VNE003
     content: dict
-    sending_time: str | None
+    sending_time_timestamp: int | None
     sending_timeout: int | None
 
     def to_dict(self, by_alias: bool = True) -> dict:

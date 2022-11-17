@@ -5,7 +5,7 @@ import uvicorn
 from motor import motor_asyncio
 
 import src.core.config as project_config
-import src.services.amqp as amqp_service
+import src.services.amqp_producer as amqp_service
 import src.services.storage as storage_service
 
 if not project_config.get_settings().debug:
