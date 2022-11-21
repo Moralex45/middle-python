@@ -1,4 +1,5 @@
 import functools
+from enum import Enum
 from pathlib import Path
 
 from pydantic import BaseSettings
@@ -29,10 +30,25 @@ class RabbitMQSettings(BaseConfig):
         return f'amqp://{self.username}:{self.password}@{self.host}:{self.port}'
 
 
-class PostgresSettings(BaseConfig):
+class AuthPostgresSettings(BaseConfig):
     host: str = 'localhost'
-    port: int = 5469
+    port: int = 5432
     db: str = 'auth_database'
+    user: str
+    password: str
+
+    class Config:
+        env_prefix = 'PG_'
+
+    @property
+    def url(self):
+        return f'postgresql://{self.user}:{self.password}@{self.host}:{self.port}/{self.db}'
+
+
+class AdminPostgresSettings(BaseConfig):
+    host: str = 'localhost'
+    port: int = 5432
+    db: str = 'movies_database'
     user: str
     password: str
 
@@ -74,9 +90,15 @@ class MongoDBSettings(BaseConfig):
         return f'{self.host}:{self.port}'
 
 
+class ServicesPostgres(Enum):
+    AUTH = 'auth'
+    ADMIN = 'admin'
+
+
 class ProjectSettings(BaseConfig):
     rabbitmq: RabbitMQSettings = RabbitMQSettings()
-    postgres: PostgresSettings = PostgresSettings()
+    auth_postgres: AuthPostgresSettings = AuthPostgresSettings()
+    admin_postgres: AdminPostgresSettings = AdminPostgresSettings()
     clickhouse: ClickhouseSettings = ClickhouseSettings()
     mongo: MongoDBSettings = MongoDBSettings()
 
