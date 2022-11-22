@@ -1,10 +1,15 @@
 from __future__ import annotations
 
+import datetime
+
 import fastapi
 
 import src.models.http.service_notification as http_service_notifications
+import src.models.amqp_producer.service_notification as amqp_service_notifications
 from src.repositories.storage.service_notification import (
-    AsyncMongoDBNotificationRepository, get_service_notification_repository)
+    AsyncMongoDBNotificationStorageRepository, get_storage_service_notification_repository)
+from src.repositories.amqp_producer.service_notification import (
+    AsyncRabbitMQNotificationRepository, get_amqp_producer_service_notification_repository)
 
 router = fastapi.APIRouter(prefix='/api/v1/service_notification')
 
@@ -19,15 +24,35 @@ router = fastapi.APIRouter(prefix='/api/v1/service_notification')
 )
 async def create_notification(
         http_notification: http_service_notifications.ServiceNotificationCreation,
-        service_notification_repository: AsyncMongoDBNotificationRepository = fastapi.Depends(
-            get_service_notification_repository,
+        storage_service_notification_repository: AsyncMongoDBNotificationStorageRepository = fastapi.Depends(
+            get_storage_service_notification_repository,
+        ),
+        amqp_producer_service_notification_repository: AsyncRabbitMQNotificationRepository = fastapi.Depends(
+            get_amqp_producer_service_notification_repository,
         ),
 ) -> http_service_notifications.ServiceNotification:
-    repository_notification = await service_notification_repository.create_notification(
+    repository_notification = await storage_service_notification_repository.create_notification(
         http_notification.type,
         http_notification.content,
         http_notification.sending_time_timestamp,
         http_notification.sending_timeout,
     )
-    # TODO implement sending to rabbitmq
+
+    possible_sending_time: datetime.datetime | None = None
+
+    if repository_notification.sending_timeout is not None:
+        possible_sending_time = datetime.datetime.now() + datetime.timedelta(
+            seconds=repository_notification.sending_timeout,
+        )
+
+    elif repository_notification.sending_time_timestamp is not None:
+        possible_sending_time = datetime.datetime.fromtimestamp(repository_notification.sending_time_timestamp)
+
+    if possible_sending_time is not None:
+        # TODO send to scheduler
+        ...
+    else:
+        await amqp_producer_service_notification_repository.publish_notification(
+            amqp_service_notifications.ServiceNotification(**repository_notification.to_dict()),
+        )
     return http_service_notifications.ServiceNotification(**repository_notification.to_dict(False))

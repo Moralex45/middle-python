@@ -7,10 +7,10 @@ from motor import motor_asyncio
 import src.core.config as project_config
 from src.models.storage import service_notification as storage_notifications
 from src.repositories.storage.service_notification.base import \
-    AsyncNotificationsRepositoryProtocol
+    AsyncNotificationsStorageRepositoryProtocol
 
 
-class AsyncMongoDBNotificationRepository(AsyncNotificationsRepositoryProtocol):
+class AsyncMongoDBNotificationStorageRepository(AsyncNotificationsStorageRepositoryProtocol):
     def __init__(
             self,
             mongodb_instance: motor_asyncio.AsyncIOMotorClient,
