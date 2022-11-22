@@ -1,2 +1,6 @@
 class NotFoundError(Exception):
     ...
+
+
+class SendEmailFailError(Exception):
+    ...

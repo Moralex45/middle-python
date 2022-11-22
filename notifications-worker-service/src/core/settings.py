@@ -1,4 +1,3 @@
-import functools
 from enum import Enum
 from pathlib import Path
 
@@ -34,11 +33,11 @@ class AuthPostgresSettings(BaseConfig):
     host: str = 'localhost'
     port: int = 5432
     db: str = 'auth_database'
-    user: str
-    password: str
+    user: str = 'testuser'
+    password: str = 'testpassword'
 
     class Config:
-        env_prefix = 'PG_'
+        env_prefix = 'AUTHPG_'
 
     @property
     def url(self):
@@ -49,11 +48,11 @@ class AdminPostgresSettings(BaseConfig):
     host: str = 'localhost'
     port: int = 5432
     db: str = 'movies_database'
-    user: str
-    password: str
+    user: str = 'testuser'
+    password: str = 'testpassword'
 
     class Config:
-        env_prefix = 'PG_'
+        env_prefix = 'ADMINPG_'
 
     @property
     def url(self):
@@ -64,8 +63,8 @@ class ClickhouseSettings(BaseConfig):
     host: str = 'localhost'
     port: int = 5469
     db: str = 'movies_db'
-    user: str
-    password: str
+    user: str = 'testuser'
+    password: str = 'testpassword'
 
     class Config:
         env_prefix = 'CH_'
@@ -90,6 +89,15 @@ class MongoDBSettings(BaseConfig):
         return f'{self.host}:{self.port}'
 
 
+class MailingSettings(BaseConfig):
+
+    from_email: str = 'test@gmail.com'
+    api_key: str = 'testapikey'
+
+    class Config:
+        env_prefix = 'MAILING_'
+
+
 class ServicesPostgres(Enum):
     AUTH = 'auth'
     ADMIN = 'admin'
@@ -101,11 +109,4 @@ class ProjectSettings(BaseConfig):
     admin_postgres: AdminPostgresSettings = AdminPostgresSettings()
     clickhouse: ClickhouseSettings = ClickhouseSettings()
     mongo: MongoDBSettings = MongoDBSettings()
-
-
-__settings = ProjectSettings()
-
-
-@functools.lru_cache()
-def get_settings() -> ProjectSettings:
-    return __settings
+    mailing: MailingSettings = MailingSettings()

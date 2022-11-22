@@ -21,25 +21,25 @@ class Consumer:
         self.message_handler = message_handler
         self.__login = login
         self.__password = password
-        self.connection: AbstractRobustConnection | None = None
+        self.__connection: AbstractRobustConnection | None = None
 
-    async def init_connection(self) -> AbstractConnection:
+    async def __init_connection(self) -> AbstractConnection:
         return await connect_robust(url=self.connection_url, login=self.__login, password=self.__password)
 
-    async def on_message(self, message: AbstractIncomingMessage) -> None:
+    async def __on_message(self, message: AbstractIncomingMessage) -> None:
         async with message.process():
             event = broker_models.Message.parse_raw(message.body.decode('utf-8'))
             await self.message_handler.handle(event)
 
     async def start_consuming(self) -> None:
-        self.connection = await self.init_connection()
+        self.__connection = await self.__init_connection()
 
-        async with self.connection as conn:
+        async with self.__connection as conn:
             channel = await conn.channel()
             await channel.set_qos(prefetch_count=1)
             queue = await channel.get_queue(self.queue_name, ensure=True)
-            await queue.consume(self.on_message)
+            await queue.consume(self.__on_message)
             await asyncio.Future()
 
     async def dispose(self) -> None:
-        await self.connection.close()
+        await self.__connection.close()
