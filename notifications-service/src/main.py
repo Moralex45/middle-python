@@ -8,9 +8,6 @@ import src.core.config as project_config
 import src.services.amqp as amqp_service
 import src.services.storage as storage_service
 
-if not project_config.get_settings().debug:
-    sentry_sdk.init()
-
 app = fastapi.FastAPI(
     title=project_config.get_settings().project_name,
     description='Сервис обработки событий нотификации',
@@ -24,6 +21,9 @@ app = fastapi.FastAPI(
 
 @app.on_event('startup')
 async def startup_event():
+    if not project_config.get_settings().debug:
+        sentry_sdk.init(dsn=project_config.get_settings().sentry_settings.dsn)
+
     storage_service.mongodb.mongodb_instance = motor_asyncio.AsyncIOMotorClient(
         host=project_config.get_settings().mongodb_settings.host,
         port=project_config.get_settings().mongodb_settings.port,
