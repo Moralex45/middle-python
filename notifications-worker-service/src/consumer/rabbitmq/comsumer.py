@@ -24,7 +24,7 @@ class RabbitmqConsumer(ConsumerProtocol):
         self.prefetch_count = prefetch_count
         self.__login = login
         self.__password = password
-        self.__connection: AbstractRobustConnection | None = None
+        self.__connection: AbstractRobustConnection
 
     async def __init_connection(self) -> AbstractRobustConnection:
         return await connect_robust(url=self.connection_url, login=self.__login, password=self.__password)
@@ -33,7 +33,7 @@ class RabbitmqConsumer(ConsumerProtocol):
         async with message.process():
             event = self.message_handler.message_model.parse_raw(message.body.decode('utf-8'))
             try:
-                await self.message_handler.handle(event)
+                await self.message_handler.handle(event)  # type: ignore
                 await message.ack()
             except exc.MessageHandlingError:
                 await message.reject(requeue=True)

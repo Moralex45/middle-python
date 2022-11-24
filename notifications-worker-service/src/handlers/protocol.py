@@ -5,7 +5,7 @@ import src.models.broker as broker_mdl
 
 class EventHandlerProtocol(typing.Protocol):
 
-    message_model = broker_mdl.EventMessage
+    message_model: type[broker_mdl.EventMessage]
 
     async def handle(self, message: broker_mdl.EventMessage) -> None:
         ...
@@ -13,7 +13,7 @@ class EventHandlerProtocol(typing.Protocol):
 
 class MessageHandlerProtocol(typing.Protocol):
 
-    message_model = broker_mdl.PersonalizedMessage
+    message_model: type[broker_mdl.PersonalizedMessage]
 
     async def handle(self, message: broker_mdl.PersonalizedMessage) -> None:
         ...

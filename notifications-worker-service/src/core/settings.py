@@ -154,6 +154,8 @@ class TemplatesSettings(BaseConfig):
                 return self.new_series_subject
             case EventTypes.REGISTRATION:
                 return self.registration_subject
+            case EventTypes.MAILING:
+                return ''
 
     class Config:
         env_prefix = 'TMPL_'

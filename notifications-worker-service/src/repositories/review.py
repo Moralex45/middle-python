@@ -9,7 +9,7 @@ import src.utils.exceptions as exc
 
 class ReviewRepositoryProtocol(typing.Protocol):
 
-    async def get_user_id_by_review(self, review_id: uuid.UUID) -> user_act.Review:
+    async def get_review_by_id(self, review_id: uuid.UUID) -> user_act.Review:
         """
         :raises NotFoundError:
         """

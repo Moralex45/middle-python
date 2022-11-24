@@ -5,7 +5,7 @@ import logging
 import aio_pika
 import aiopg
 import motor.motor_asyncio as motor_asyncio
-import asynch
+import asynch  # type: ignore
 
 import src.core.settings as worker_settings
 import src.handlers as handlers
@@ -43,8 +43,8 @@ class Worker:
         db.rabbitmq_instance = await aio_pika.connect(settings.rabbitmq.url,
                                                       connection_class=aio_pika.RobustConnection)
         db.clickhouse_connection = await asynch.connect(settings.clickhouse.url)
-        db.auth_postgres_connection = aiopg.connect(settings.auth_postgres.url)
-        db.admin_postgres_connection = aiopg.connect(settings.admin_postgres.url)
+        db.auth_postgres_connection = await aiopg.connect(settings.auth_postgres.url)
+        db.admin_postgres_connection = await aiopg.connect(settings.admin_postgres.url)
 
         logger.info('Initializing repositories')
         broker_repo = repo.BrokerMessageRabbitmqRepository(

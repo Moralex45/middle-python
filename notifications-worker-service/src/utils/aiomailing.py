@@ -1,7 +1,7 @@
 import typing
 
-import aiosendgrid
-from sendgrid.helpers.mail import Content, Mail, From, To
+import aiosendgrid  # type: ignore
+from sendgrid.helpers.mail import Content, Mail, From, To  # type: ignore
 
 import src.utils.exceptions as exc
 

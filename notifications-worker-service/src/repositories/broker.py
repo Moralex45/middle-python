@@ -1,6 +1,7 @@
 import typing
 
 import aio_pika
+import aio_pika.abc as aio_pika_abc
 
 
 class BrokerMessageRepositoryProtocol(typing.Protocol):
@@ -12,7 +13,7 @@ class BrokerMessageRepositoryProtocol(typing.Protocol):
 class BrokerMessageRabbitmqRepository(BrokerMessageRepositoryProtocol):
     def __init__(
             self,
-            connection: aio_pika.RobustConnection,
+            connection: aio_pika_abc.AbstractConnection,
             *,
             routing_key: str,
     ):

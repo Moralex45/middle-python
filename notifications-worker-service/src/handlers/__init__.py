@@ -1,6 +1,6 @@
-from protocol import MessageHandlerProtocol, EventHandlerProtocol
-from message_handler import PersonalizedMessageHandler
-from event_handler import EventHandler
+from src.handlers.protocol import MessageHandlerProtocol, EventHandlerProtocol
+from src.handlers.message_handler import PersonalizedMessageHandler
+from src.handlers.event_handler import EventHandler
 
 
 __all__ = [

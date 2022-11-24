@@ -41,7 +41,7 @@ class EventHandler(protocol.EventHandlerProtocol):
         if review_id is None:
             logger.info('Broken message by id %s arrived', message.id)
             return
-        review = await self._review_repo.get_user_id_by_review(review_id)
+        review = await self._review_repo.get_review_by_id(review_id)
         user_info = await self._users_repo.get_user_by_id(review.user_id)
         movie_info = await self._movies_repo.get_movie_by_id(review.movie_id)
         content = {'movie_name': movie_info.title}
@@ -84,9 +84,9 @@ class EventHandler(protocol.EventHandlerProtocol):
                 await self._broker_repo.publish_message(message_to_sent.json().encode())
 
     async def _handle_mass_mailing(self, message: broker_mdl.EventMessage) -> None:
-        email_subject: str = message.content.get('subject')
-        blocks: dict = message.content.get('blocks')
-        if email_subject is None or blocks is None:
+        email_subject: str = message.content.get('subject', '')
+        blocks: dict = message.content.get('blocks', {})
+        if not email_subject or not blocks:
             logger.info('Broken message by id %s arrived', message.id)
             return
         users = self._users_repo.get_all_users()

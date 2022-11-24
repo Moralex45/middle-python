@@ -1,8 +1,8 @@
-from review import ReviewRepositoryProtocol, ReviewMongoRepository
-from movies import MovieRepositoryProtocol, MoviePostgresRepository
-from movie_users import MovieUsersRepositoryProtocol, MovieUserClickhouseRepository
-from users import UsersRepositoryProtocol, UsersPostgresRepository
-from broker import BrokerMessageRepositoryProtocol, BrokerMessageRabbitmqRepository
+from src.repositories.review import ReviewRepositoryProtocol, ReviewMongoRepository
+from src.repositories.movies import MovieRepositoryProtocol, MoviePostgresRepository
+from src.repositories.movie_users import MovieUsersRepositoryProtocol, MovieUserClickhouseRepository
+from src.repositories.users import UsersRepositoryProtocol, UsersPostgresRepository
+from src.repositories.broker import BrokerMessageRepositoryProtocol, BrokerMessageRabbitmqRepository
 
 
 __all__ = [

@@ -1,8 +1,8 @@
 import typing
 import uuid
 
-from asynch.connection import Connection
-from asynch.cursors import DictCursor
+from asynch.connection import Connection  # type: ignore
+from asynch.cursors import DictCursor  # type: ignore
 
 
 class MovieUsersRepositoryProtocol(typing.Protocol):

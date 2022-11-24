@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import functools
 
-import aio_pika
+from aio_pika.abc import AbstractConnection
 
-rabbitmq_instance: aio_pika.RobustConnection | None = None
+rabbitmq_instance: AbstractConnection
 
 
 @functools.lru_cache()
-def get_rabbitmq_instance() -> aio_pika.RobustConnection | None:
+def get_rabbitmq_instance() -> AbstractConnection:
     return rabbitmq_instance
