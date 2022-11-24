@@ -155,6 +155,9 @@ class TemplatesSettings(BaseConfig):
             case EventTypes.REGISTRATION:
                 return self.registration_subject
 
+    class Config:
+        env_prefix = 'TMPL_'
+
 
 class EventWorkerSettings(BaseConfig):
     rabbitmq: RabbitMQSettings = RabbitMQSettings()
