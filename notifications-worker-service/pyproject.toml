@@ -8,11 +8,13 @@ authors = ["kenki <ilsafganiev2222@gmail.com>"]
 python = "^3.10"
 pydantic = {extras = ["dotenv"], version = "^1.10.2"}
 asynch = "^0.2.2"
-asyncpg = "^0.27.0"
 motor = "^3.1.1"
 aio-pika = "^8.2.5"
 orjson = "^3.8.2"
 aiosendgrid = {extras = ["helpers"], version = "^0.1.0"}
+Jinja2 = "^3.1.2"
+aiofiles = "^22.1.0"
+aiopg = "^1.4.0"
 
 [tool.poetry.dev-dependencies]
 flake8-bugbear = "^22.6.22"
