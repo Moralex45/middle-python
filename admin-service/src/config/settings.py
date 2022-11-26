@@ -115,3 +115,5 @@ CORS_ALLOWED_ORIGINS = [
 
 if not DEBUG:
     sentry_sdk.init(integrations=[DjangoIntegration()])
+
+NOTIFICATION_URL = os.environ.get('NOTIFICATION_URL', '127.0.0.1:8000')
