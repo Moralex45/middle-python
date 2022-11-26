@@ -71,6 +71,10 @@ https://developer.confluent.io/quickstart/kafka-docker
 
 # Запуск MongoDB
 
-`docker run -d --name yp_ugc_mongo -p 270170:27017 mongo`
+`docker run -d --name yp_ugc_mongo -p 27018:27017 mongo`
 
-`docker run -d --name yp_notifcations_mongo -p 270171:27017 mongo`
+`docker run -d --name yp_notifcations_mongo -p 27019:27017 mongo`
+
+# Запуск RabbitMQ
+
+`docker run -d --name yp_rabbitmq -e RABBITMQ_DEFAULT_USER=guest -e RABBITMQ_DEFAULT_PASS=guest -p 5672:5672 rabbitmq:3-management`
