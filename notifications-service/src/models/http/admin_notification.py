@@ -34,5 +34,5 @@ class AdminNotificationCreation(Base):
         return values
 
 
-class ServiceNotification(AdminNotificationCreation):
+class AdminServiceNotification(AdminNotificationCreation):
     id: uuid.UUID  # noqa: VNE003

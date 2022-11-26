@@ -5,7 +5,7 @@ import pydantic
 from src.models.base import Base
 
 
-class ServiceNotification(Base):
+class AdminServiceNotification(Base):
     id: uuid.UUID = pydantic.Field(..., alias='_id')  # noqa: VNE003
     type: str  # noqa: VNE003
     content: str

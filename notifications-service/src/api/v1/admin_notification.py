@@ -14,7 +14,7 @@ router = fastapi.APIRouter(prefix='/api/v1/admin_notification')
 
 @router.post(
     '/',
-    response_model=http_admin_notifications.ServiceNotification,
+    response_model=http_admin_notifications.AdminServiceNotification,
     status_code=fastapi.status.HTTP_201_CREATED,
     description='Админка для нотификаций',
     summary='Endpoint для управления нотификациями через админку',
