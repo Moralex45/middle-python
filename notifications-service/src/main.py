@@ -1,5 +1,6 @@
 import aio_pika
 import fastapi
+import sentry_sdk
 import uvicorn
 from motor import motor_asyncio
 
