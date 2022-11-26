@@ -6,7 +6,7 @@ import src.models.http.admin_notification as http_admin_notifications
 import src.models.amqp_producer.admin_notification as amqp_admin_notifications
 from src.repositories.storage.admin_notification import (
     AsyncMongoDBNotificationStorageRepository, get_storage_service_notification_repository)
-from src.repositories.amqp_producer.service_notification import (
+from src.repositories.amqp_producer.admin_notification import (
     AsyncRabbitMQNotificationRepository, get_amqp_producer_service_notification_repository)
 
 router = fastapi.APIRouter(prefix='/api/v1/admin_notification')
