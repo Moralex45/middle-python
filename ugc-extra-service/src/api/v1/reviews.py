@@ -14,6 +14,7 @@ from src.repositories.user_to_film_like import (
     AsyncMongoDBUserToFilmLikeRepository, get_user_to_film_like_repository)
 from src.repositories.user_to_review_like import (
     AsyncMongoDBUserToReviewLikeRepository, get_user_to_review_like_repository)
+from src.utils.review_like_event import review_like_event
 
 router = fastapi.APIRouter(prefix='/api/v1/reviews')
 
@@ -133,6 +134,7 @@ async def create_review_like(
         user_review_like = await user_to_review_likes_repository.create_like(
             http_review_like.user_id, http_review_like.review_id, http_review_like.mark,
         )
+        await review_like_event(review_id=http_review_like.review_id)
         return http_user_to_review_like_models.UserToReviewLike(**user_review_like.to_dict(False))
 
     except repositories_exception.DataAlreadyExistsError:
