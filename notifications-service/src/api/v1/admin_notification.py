@@ -37,6 +37,6 @@ async def create_notification(
     )
 
     await amqp_producer_service_notification_repository.publish_notification(
-        amqp_admin_notifications.ServiceNotification(**repository_notification.to_dict()),
+        amqp_admin_notifications.AdminServiceNotification(**repository_notification.to_dict()),
     )
     return http_admin_notifications.AdminServiceNotification(**repository_notification.to_dict(False))
