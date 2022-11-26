@@ -4,6 +4,7 @@ import uvicorn
 from motor import motor_asyncio
 
 import src.api.v1.service_notification as service_notifications_routing
+import src.api.v1.admin_notification as admin_notifications_routing
 import src.core.config as project_config
 import src.services.amqp_producer as amqp_service
 import src.services.storage as storage_service
@@ -19,6 +20,7 @@ app = fastapi.FastAPI(
 )
 
 app.include_router(service_notifications_routing.router, tags=['service notifications'])
+app.include_router(admin_notifications_routing.router, tags=['admin notifications'])
 
 
 @app.on_event('startup')
