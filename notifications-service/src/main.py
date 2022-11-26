@@ -1,5 +1,6 @@
 import aio_pika
 import fastapi
+import sentry_sdk
 import uvicorn
 from motor import motor_asyncio
 
@@ -24,6 +25,9 @@ app.include_router(service_notifications_routing.router, tags=['service notifica
 
 @app.on_event('startup')
 async def startup_event():
+    if not project_config.get_settings().debug:
+        sentry_sdk.init(dsn=project_config.get_settings().sentry_settings.dsn)
+
     storage_service.mongodb.mongodb_instance = motor_asyncio.AsyncIOMotorClient(
         host=project_config.get_settings().mongodb_settings.host,
         port=project_config.get_settings().mongodb_settings.port,

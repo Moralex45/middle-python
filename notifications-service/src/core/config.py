@@ -48,9 +48,17 @@ class RabbitMQSettings(BaseConfig):
         return f'amqp://{self.username}:{self.password}@{self.host}:{self.port}'
 
 
+class SentrySettings(BaseConfig):
+    dsn: str = ''
+
+    class Config:
+        env_prefix = 'SENTRY_'
+
+
 class ProjectSettings(BaseConfig):
     mongodb_settings: MongodbSettings = MongodbSettings()
     rabbitmq_settings: RabbitMQSettings = RabbitMQSettings()
+    sentry_settings: SentrySettings = SentrySettings()
 
     project_name: str = 'Notification service'
 
