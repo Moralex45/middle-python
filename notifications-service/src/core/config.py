@@ -22,6 +22,7 @@ class MongodbSettings(BaseConfig):
     mongodb_database: str = 'notifications'
     events_notifications_collection: str = 'events'
     admin_notifications_collection: str = 'admin'
+    jobs_notifications_collection: str = 'jobs'
 
     class Config:
         env_prefix = 'MONGODB_'

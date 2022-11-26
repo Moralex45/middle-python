@@ -1,12 +1,13 @@
 import aio_pika
 import fastapi
-import sentry_sdk
 import uvicorn
 from motor import motor_asyncio
 
+import src.api.v1.service_notification as service_notifications_routing
 import src.core.config as project_config
-import src.services.amqp as amqp_service
+import src.services.amqp_producer as amqp_service
 import src.services.storage as storage_service
+from src.utils.schedule import scheduler
 
 app = fastapi.FastAPI(
     title=project_config.get_settings().project_name,
@@ -17,6 +18,8 @@ app = fastapi.FastAPI(
     openapi_url='/api/docs/openapi.json',
     default_response_class=fastapi.responses.ORJSONResponse,
 )
+
+app.include_router(service_notifications_routing.router, tags=['service notifications'])
 
 
 @app.on_event('startup')
@@ -32,6 +35,8 @@ async def startup_event():
     amqp_service.rabbitmq.rabbitmq_connection = await aio_pika.connect_robust(
         project_config.get_settings().rabbitmq_settings.url,
     )
+
+    scheduler.start()
 
 
 if __name__ == '__main__':
