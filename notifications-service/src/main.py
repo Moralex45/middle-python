@@ -7,6 +7,7 @@ import src.api.v1.service_notification as service_notifications_routing
 import src.core.config as project_config
 import src.services.amqp_producer as amqp_service
 import src.services.storage as storage_service
+from src.utils.schedule import scheduler
 
 app = fastapi.FastAPI(
     title=project_config.get_settings().project_name,
@@ -31,6 +32,8 @@ async def startup_event():
     amqp_service.rabbitmq.rabbitmq_connection = await aio_pika.connect_robust(
         project_config.get_settings().rabbitmq_settings.url,
     )
+
+    scheduler.start()
 
 
 if __name__ == '__main__':

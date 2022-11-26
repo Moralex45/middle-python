@@ -10,6 +10,8 @@ from src.repositories.storage.service_notification import (
     AsyncMongoDBNotificationStorageRepository, get_storage_service_notification_repository)
 from src.repositories.amqp_producer.service_notification import (
     AsyncRabbitMQNotificationRepository, get_amqp_producer_service_notification_repository)
+from src.utils.schedule import scheduler, get_job_id
+
 
 router = fastapi.APIRouter(prefix='/api/v1/service_notification')
 
@@ -49,8 +51,12 @@ async def create_notification(
         possible_sending_time = datetime.datetime.fromtimestamp(repository_notification.sending_time_timestamp)
 
     if possible_sending_time is not None:
-        # TODO send to scheduler
-        ...
+        scheduler.add_job(func=amqp_producer_service_notification_repository.publish_notification,
+                          kwargs=repository_notification.to_dict(),
+                          id=get_job_id(repository_notification),
+                          trigger='date',
+                          run_date=possible_sending_time,
+                          replace_existing=True)
     else:
         await amqp_producer_service_notification_repository.publish_notification(
             amqp_service_notifications.ServiceNotification(**repository_notification.to_dict()),
