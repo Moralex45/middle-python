@@ -1,3 +1,1 @@
-cd src
-
-gunicorn --bind 0.0.0.0:8000 -k uvicorn.workers.UvicornWorker main:app
+gunicorn --bind 0.0.0.0:8000 -k uvicorn.workers.UvicornWorker src.main:app
