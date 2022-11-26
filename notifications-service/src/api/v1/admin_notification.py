@@ -27,7 +27,7 @@ async def create_notification(
     amqp_producer_service_notification_repository: AsyncRabbitMQNotificationRepository = fastapi.Depends(
         get_amqp_producer_service_notification_repository,
     ),
-) -> http_admin_notifications.ServiceNotification:
+) -> http_admin_notifications.AdminServiceNotification:
     repository_notification = await storage_service_notification_repository.create_notification(
         http_notification.type,
         http_notification.content,
@@ -39,4 +39,4 @@ async def create_notification(
     await amqp_producer_service_notification_repository.publish_notification(
         amqp_admin_notifications.ServiceNotification(**repository_notification.to_dict()),
     )
-    return http_admin_notifications.ServiceNotification(**repository_notification.to_dict(False))
+    return http_admin_notifications.AdminServiceNotification(**repository_notification.to_dict(False))

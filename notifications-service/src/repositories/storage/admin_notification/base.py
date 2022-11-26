@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 
-import src.models.storage.service_notification as storage_notifications
+import src.models.storage.admin_notification as admin_notifications
 
 
 class AsyncNotificationsStorageRepositoryProtocol(ABC):
@@ -14,5 +14,5 @@ class AsyncNotificationsStorageRepositoryProtocol(ABC):
             recepients: list,
             sending_time_timestamp: int | None = None,
             sending_timeout: int | None = None,
-    ) -> storage_notifications.ServiceNotification:
+    ) -> admin_notifications.ServiceNotification:
         raise NotImplementedError

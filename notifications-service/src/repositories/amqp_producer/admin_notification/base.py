@@ -9,6 +9,6 @@ class AsyncNotificationsAMQPRepositoryProtocol(ABC):
     @abstractmethod
     async def publish_notification(
             self,
-            amqp_service_notification: amqp_notifications.ServiceNotification,
+            amqp_service_notification: amqp_notifications.AdminServiceNotification,
     ) -> None:
         raise NotImplementedError
