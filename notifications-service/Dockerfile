@@ -12,7 +12,6 @@ RUN pip install --upgrade pip  \
     && poetry install $(test "DEBUG" = False && echo "--no-dev") \
     && chmod a+x entrypoint.sh
 
-COPY tests tests
 COPY src src
 
 ENTRYPOINT ["sh", "entrypoint.sh"]

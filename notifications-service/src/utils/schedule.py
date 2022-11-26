@@ -1,6 +1,6 @@
-from apscheduler.schedulers.asyncio import AsyncIOScheduler  # type: ignore
-from apscheduler.jobstores.mongodb import MongoDBJobStore  # type: ignore
 from apscheduler.executors.pool import ThreadPoolExecutor  # type: ignore
+from apscheduler.jobstores.mongodb import MongoDBJobStore  # type: ignore
+from apscheduler.schedulers.asyncio import AsyncIOScheduler  # type: ignore
 
 from src.core.config import get_settings
 from src.models.storage.service_notification import ServiceNotification

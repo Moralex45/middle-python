@@ -4,8 +4,8 @@ import sentry_sdk
 import uvicorn
 from motor import motor_asyncio
 
-import src.api.v1.service_notification as service_notifications_routing
 import src.api.v1.admin_notification as admin_notifications_routing
+import src.api.v1.service_notification as service_notifications_routing
 import src.core.config as project_config
 import src.services.amqp_producer as amqp_service
 import src.services.storage as storage_service
@@ -40,6 +40,13 @@ async def startup_event():
     )
 
     scheduler.start()
+
+
+@app.on_event('shutdown')
+async def shutdown_event():
+    await amqp_service.rabbitmq.rabbitmq_connection.close()
+
+    scheduler.shutdown()
 
 
 if __name__ == '__main__':
