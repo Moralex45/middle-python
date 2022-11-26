@@ -4,14 +4,15 @@ import datetime
 
 import fastapi
 
-import src.models.http.service_notification as http_service_notifications
 import src.models.amqp_producer.service_notification as amqp_service_notifications
-from src.repositories.storage.service_notification import (
-    AsyncMongoDBNotificationStorageRepository, get_storage_service_notification_repository)
+import src.models.http.service_notification as http_service_notifications
 from src.repositories.amqp_producer.service_notification import (
-    AsyncRabbitMQNotificationRepository, get_amqp_producer_service_notification_repository)
-from src.utils.schedule import scheduler, get_job_id
-
+    AsyncRabbitMQNotificationRepository,
+    get_amqp_producer_service_notification_repository)
+from src.repositories.storage.service_notification import (
+    AsyncMongoDBNotificationStorageRepository,
+    get_storage_service_notification_repository)
+from src.utils.schedule import get_job_id, scheduler
 
 router = fastapi.APIRouter(prefix='/api/v1/service_notification')
 

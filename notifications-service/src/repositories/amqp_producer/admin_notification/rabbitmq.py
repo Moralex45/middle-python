@@ -15,7 +15,10 @@ class AsyncRabbitMQNotificationRepository(AsyncNotificationsAMQPRepositoryProtoc
     ):
         self.rabbitmq_producer = rabbitmq_producer_instance
 
-    async def publish_notification(self, amqp_service_notification: amqp_notifications.AdminServiceNotification) -> None:
+    async def publish_notification(
+            self,
+            amqp_service_notification: amqp_notifications.AdminServiceNotification,
+    ) -> None:
         async with self.rabbitmq_producer:
             routing_key = project_config.RabbitMQSettings.routing_key
             channel = await self.rabbitmq_producer.channel()
