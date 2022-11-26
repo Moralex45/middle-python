@@ -42,6 +42,13 @@ async def startup_event():
     scheduler.start()
 
 
+@app.on_event('shutdown')
+async def startup_event():
+    await amqp_service.rabbitmq.rabbitmq_connection.close()
+
+    scheduler.shutdown()
+
+
 if __name__ == '__main__':
     uvicorn.run(
         'main:app',
