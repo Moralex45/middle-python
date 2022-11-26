@@ -26,10 +26,10 @@ jobs:
         poetry install
     - name: Flake8
       run: |
-        flake8 ./src --count --select=E9,F63,F7,F82 --show-source --statistics
-        flake8 ./src --count --exit-zero --statistics
+        flake8 ${{ matrix.service }}/src --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 ${{ matrix.service }}/src --count --exit-zero --statistics
     - name: Mypy
-      run: mypy --python-version=${{ matrix.python-version }} ./src
+      run: mypy --python-version=${{ matrix.python-version }} ${{ matrix.service }}/src
   notification:
     name: Telegram notification
     needs: tests
