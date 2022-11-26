@@ -46,6 +46,11 @@ class Settings(BaseSettings):
     ENABLE_TRACER: bool = Field(env='ENABLE_TRACER')
     ENABLE_DDOS_PROTECTION: bool = Field(env='ENABLE_DDOS_PROTECTION')
 
+    CONFIRM_URL_SALT: str = Field(env='CONFIRM_URL_SALT')
+    CONFIRM_URL_EXPIRED: int = Field(env='CONFIRM_URL_EXPIRED')
+    NOTIFICATION_URL: str = Field(env='NOTIFICATION_URL')
+    SITE_URL: str = Field(env='SITE_URL')
+
     @property
     def POSTGRES_DSN(self) -> str:
         return f'postgresql+psycopg2://{self.POSTGRES_DB_USER}:{self.POSTGRES_DB_PASSWORD}' \

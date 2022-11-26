@@ -67,6 +67,7 @@ class UserData(BaseModel):
     first_name = Column(TEXT())
     last_name = Column(TEXT())
     email = Column(TEXT())
+    email_confirmed = Column(BOOLEAN(), default=False)
     birth_date = Column(TIMESTAMP())
 
     def __repr__(self):
