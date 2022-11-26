@@ -321,6 +321,16 @@ services:
     networks:
       - cinema_backend_network
 
+  notifications_rabbitmq:
+    image: rabbitmq:3-management
+    env_file:
+      - docker/rabbitmq/.env/.env.prod
+    expose:
+      - "5672"
+      - "15672"
+    networks:
+      - cinema_backend_network
+
   nginx:
     image: nginx:latest
     volumes:
