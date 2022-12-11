@@ -1,13 +1,15 @@
 import datetime
 import uuid
+from abc import ABC
 
 from src.db.core import db_session
 from src.db.models.users import UserData
 from src.db.services.base import IUserDataService
 from src.db.services.user import UserService
+from src.utils.update_email import UpdateEmail
 
 
-class UserDataService(IUserDataService):
+class UserDataService(IUserDataService, ABC):
     @classmethod
     def get_by_id(cls, _id: uuid.UUID) -> UserData | None:
         with db_session() as session:
@@ -91,10 +93,24 @@ class UserDataService(IUserDataService):
             if last_name is not None:
                 db_user_data.last_name = last_name
             if email is not None:
+                if db_user_data.email != email:
+                    db_user_data.email_confirmed = False
+                    UpdateEmail(user_id=db_user_data.user_id, email=email)
                 db_user_data.email = email
             if birth_date is not None:
                 db_user_data.birth_date = birth_date
             session.add(db_user_data)
             session.commit()
 
+            return cls.get_by_id(db_user_data.id)
+
+    @classmethod
+    def confirm_email(cls, user_id: uuid.UUID) -> UserData:
+        with db_session() as session:
+            db_user_data = cls.get_by_user_id(user_id)
+            if db_user_data is None:
+                raise ValueError(f'Unable to fetch userdata wih passed uuid {user_id}')
+            db_user_data.email_confirmed = True
+            session.add(db_user_data)
+            session.commit()
             return cls.get_by_id(db_user_data.id)

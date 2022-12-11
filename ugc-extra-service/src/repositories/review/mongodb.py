@@ -53,7 +53,7 @@ class AsyncMongoDBReviewRepository(ReviewRepositoryProtocol):
         return None
 
     async def get_review(self, review_id: uuid.UUID) -> Review | None:
-        query = {'review_id': str(review_id)}
+        query = {'_id': str(review_id)}
         document: dict | None = await self.collection.find_one(query)  # type:ignore
         if document is not None:
             return Review(**document)

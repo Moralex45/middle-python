@@ -45,9 +45,18 @@ class RedisSettings(BaseConfig):
         return f'{self.host}:{self.port}'
 
 
+class NotificationSettings(BaseConfig):
+    url: str
+    email_timeout: int
+
+    class Config:
+        env_prefix = 'NOTIFICATION_'
+
+
 class ProjectSettings(BaseConfig):
     mongodb_settings: MongodbSettings = MongodbSettings()
     redis_settings: RedisSettings = RedisSettings()
+    notification_settings: NotificationSettings = NotificationSettings()
 
     project_name: str = 'UGC extra service'
 

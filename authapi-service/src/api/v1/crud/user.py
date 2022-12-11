@@ -14,6 +14,7 @@ from src.core.utils import permissions_required, rate_limit
 from src.db.services.auth_history import AuthHistoryService
 from src.db.services.user import UserService
 from src.db.services.userdata import UserDataService
+from src import cache
 
 blueprint = Blueprint('user', __name__, url_prefix='/api/v1/crud/user')
 
@@ -106,4 +107,31 @@ def update_credentials():
         UserDataService.update(user_id=db_user.id, first_name=user_update.first_name, last_name=user_update.last_name,
                                email=user_update.email, birth_date=birth_date)
 
+    return Response(response_body, status=response_status, mimetype='application/json')
+
+
+@blueprint.route('/', methods=['GET'])
+@permissions_required(CAN_EDIT_PROFILE['code'])
+@rate_limit
+def confirm_email():
+
+    response_body = ''
+    response_status = HTTPStatus.OK
+
+    try:
+        confirm = request.args.get('confirm')
+    except (ValueError, AttributeError):
+        response_status = HTTPStatus.BAD_REQUEST
+        return Response(response_body, status=response_status, mimetype='application/json')
+
+    if not cache.cache_service.get(confirm):
+        response_status = HTTPStatus.BAD_REQUEST
+        return Response(response_body, status=response_status, mimetype='application/json')
+    try:
+        db_user = current_user
+        UserDataService.confirm_email(db_user.id)
+    except (ValueError, AttributeError):
+        response_status = HTTPStatus.BAD_REQUEST
+        return Response(response_body, status=response_status, mimetype='application/json')
+    response_body = orjson.dumps({'message': 'Email confirmed'})
     return Response(response_body, status=response_status, mimetype='application/json')
