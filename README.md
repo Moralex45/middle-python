@@ -1,8 +1,7 @@
 # Секция для ревьюера
 
 Ссылка на гит-репозиторий проекта: 
-https://github.com/KenKi2002/ugc_sprint_1  
-Все испрваления по ревью прикреплены к issue [#25](https://github.com/KenKi2002/ugc_sprint_1/issues/25)
+https://github.com/KenKi2002/ugc_sprint_1
 
 
 # Запуск тестов
