@@ -1,0 +1,5 @@
+purchase_already_exists = 'purchase already exists'
+user_has_this_subscription = 'user_has_this_subscription'
+subscription_not_found = 'Subscription not found'
+no_payment = 'Payment not found or unpaid'
+duplication_subscription = 'Subscription already exists'
