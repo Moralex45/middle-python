@@ -18,6 +18,7 @@ class Settings(BaseSettings):
 
     APP_HOST: str = Field(env='APP_HOST', default='127.0.0.1')
     APP_PORT: int = Field(env='APP_PORT', default=5000)
+    BILLING_SERVICE_URL: str = 'http://localhost:8000'
 
     @property
     def POSTGRES_DSN(self) -> str:
