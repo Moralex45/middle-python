@@ -1,3 +1,4 @@
+import uuid
 import logging
 from http import HTTPStatus
 from datetime import timedelta, date
@@ -56,16 +57,19 @@ async def payment(
             detail=errors_description.user_has_this_subscription
         )
 
+    uuid_payment_id = uuid.uuid4()
+    uuid_recurent_payment_id = uuid.uuid4()
+
     new_user_purchase = http_user_purchase_model(
         user_id=user_purchase.user_id,
         product_type=user_purchase.product_type,
         product_id=user_purchase.product_id,
-        payment_id=user_purchase.payment_id,
+        payment_id=uuid_payment_id,
     )
 
     new_db_user_subscription = http_user_subscription_model(
         user_id=user_purchase.user_id,
-        payment_id=user_purchase.payment_id,
+        payment_id=uuid_recurent_payment_id,
         subscription_id=user_purchase.subscription_id,
         expiration=date.today() + timedelta(days=db_subscription.duration)
     )
