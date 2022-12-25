@@ -11,6 +11,7 @@ class PaymentCreate(Base):
     description: str
     recurrent: bool | None = False
     recurrent_period: int | None
+    recurrent_id: uuid.UUID | None
 
 
 class PaymentCreateResponse(Base):
