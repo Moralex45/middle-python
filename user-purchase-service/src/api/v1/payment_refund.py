@@ -33,8 +33,8 @@ async def payment(
         )
 
     await payment_service.payment_refund(
-        refund.user_id,
-        refund.payment_id
+        refund.payment_id,
+        refund.sub_payment_id
     )
 
     return JSONResponse(
