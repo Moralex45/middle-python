@@ -20,7 +20,7 @@ class UserSubscription(BaseModel):
 
     user_id = Column(UUID(as_uuid=True))
     payment_id = Column(UUID(as_uuid=True))
-    status = Column(Enum(PaymentStatus), default=PaymentStatus.succeed)
+    status = Column(Enum(PaymentStatus))
     subscription_id = Column(ForeignKey('subscription.id'))
 
     expiration = Column(DateTime(timezone=True))

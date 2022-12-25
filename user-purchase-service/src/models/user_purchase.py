@@ -20,7 +20,7 @@ class UserPurchase(BaseModel):
     product_id = Column(UUID(as_uuid=True))
     payment_id = Column(UUID(as_uuid=True))
 
-    status = Column(Enum(PaymentStatus), default=PaymentStatus.succeed.value)
+    status = Column(Enum(PaymentStatus))
 
     is_deleted = Column(Boolean, default=False)
 

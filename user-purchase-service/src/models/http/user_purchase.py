@@ -15,5 +15,5 @@ class UserPurchaseIN(Base):
     user_id: uuid.UUID
     product_type: ProductType
     product_id: uuid.UUID
-    payment_id: uuid.UUID
+    payment_id: uuid.UUID | None
     subscription_id: uuid.UUID

@@ -7,6 +7,6 @@ class ProductType(enum.Enum):
 
 
 class PaymentStatus(enum.Enum):
-    succeed = 'succeed'
+    succeed = 'succeeded'
     canseled = 'canseled'
     refunded = 'refunded'

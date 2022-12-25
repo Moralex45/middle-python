@@ -20,4 +20,4 @@ class CallbackData(Base):
     event: EventOptions
     payment_id: uuid.UUID
     status: StatusOptions
-    sub_payment_id: uuid.UUID
+    sub_payment_id: uuid.UUID | None
